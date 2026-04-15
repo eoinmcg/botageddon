@@ -20,14 +20,19 @@ export default class Help extends Scene {
     super.update();
 
     const stick = gamepadDpad(0);
+    const swipe = this.g.swipe.dir;
 
     if (keyWasPressed('ArrowUp')
+      || swipe === 'up'
       || (this.lastStick[0] > 0 && stick.y === 0)) {
       this.g.sfx.play('walk');
+      this.g.swipe.clear();
     }
     if (keyWasPressed('ArrowDown')
+      || swipe === 'down'
       || (this.lastStick[0] < 0 && stick.y === 0)) {
       this.g.sfx.play('walk');
+      this.g.swipe.clear();
     }
 
     if (keyWasPressed('Enter')
@@ -37,8 +42,8 @@ export default class Help extends Scene {
       || gamepadWasPressed(1)
       || gamepadWasPressed(2)
       || keyWasPressed('Space')) {
+      this.g.swipe.clear();
       this.g.sceneManager.changeScene('Splash');
-
     }
 
     this.lastStick = [stick.y];

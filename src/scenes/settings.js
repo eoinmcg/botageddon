@@ -17,17 +17,22 @@ export default class SEttings extends Scene {
     super.update();
 
     const stick = gamepadStick(0);
+    const swipe = this.g.swipe.dir;
 
-    if (keyWasPressed("ArrowUp") || (this.lastStick[0] > 0 && stick.y === 0)) {
+    if (keyWasPressed("ArrowUp")
+      || swipe === 'up'
+      || (this.lastStick[0] > 0 && stick.y === 0)) {
       this.pointer -= 1;
       this.g.sfx.play("walk");
+      this.g.swipe.clear();
     }
-    if (
-      keyWasPressed("ArrowDown") ||
-      (this.lastStick[0] < 0 && stick.y === 0)
+    if (keyWasPressed("ArrowDown")
+      || swipe === 'down'
+      || (this.lastStick[0] < 0 && stick.y === 0)
     ) {
       this.pointer += 1;
       this.g.sfx.play("walk");
+      this.g.swipe.clear();
     }
 
     if (this.pointer < 0) this.pointer = this.yPos.length - 1;
@@ -40,10 +45,12 @@ export default class SEttings extends Scene {
       gamepadWasPressed(0) ||
       gamepadWasPressed(1) ||
       gamepadWasPressed(2) ||
+      swipe === 'tap' ||
       keyWasPressed("Space");
 
     if (inputPressed) {
       this.runChoice(this.pointer);
+      this.g.swipe.clear();
     }
 
     this.lastStick = [stick.y];

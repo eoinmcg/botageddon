@@ -83,7 +83,7 @@ if (window.BUILD) {
     console.log(`Built: ${BUILD}  [commit: ${COMMIT}]\n\n`);
     console.log(
       "%c" + `🤖 Greeting, Human! \n`,
-      "font-size: 24px; font-weight: bold; color: #c20;",
+      "font-size: 24px; font-family: monospace; font-weight: bold; color: lime;",
     );
     console.log(`Check the source: https://github.com/eoinmcg/botageddon`);
     console.log(`code & GFX by @eoinmcg`);

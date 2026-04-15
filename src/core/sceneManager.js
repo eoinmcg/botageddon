@@ -44,6 +44,7 @@ export default class SceneManager {
       }
       engineObjectsDestroy();
 
+
       this.clearInput();
       document.body.classList.remove(effect);
       this.currentScene = new Scenes[newScene]();
@@ -76,6 +77,7 @@ export default class SceneManager {
   }
 
   clearInput() {
+    this.g.swipe.clear();
     inputClear();
     for (let key in keyIsDown) {
       keyIsDown[key] = false;

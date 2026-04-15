@@ -1,5 +1,4 @@
 import Scene from "./scene";
-import isMobile from '../helpers/isMobile';
 
 export default class Splash extends Scene {
   enter(Game) {
@@ -9,12 +8,6 @@ export default class Splash extends Scene {
     this.options = ['Start', 'Help', 'Settings'];
     this.yPos = [-3, -4, -5];
     this.pointer = 0;
-
-    if (isMobile()) {
-      this.options.shift();
-      this.yPos.shift();
-      this.options[0] = 'Start';
-    }
 
     this.g.resetStore();
     this.stick = [gamepadDpad(0)];
@@ -33,16 +26,21 @@ export default class Splash extends Scene {
     super.update();
 
     const stick = gamepadStick(0);
+    const swipe = this.g.swipe.dir;
 
     if (keyWasPressed('ArrowUp')
+      || swipe === 'up'
       || (this.lastStick[0] > 0 && stick.y === 0)) {
       this.pointer -= 1;
       this.g.sfx.play('walk');
+      this.g.swipe.clear();
     }
     if (keyWasPressed('ArrowDown')
+      || swipe === 'down'
       || (this.lastStick[0] < 0 && stick.y === 0)) {
       this.pointer += 1;
       this.g.sfx.play('walk');
+      this.g.swipe.clear();
     }
 
     if (this.pointer < 0) this.pointer = this.yPos.length - 1;
@@ -53,14 +51,15 @@ export default class Splash extends Scene {
       || gamepadWasPressed(0)
       || gamepadWasPressed(1)
       || gamepadWasPressed(2)
+      || swipe === 'tap'
       || keyWasPressed('Space')) {
       const opt = this.options[this.pointer];
+      this.g.swipe.clear();
       if (opt === 'Help') {
         this.g.sceneManager.changeScene('Help');
       } else if (opt === 'Settings') {
         this.g.sceneManager.changeScene('Settings');
       } else if (opt === '1 Player' || opt === 'Start') {
-        // const scene = this.g.plays === 0 ? 'Tutorial' : 'Play';
         this.g.sceneManager.changeScene('Play');
       }
 

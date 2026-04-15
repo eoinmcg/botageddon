@@ -13,7 +13,7 @@ export default class Play extends Scene {
     this.g.plays += 1;
     setItem('plays', this.g.plays);
 
-    this.g.p1 = new Player(this.g, vec2(0, -1), this.g.store.p1.type || 'BUG', 'p1');
+    this.g.p1 = new Player(this.g, vec2(0, -1));
 
     new Dancer(this.g)
     new Human(this.g, { pos: vec2(-3, -6) })
@@ -26,8 +26,8 @@ export default class Play extends Scene {
     this.lastStick = [0];
     document.body.style.cursor = 'none'
 
-    this.g.music.play('mission2');
-    new Alert(this.g, { text: 'WAVE 1', col: 'orange', pos: vec2(-2, 1), sfx: 'score' });
+    this.g.music.play('intro');
+    new Alert(this.g, { text: 'WAVE 1', col: 'lime', outline: 'green', pos: vec2(-2, 1), sfx: 'score' });
   }
 
   update() {
@@ -39,7 +39,7 @@ export default class Play extends Scene {
 
     if (this.g.store.p1.score > this.g.hiScore) {
       if (!this.g.newHiscore) {
-        new Alert(this.g, { text: 'NEW HISCORE!!', col: 'lemon', pos: vec2(0, -5), sfx: 'score' });
+        new Alert(this.g, { text: 'NEW HISCORE!!', col: 'lemon', pos: vec2(-3.7, -5), sfx: 'score' });
       }
       this.g.newHiscore = true;
       this.g.hiScore = Math.max(this.g.store.p1.score, this.g.store.p2.score);
@@ -64,6 +64,9 @@ export default class Play extends Scene {
     if (this.g.gameOver) {
       this.checkGameOverInput();
     }
+
+    this.g.sticks.l.update();
+    this.g.sticks.r.update();
 
   }
 
@@ -180,6 +183,9 @@ export default class Play extends Scene {
         o.render();
       };
     })
+
+    this.g.sticks.l.render();
+    this.g.sticks.r.render();
 
   }
 }

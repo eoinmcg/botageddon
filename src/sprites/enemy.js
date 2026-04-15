@@ -34,7 +34,7 @@ export default class Enemy extends Sprite {
     }
 
     if (this.anim) {
-      this.changeAnim(this.anim, .1);
+      this.changeAnim(this.anim, .09);
     }
 
     if (this.path || this.pathOveride) {

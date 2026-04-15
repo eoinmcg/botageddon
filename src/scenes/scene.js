@@ -1,4 +1,4 @@
-import Circle from "../sprites/circle";
+
 export default class Scene {
   enter(game) {
     this.g = game;

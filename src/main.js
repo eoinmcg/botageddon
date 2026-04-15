@@ -1,6 +1,7 @@
 import Game from "./core/game.js";
+import VirtualStick from "./sprites/virtualStick.js";
+import Swiper from "./lib/swiper.js";
 import resize from "./helpers/resize.js";
-import { tvShader, passthroughShader } from "./lib/tvShader.js";
 
 function gameInit() {
   resize(Game.W, Game.H);
@@ -8,13 +9,19 @@ function gameInit() {
   canvasMinAspect = 1.6;
   canvasMaxAspect = 2;
 
+  Game.sticks = {
+    l: new VirtualStick('left'),
+    r: new VirtualStick('right'),
+  }
+
+  Game.swipe = new Swiper();
+  Game.swipe.clear();
+
+  Game.sticks.l.mount();
+  Game.sticks.r.mount();
+
   setCanvasPixelated(true);
   Game.sceneManager.changeScene(Game.startScene);
-
-  Game.shaders = { tvShader, passthroughShader };
-
-  // new PostProcessPlugin(tvShader);
-  // postProcess.enabled = false;
 
 }
 

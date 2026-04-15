@@ -5,6 +5,7 @@ import Powerup from "./powerup";
 import Particles from "../helpers/particles";
 import postScore from "../helpers/postScore";
 
+
 export default class Player extends Sprite {
   constructor(g, pos) {
     const props = { g };
@@ -33,9 +34,14 @@ export default class Player extends Sprite {
 
     this.renderOrder = 2000;
 
+    this.sticks = (g.sticks.l.hasTouch && g.sticks.r.hasTouch)
+      ? g.sticks : false;
+
     this.speed = 0.05;
     this.aimDir = vec2(1, 0);
+    this.fireCooldownDelay = .1;
     this.fireCooldown = 0;
+
 
     this.outline = {
       offset: 0.15,
@@ -47,27 +53,38 @@ export default class Player extends Sprite {
   update() {
     super.update();
 
-    // Move (keyboard OR left stick)
+    // Movement
     let move = keyDirection();
+
     if (isUsingGamepad) {
-      const stickL = gamepadStick(0); // left stick
+      const stickL = gamepadStick(0);
       if (stickL.length() > 0.1)
-        move = stickL; // override keyboard if active
+        move = stickL;
     }
+
+    if (this.sticks && this.sticks.l.active) {
+      move = this.sticks.l.value.normalize();
+    }
+
     this.velocity = move.scale(this.speed);
     this.pos = this.pos.add(this.velocity);
 
-    // Aim (mouse OR right stick)
+    // Aiming
     let aimingWithStick = false;
+
     if (isUsingGamepad) {
-      const stickR = gamepadStick(1); // right stick
+      const stickR = gamepadStick(1);
       if (stickR.length() > 0.2) {
         this.aimDir = stickR.normalize();
         aimingWithStick = true;
       }
     }
 
-    // fallback to mouse if not aiming with stick
+    if (this.sticks && this.sticks.r.active) {
+      this.aimDir = this.sticks.r.value.normalize();
+      aimingWithStick = true;
+    }
+
     if (!aimingWithStick) {
       const toMouse = mousePos.subtract(this.pos);
       if (toMouse.length() > 0.01)
@@ -76,22 +93,27 @@ export default class Player extends Sprite {
 
     this.angle = this.aimDir.angle();
 
+    // Shooting
     this.fireCooldown -= timeDelta;
-
     this.shoot = false;
-    if (mouseWasPressed(0)) this.shoot = true;
 
-    if (isUsingGamepad) {
-      if (gamepadIsDown(7)) this.shoot = true;
-    }
+    if (!this.sticks && mouseWasPressed(0)) this.shoot = true;
+
+    if (isUsingGamepad && gamepadIsDown(7)) this.shoot = true;
+    // On touch, fire automatically whenever the right stick is active
+    if (this.sticks && this.sticks.r.active) this.shoot = true;
 
     if (this.shoot && this.fireCooldown <= 0) {
       const spawnPos = this.pos.add(this.aimDir.scale(.2));
-      new Bullet(spawnPos, { dir: this.aimDir, angle: this.angle, g: this.g })
+      new Bullet(spawnPos, { dir: this.aimDir, angle: this.angle, g: this.g });
       this.g.sfx.play("shoot", this.pos);
       Particles.gunsmoke(this.pos);
+      this.fireCooldown = this.fireCooldownDelay;
     }
+
+    // Hurt / Fade
     this.clampToScreen();
+
     let t = this.hurtTimer.get();
     if (this.hurtTimer && this.hurtTimer.isSet && this.hurtTimer.elapsed()) {
       this.hurtTimer.unset();
@@ -100,7 +122,6 @@ export default class Player extends Sprite {
     if (t < 0) {
       this.fade = (t * -1) / this.hurtFor;
     }
-
   }
 
   render() {
@@ -110,27 +131,17 @@ export default class Player extends Sprite {
       let size = (1 - this.fade) * 10;
       let ringColor = new Color(1, 1, 1, this.fade);
       drawTile(this.pos, vec2(clamp(size, .5, 1)), this.g.tile('circle'), ringColor)
-      //   drawEllipse(
-      //     this.pos,
-      //     vec2(clamp(size, .5, 1)),
-      //     CLEAR_BLACK,
-      //     0,
-      //     0.3,
-      //     ringColor,
-      //   );
     }
-    let skipParent = this.fade && wave > 0;
-
 
     drawTile(this.pos.add(vec2(0, -.5)), vec2(.7, .5), tile(0, this.g.tileSize), this.shadowCol);
 
+    let skipParent = this.fade && wave > 0;
     if (!skipParent) {
       super.render();
     }
-    if (this.shoot) {
-      drawTile(this.pos.add(vec2(0, 1)), vec2(.5), tile(0, this.g.tileSize));
+    if (!this.sticks) {
+      drawTile(mousePos, vec2(.5), tile(12, this.g.tileSize), this.g.palette.lime.mk());
     }
-    drawTile(mousePos, vec2(.5), tile(12, this.g.tileSize), this.g.palette.lime.mk());
 
   }
 

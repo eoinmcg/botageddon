@@ -32,7 +32,6 @@ const COMMIT = revision.execSync('git rev-parse --short HEAD')
 const PROGRAM_NAME = 'bugandbee';
 const BUILD_FOLDER = 'tmp';
 const sourceFiles = [
-  // 'node_modules/littlejsengine/dist/littlejs.release.js',
   'src/lib/littlejs.release.js',
   'dist/game.js',
 ];
@@ -43,12 +42,10 @@ if (!fs.existsSync('dist')) {
 };
 
 const dataFiles = Config.images.map(tile => `public/${tile}`);
-Config.trackPaths.forEach((track) => {
-  dataFiles.push(`public/${track}`);
-})
 
-dataFiles.push(`public/04b19.woff`);
-dataFiles.push(`public/04b19.woff2`);
+dataFiles.push(`public/wheaton_capitals.otf`);
+dataFiles.push(`public/favicon.gif`);
+dataFiles.push(`public/manifest.json`);
 
 console.log(``);
 chalkSuccess(` Building ${Config.title}... `, '🛠️');
@@ -159,7 +156,7 @@ function htmlBuildStep(filename) {
   const source = fs.readFileSync('index.html', 'UTF8');
   const $ = cheerio.load(source);
   $('script').remove();
-  $('body').contents().filter(function () {
+  $('body').contents().filter(function() {
     return this.type === 'comment';
   }).remove();
   let html = $.html();
