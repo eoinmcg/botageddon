@@ -1,4 +1,4 @@
-# 🤖 BOTAGGEDON
+# 🤖 ROBOCIDE
 
 Twin stick shooter arcade action.
 

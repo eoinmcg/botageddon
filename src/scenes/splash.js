@@ -76,7 +76,7 @@ export default class Splash extends Scene {
     setFontDefault('"wheaton"');
     let col = new Color(0, 0, 0, .8);
     this.logoText({
-      text: 'botageddon', pos: vec2(0, 4), lineWidth: .2, color: slime,
+      text: 'robocide', pos: vec2(0, 4), lineWidth: .2, color: slime,
       lineColor: BLACK
     })
 
