@@ -19,6 +19,16 @@ or use a gamepad
 
 -----
 
+Clone the repo, crack open a terminal and prepare for fun!
+
+__Run locally__: `npm run dev`
+__Create a zip__: `npm run zip`
+__* Host on github pages:__ `npm run deploy`
+
+* In your repo under settings > pages
+
+-----
+
 - [🎶 Music by Snabisch](https://snabisch.itch.io/free-music-sequences-for-pico-8)
 - [⚙️ Made with LittleJS](https://github.com/KilledByAPixel/LittleJS)
 

@@ -9,7 +9,7 @@ import revision from 'child_process';
 import fs from 'node:fs';
 import child_process from 'node:child_process';
 import chalk from 'chalk';
-import { chalkError, chalkSuccess } from './helpers.js';
+import { chalkError, chalkSuccess, slugify } from './helpers.js';
 import * as cheerio from 'cheerio';
 
 // Get the directory of the current script
@@ -29,7 +29,7 @@ const COMMIT = revision.execSync('git rev-parse --short HEAD')
 
 'use strict';
 
-const PROGRAM_NAME = 'bugandbee';
+const PROGRAM_NAME = slugify(Config.title);
 const BUILD_FOLDER = 'tmp';
 const sourceFiles = [
   'src/lib/littlejs.release.js',
