@@ -3,7 +3,7 @@ import Player from "../sprites/player";
 import Dancer from "../sprites/dancer";
 import Muncher from "../sprites/muncher";
 import Drone from "../sprites/drone";
-import Human from "../sprites/human";
+import Kitty from "../sprites/kitty";
 import Alert from "../sprites/alert";
 import { setItem } from "../helpers/store.js";
 
@@ -18,8 +18,8 @@ export default class Play extends Scene {
     this.g.p1 = new Player(this.g, vec2(0, -1));
 
     new Drone(this.g)
-    new Human(this.g, { pos: vec2(-1.5, -5) })
-    new Human(this.g, { pos: vec2(1.5, -5) })
+    new Kitty(this.g, { pos: vec2(-1.5, -5) })
+    new Kitty(this.g, { pos: vec2(1.5, -5) })
 
     this.g.gameOver = false;
 
@@ -28,8 +28,8 @@ export default class Play extends Scene {
     this.lastStick = [0];
     document.body.style.cursor = 'none'
 
-    this.g.music.play('mission');
-    new Alert(this.g, { text: 'WAVE 1', col: 'slime', outline: 'green', pos: vec2(-2, 1), sfx: 'score' });
+    this.g.music.play('intro');
+    new Alert(this.g, { text: 'WAVE 1', col: 'slime', outline: 'forestgreen', pos: vec2(-2, 1), sfx: 'score' });
   }
 
   update() {
@@ -158,7 +158,7 @@ export default class Play extends Scene {
     font.drawText(text, vec2(leftX, 6.5), .5, false, BLACK);
     font.drawText(text, vec2(leftX, 6.6), .5, false, WHITE);
     const heartTile = this.g.tile('heart');
-    const pink = this.g.palette.pink.mk();
+    const pink = this.g.palette.pink.col;
     for (let i = 0; i < this.g.store.p1.lives; i += 1) {
       drawTile(vec2(4.5 - (i * .7), 6.5), vec2(.7), heartTile, pink);
     }

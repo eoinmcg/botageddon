@@ -71,12 +71,11 @@ export default class Splash extends Scene {
     font.drawText(hi, vec2(0, 11.4), 1, true, BLACK);
     font.drawText(hi, vec2(0, 11.5), 1, true);
 
-    const slime = this.g.palette.slime.col;
     mainContext.font = 'wheaton';
     setFontDefault('"wheaton"');
     let col = new Color(0, 0, 0, .8);
     this.logoText({
-      text: 'robocide', pos: vec2(0, 4), lineWidth: .2, color: slime,
+      text: 'robocide', pos: vec2(0, 4), lineWidth: .2, color: this.g.palette.pink.col,
       lineColor: BLACK
     })
 

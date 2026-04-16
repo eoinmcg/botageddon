@@ -21,7 +21,7 @@ export default class Enemy extends Sprite {
     this.health = this.health || 1;
     this.value = this.value || 10;
     this.outline = this.outline || {
-      color: BLACK, offset: .15
+      color: BLACK, offset: .1
     };
 
     this.renderOrder = 1000;
@@ -109,9 +109,9 @@ export default class Enemy extends Sprite {
       this.angle += rand(-.1, .1);
     }
 
-    if (o.name === 'human') {
+    if (o.name === 'kitty') {
       o.destroy();
-      console.log('DED HOOMAN')
+      console.log('DED KITTY')
 
     }
 

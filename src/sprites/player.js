@@ -11,7 +11,7 @@ export default class Player extends Sprite {
     const props = { g };
 
     const t = g.tile("bee0");
-    super(pos, vec2(.5), t, props);
+    super(pos, vec2(.7), t, props);
 
     this.player = 'p1';
 
@@ -20,9 +20,12 @@ export default class Player extends Sprite {
     this.mirror = false;
 
     this.anims = {
-      fly: ["bee0", "bee1", "bee2"],
+      cat: ["cat0", "cat1"],
+      cat_up: ["cat2", "cat3"],
+      idle: ["cat0"],
+      idle_up: ["cat2"],
     };
-    this.changeAnim("fly", 0.1);
+    this.changeAnim("cat", 0.2);
 
     this.hurt = false;
     this.hurtFor = 3;
@@ -42,9 +45,8 @@ export default class Player extends Sprite {
     this.fireCooldownDelay = .1;
     this.fireCooldown = 0;
 
-
     this.outline = {
-      offset: 0.15,
+      offset: 0.1,
       color: BLACK
     };
 
@@ -91,8 +93,6 @@ export default class Player extends Sprite {
         this.aimDir = toMouse.normalize();
     }
 
-    this.angle = this.aimDir.angle();
-
     // Shooting
     this.fireCooldown -= timeDelta;
     this.shoot = false;
@@ -107,7 +107,8 @@ export default class Player extends Sprite {
       const spawnPos = this.pos.add(this.aimDir.scale(.2));
       new Bullet(spawnPos, { dir: this.aimDir, angle: this.angle, g: this.g });
       this.g.sfx.play("shoot", this.pos);
-      Particles.gunsmoke(this.pos);
+      const gunTip = this.pos.add(this.aimDir.scale(.8));
+      Particles.gunsmoke(gunTip);
       this.fireCooldown = this.fireCooldownDelay;
     }
 
@@ -122,29 +123,72 @@ export default class Player extends Sprite {
     if (t < 0) {
       this.fade = (t * -1) / this.hurtFor;
     }
+
+    this.mirror = this.aimDir.x < 0;
+
+    const a = this.aimDir.angle();
+    this.isUp = a > -1.2 && a < 1.2;
+    if (this.velocity.x === 0 && this.velocity.y === 0) {
+      this.changeAnim(this.isUp ? 'idle_up' : 'idle')
+    }
+    else {
+      this.changeAnim(this.isUp ? 'cat_up' : 'cat', .1)
+    }
+
+
   }
 
   render() {
     const wave = Math.sin(time * 20);
 
+    // when hit / recovering
     if (this.fade) {
       let size = (1 - this.fade) * 10;
       let ringColor = new Color(1, 1, 1, this.fade);
       drawTile(this.pos, vec2(clamp(size, .5, 1)), this.g.tile('circle'), ringColor)
     }
 
+    //shadow
     drawTile(this.pos.add(vec2(0, -.5)), vec2(.7, .5), tile(0, this.g.tileSize), this.shadowCol);
 
     let skipParent = this.fade && wave > 0;
+
+    if (this.isUp) this.renderGun(skipParent);
     if (!skipParent) {
       super.render();
     }
+
+    if (!this.isUp) this.renderGun(skipParent);
+
     if (!this.sticks) {
       drawTile(mousePos, vec2(.5), tile(12, this.g.tileSize), this.g.palette.slime.mk());
     }
 
   }
 
+  renderGun(skipParent) {
+
+    if (skipParent) return;
+
+    const lineStart = this.pos.add(vec2(0, -.2));
+    const lineEnd = this.pos.add(this.aimDir.scale(.8));
+
+    // gun handle (rear grip)
+    const perp = vec2(-this.aimDir.y, this.aimDir.x);
+    const handleDir = this.aimDir.x > 0 ? 1 : -1;
+    const handleA = lineStart;
+    const handleB = lineStart.subtract(perp.scale(.2 * handleDir));
+    drawLine(handleA, handleB, 0.15, BLACK);
+
+    // second handle (foregrip, partway along the barrel)
+    const foregrip = this.pos.add(this.aimDir.scale(.4));
+    const foregrip2 = foregrip.subtract(perp.scale(.5 * handleDir));
+    drawLine(foregrip, foregrip2, 0.15, BLACK);
+
+    // barrel
+    drawLine(lineStart, lineEnd, 0.2, new Color(.01, .01, .01));
+
+  }
 
   clampToScreen() {
     this.pos.x = clamp(

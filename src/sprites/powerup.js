@@ -11,14 +11,15 @@ export default class Powerup extends Sprite {
     this.type = type;
 
     this.anims = {
-      sparkle: ["crystal0", "crystal1", "crystal2"],
+      // sparkle: ["crystal0", "crystal1", "crystal2"],
+      sparkle: ["fish0", "fish1", "fish2"],
     };
     this.changeAnim("sparkle", 0.1);
 
     this.renderOrder = 3000;
 
     this.outline = this.outline || {
-      color: BLACK, offset: .15
+      color: BLACK, offset: .1
     };
 
   }

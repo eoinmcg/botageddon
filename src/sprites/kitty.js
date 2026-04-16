@@ -1,21 +1,33 @@
 import Sprite from "./sprite";
 
-export default class Human extends Sprite {
+export default class Kitty extends Sprite {
 
   constructor(g, props) {
     props.g = g;
 
 
-    const t = g.tile(['girl0', 'boy0'].rnd());
-    super(props.pos, vec2(.7), t, props);
+    const t = g.tile(["kitty3"].rnd());
+    super(props.pos, vec2(.5), t, props);
 
     this.setCollision();
 
     this.g = g;
-    this.name = "human";
+    this.name = "kitty";
+
+    this.anims = {
+      idle: ["kitty3", "kitty4", "kitty3"],
+    }
+    this.changeAnim("idle", 0.5);
+
+    this.cols = [
+      g.palette.pink.mk(1),
+      g.palette.orange.mk(1),
+      g.palette.yellow.mk(1),
+    ];
+    this.color = this.cols.rnd();
 
     this.outline = {
-      offset: 0.15,
+      offset: 0.1,
       color: BLACK
     };
   }
