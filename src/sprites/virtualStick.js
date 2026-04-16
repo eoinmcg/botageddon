@@ -1,3 +1,5 @@
+import { CLEAR_BLACK } from "littlejsengine";
+
 export default class VirtualStick {
   constructor(side) {
     this.side = side;
@@ -120,8 +122,7 @@ export default class VirtualStick {
     // Dimmer when idle, brighter when active
     const alpha = this.active ? 0.7 : 0.3;
 
-    drawCircle(anchorW, radiusW, new Color(1, 1, 1, alpha * 0.4)); // outer ring
-    // drawCircle(anchorW, radiusW, new Color(1, 1, 1, alpha * 0.4), 0, false); // ring outline
+    drawCircle(anchorW, radiusW, new Color(1, 1, 1, alpha * 0.5)); // outer ring
     drawCircle(knobW, knobRadiusW, new Color(1, 1, 1, alpha));       // knob
   }
 

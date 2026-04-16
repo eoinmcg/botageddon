@@ -3,6 +3,7 @@ export default class Scene {
   enter(game) {
     this.g = game;
     this.g.events = [];
+    this.uiInput = false;
   }
 
   exit() { }
@@ -29,6 +30,10 @@ export default class Scene {
       this.skip = true;
     }
 
+    this.uiInput = false;
+
+    if (!this.g.events) return
+
     for (let i = this.g.events.length - 1; i >= 0; --i) {
       const e = this.g.events[i];
       e.ttl -= timeDelta;
@@ -39,6 +44,39 @@ export default class Scene {
       }
     }
 
+  }
+
+  // for navigating menus on splash screen etc
+  handleUiInput() {
+
+    const stick = gamepadStick(0);
+    const swipe = this.g.swipe.dir;
+
+    this.uiInput = false;
+    if (keyWasPressed('ArrowUp')
+      || swipe === 'up'
+      || (this.lastStick[0] > 0 && stick.y === 0)) {
+      this.uiInput = 'up';
+      this.g.swipe.clear();
+    }
+    if (keyWasPressed('ArrowDown')
+      || swipe === 'down'
+      || (this.lastStick[0] < 0 && stick.y === 0)) {
+      this.uiInput = 'down';
+      this.g.swipe.clear();
+    }
+    if (keyWasPressed('Enter')
+      || keyWasPressed('KeyX')
+      || gamepadWasPressed(0)
+      || gamepadWasPressed(1)
+      || gamepadWasPressed(2)
+      || swipe === 'tap'
+      || keyWasPressed('Space')) {
+      this.uiInput = 'enter';
+      this.g.swipe.clear();
+    }
+
+    this.lastStick = [stick.y];
   }
 
   updatePost() { }

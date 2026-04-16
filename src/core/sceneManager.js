@@ -32,7 +32,7 @@ export default class SceneManager {
     }
 
     try {
-      this.g.stopMusic();
+      this.g.music.stop();
     } catch (e) { }
 
     this.lastChange = new Date().getTime();

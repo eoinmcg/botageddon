@@ -26,8 +26,8 @@ export default class Play extends Scene {
     this.lastStick = [0];
     document.body.style.cursor = 'none'
 
-    this.g.music.play('intro');
-    new Alert(this.g, { text: 'WAVE 1', col: 'lime', outline: 'green', pos: vec2(-2, 1), sfx: 'score' });
+    // this.g.music.play('intro');
+    new Alert(this.g, { text: 'WAVE 1', col: 'slime', outline: 'green', pos: vec2(-2, 1), sfx: 'score' });
   }
 
   update() {
@@ -39,7 +39,7 @@ export default class Play extends Scene {
 
     if (this.g.store.p1.score > this.g.hiScore) {
       if (!this.g.newHiscore) {
-        new Alert(this.g, { text: 'NEW HISCORE!!', col: 'lemon', pos: vec2(-3.7, -5), sfx: 'score' });
+        new Alert(this.g, { text: 'NEW HISCORE!!', col: 'yellow', pos: vec2(-3.7, -5), sfx: 'score' });
       }
       this.g.newHiscore = true;
       this.g.hiScore = Math.max(this.g.store.p1.score, this.g.store.p2.score);
@@ -47,7 +47,6 @@ export default class Play extends Scene {
     }
 
     const p1Dead = this.g.store.p1.lives < 0;
-
 
     if (p1Dead && !this.g.gameOver) {
       if (this.g.newHiscore) {
@@ -79,8 +78,6 @@ export default class Play extends Scene {
   togglePause() {
     paused = !paused;
 
-    // if (this.g.sfx.isMuted) return;
-
     if (paused && !this.g.sfx.isMuted) {
       this.g.music.mute();
     } else if (!this.g.sfx.isMuted) {
@@ -91,16 +88,21 @@ export default class Play extends Scene {
 
   checkGameOverInput() {
     const stick = gamepadStick(0);
+    const swipe = this.g.swipe.dir;
 
     if (keyWasPressed('ArrowUp')
+      || swipe === 'up'
       || (this.lastStick[0] > 0 && stick.y === 0)) {
       this.pointer -= 1;
       this.g.sfx.play('walk');
+      this.g.swipe.clear();
     }
     if (keyWasPressed('ArrowDown')
+      || swipe === 'down'
       || (this.lastStick[0] < 0 && stick.y === 0)) {
       this.pointer += 1;
       this.g.sfx.play('walk');
+      this.g.swipe.clear();
     }
     if (this.pointer < 0) this.pointer = this.yPos.length - 1;
     if (this.pointer > this.yPos.length - 1) this.pointer = 0;
@@ -111,6 +113,7 @@ export default class Play extends Scene {
       if (keyWasPressed('Space')
         || keyWasPressed('KeyF')
         || keyWasPressed('Enter')
+        || swipe === 'tap'
         || gamepadWasPressed(0)
         || gamepadWasPressed(2)) {
         if (this.pointer === 0) {
@@ -120,8 +123,10 @@ export default class Play extends Scene {
           this.g.store.p1.type = p1Type;
           this.g.store.p2.type = p2Type;
 
-          this.levelManager = new LevelManager(this.g, this.g.levelNum);
+          this.g.swipe.clear();
+          // this.levelManager = new LevelManager(this.g, this.g.levelNum);
           this.g.sceneManager.changeScene('Play');
+          this.g.swipe.clear();
         } else {
           this.g.sceneManager.changeScene('Splash');
         }
@@ -161,7 +166,7 @@ export default class Play extends Scene {
       if (wave > 0) {
         this.logoText({
           text: 'GAME OVER', pos: vec2(0, 2), size: 1.3,
-          color: this.g.palette.lime.mk(),
+          color: this.g.palette.slime.mk(),
           lineColor: BLACK
 
         })
@@ -169,7 +174,7 @@ export default class Play extends Scene {
       font.drawText('CONTINUE?', cameraPos.add(vec2(0, -4)), .7, true);
       font.drawText('QUIT', cameraPos.add(vec2(0, -5)), .7, true);
 
-      drawTile(vec2(-4, this.yPos[this.pointer]), vec2(.5), this.g.tile('cursor0'), undefined, 0);
+      drawTile(vec2(-4, this.yPos[this.pointer]), vec2(.5), this.g.tile('select'), undefined, 0);
     }
 
     if (wave > 0 && paused && !this.g.hitStop) {

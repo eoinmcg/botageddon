@@ -50,7 +50,7 @@ const Particles = {
 
   },
 
-  explode: function(pos, size = .5, cols = ['maroon', 'orange']) {
+  explode: function(pos, size = .5, cols = ['yellow', 'orange']) {
     const color = palette[cols[0]].col;
     const color2 = palette[cols[1]].col;
     new ParticleEmitter(

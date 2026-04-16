@@ -9,57 +9,38 @@ export default class Help extends Scene {
     this.stick = [gamepadStick(0),];
     this.lastStick = [0];
 
-    this.mouse = new Mouse(.1, YELLOW);
+    this.mouse = new Mouse(this.g);
 
-    new Box(vec2(0, -2.4), vec2(10, 1.5), 'https://eoinmcgrath.com');
-    new Box(vec2(0, -4.4), vec2(10, 1.5), 'https://not-jam.itch.io/not-jam-music-pack');
-    new Box(vec2(0, -6.4), vec2(10, 1.5), 'https://github.com/KilledByAPixel/LittleJS');
+    new Box(this.g, vec2(0, -2), vec2(9, .7), 'https://eoinmcgrath.com');
+    new Box(this.g, vec2(0, -3), vec2(9, .7), 'https://snabisch.itch.io/free-music-sequences-for-pico-8');
+    new Box(this.g, vec2(0, -4), vec2(9, .7), 'https://github.com/KilledByAPixel/LittleJS');
+    new Box(this.g, vec2(0, -6), vec2(9, .7), 'scene:Splash');
+    console.log('CREATING BOXES')
   }
 
   update() {
     super.update();
 
-    const stick = gamepadDpad(0);
-    const swipe = this.g.swipe.dir;
+    this.handleUiInput()
 
-    if (keyWasPressed('ArrowUp')
-      || swipe === 'up'
-      || (this.lastStick[0] > 0 && stick.y === 0)) {
+    if (this.uiInput === 'up') {
       this.g.sfx.play('walk');
-      this.g.swipe.clear();
     }
-    if (keyWasPressed('ArrowDown')
-      || swipe === 'down'
-      || (this.lastStick[0] < 0 && stick.y === 0)) {
+    if (this.uiInput === 'down') {
       this.g.sfx.play('walk');
-      this.g.swipe.clear();
     }
 
-    if (keyWasPressed('Enter')
-      || keyWasPressed('KeyX')
-      || keyWasPressed('KeyF')
-      || gamepadWasPressed(0)
-      || gamepadWasPressed(1)
-      || gamepadWasPressed(2)
-      || keyWasPressed('Space')) {
-      this.g.swipe.clear();
+    if (this.uiInput === 'enter') {
       this.g.sceneManager.changeScene('Splash');
     }
-
-    this.lastStick = [stick.y];
-
   }
 
   renderPost() {
 
     const font = engineFontImage;
 
-    const w = mainCanvas.width / cameraScale;
-    const h = mainCanvas.height / cameraScale;
-    drawRect(vec2(0, 0), vec2(w, h), new Color(0, 0, 0, 0.9));
-
     this.logoText({
-      text: 'ABOUT', pos: vec2(0, 5), size: 1.3, color: this.g.palette.lime.mk(),
+      text: 'ABOUT', pos: vec2(0, 5), size: 1.3, color: this.g.palette.slime.mk(),
       lineColor: BLACK
     });
 
@@ -107,37 +88,49 @@ class Point extends EngineObject {
 }
 
 class Box extends EngineObject {
-  constructor(pos, size, link) {
+  constructor(g, pos, size, link) {
     super(pos, size);
     this.setCollision();
 
+    this.g = g;
     this.hover = false;
+    this.name = 'box';
     this.color = new Color(1, 1, 1, 0);
-    this.active = new Color(1, 1, 0, .1);
+    this.active = new Color(1, 1, 0, .2);
 
     if (link) {
       this.link = link;
     }
-
   }
 
   update() {
     if (this.hover && mouseWasPressed(0)) {
-      console.log('CLICK', this.link);
-      const a = document.createElement('a');
-      a.href = this.link;
-      a.target = '_blank';
-      a.click();
+      this.handleClick();
     }
     this.hover = false;
     super.update();
   }
 
-  renderPost() {
+  render() {
     drawRect(this.pos, this.size, this.hover ? this.active : this.color);
   }
 
-  collideWithObject(o) {
-    this.hover = true;
+  handleClick() {
+
+    if (!this.link) return;
+
+    const isScene = this.link.includes('scene:')
+
+    if (isScene) {
+      const scene = this.link.split(':').pop();
+      this.g.sceneManager.changeScene(scene);
+    } else {
+      const a = document.createElement('a');
+      a.href = this.link;
+      a.target = '_blank';
+      a.click();
+
+    }
   }
+
 }

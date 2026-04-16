@@ -140,7 +140,7 @@ export default class Player extends Sprite {
       super.render();
     }
     if (!this.sticks) {
-      drawTile(mousePos, vec2(.5), tile(12, this.g.tileSize), this.g.palette.lime.mk());
+      drawTile(mousePos, vec2(.5), tile(12, this.g.tileSize), this.g.palette.slime.mk());
     }
 
   }
@@ -165,8 +165,8 @@ export default class Player extends Sprite {
     const canHit = ["baddie", "enemyFire", "platform", "rock"];
     if (canHit.includes(o.name)) {
       if (o.name !== "platform" && o.type !== "boss" && o.name !== "rock") {
-        // this.g.store[this.player].score += o.value || 0;
         o.destroy(true);
+        this.g.store[this.player].score += o.value || 0;
       }
 
       let powerups = this.g.store[this.player].powerups;

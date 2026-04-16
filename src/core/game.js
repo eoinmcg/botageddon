@@ -47,7 +47,7 @@ export const Game = {
     Game.newHiscore = false;
     Game.store.p1 = {
       score: 0,
-      lives: 2,
+      lives: 0,
       powerups: 0,
     };
     Game.store.p2 = {

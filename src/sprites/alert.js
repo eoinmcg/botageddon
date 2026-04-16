@@ -9,6 +9,7 @@ export default class Alert extends EngineObject {
       fontSize: 1,
       col: 'white',
       outline: 'red',
+      teleType: true,
       sfx: null,
       ttl: 3
     };
@@ -20,6 +21,7 @@ export default class Alert extends EngineObject {
     this.col = g.palette[props.col].mk();
     this.fontSize = props.fontSize;
     this.outline = g.palette[props.outline].mk();
+    this.g = g;
 
     this.renderOrder = 1000;
 
@@ -28,7 +30,7 @@ export default class Alert extends EngineObject {
     this.timer = props.ttl > 0
       ? new Timer(props.ttl) : false;
     this.text = props.text;
-    this.printText = '';
+    this.printText = props.teleType ? '' : this.text;
 
     this.fonts = props.fonts;
     if (props.sfx) {
@@ -46,8 +48,7 @@ export default class Alert extends EngineObject {
   addLetter() {
     if (this.printText === this.text) return;
     this.printText = this.text.substring(0, this.printText.length + 1);
-
-
+    this.g.sfx.play('walk')
   }
 
   update() {

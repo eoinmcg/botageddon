@@ -8,7 +8,7 @@ export default class SEttings extends Scene {
     this.lastStick = [0];
 
     this.options = ["Mute", "Fullscreen", "Clear HiScore", "Exit"];
-    this.yPos = [0, -1, -2, -3, -4];
+    this.yPos = [0, -1, -2, -3];
     this.pointer = 0;
 
   }
@@ -16,20 +16,14 @@ export default class SEttings extends Scene {
   update() {
     super.update();
 
-    const stick = gamepadStick(0);
-    const swipe = this.g.swipe.dir;
+    this.handleUiInput();
 
-    if (keyWasPressed("ArrowUp")
-      || swipe === 'up'
-      || (this.lastStick[0] > 0 && stick.y === 0)) {
+    if (this.uiInput === 'up') {
       this.pointer -= 1;
       this.g.sfx.play("walk");
       this.g.swipe.clear();
     }
-    if (keyWasPressed("ArrowDown")
-      || swipe === 'down'
-      || (this.lastStick[0] < 0 && stick.y === 0)
-    ) {
+    if (this.uiInput === 'down') {
       this.pointer += 1;
       this.g.sfx.play("walk");
       this.g.swipe.clear();
@@ -38,22 +32,11 @@ export default class SEttings extends Scene {
     if (this.pointer < 0) this.pointer = this.yPos.length - 1;
     if (this.pointer > this.yPos.length - 1) this.pointer = 0;
 
-    const inputPressed =
-      keyWasPressed("Enter") ||
-      keyWasPressed("KeyX") ||
-      keyWasPressed("KeyF") ||
-      gamepadWasPressed(0) ||
-      gamepadWasPressed(1) ||
-      gamepadWasPressed(2) ||
-      swipe === 'tap' ||
-      keyWasPressed("Space");
-
-    if (inputPressed) {
+    if (this.uiInput === 'enter') {
       this.runChoice(this.pointer);
       this.g.swipe.clear();
     }
 
-    this.lastStick = [stick.y];
   }
 
   renderPost() {

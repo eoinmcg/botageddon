@@ -1,91 +1,65 @@
-// GIMP palette format for PICO8 secret palette
-//  https://lospec.com/palette-list/pico-8-secret-palette
-let gpl = ` 0	0	0	000000
-73	60	43	493c2b
-190	38	51	be2633
-224	111	139	e06f8b
-164	100	34	a46422
-235	137	49	eb8931
-247	226	107	f7e26b
-255	255	255	ffffff
-157	157	157	9d9d9d
-47	72	78	2f484e
-27	38	50	1b2632
-68	137	26	44891a
-163	206	39	a3ce27
-0	87	132	005784
-49	162	242	31a2f2
-178	220	239	b2dcef
-52	42	151	342a97
-101	109	113	656d71
-204	204	204	cccccc
-115	41	48	732930
-203	67	167	cb43a7
-82	79	64	524f40
-173	157	51	ad9d33
-236	71	0	ec4700
-250	180	11	fab40b
-17	94	51	115e33
-20	128	126	14807e
-21	194	165	15c2a5
-34	90	246	225af6
-153	100	249	9964f9
-247	142	214	f78ed6
-244	185	144	f4b990`;
+// from the wonderful:
+// https://lospec.com/palette-list/arne-32
+const arne32 = [
+  // --- Core 16 (from the original Arne-16) ---
+  { name: "void", hex: "#000000" }, // pure black
+  { name: "darkbrown", hex: "#493c2b" }, // dark earthy brown
+  { name: "red", hex: "#be2633" }, // classic red
+  { name: "pink", hex: "#e06f8b" }, // pinkish skin / meat
+  { name: "brown", hex: "#a46422" }, // mid warm brown
+  { name: "orange", hex: "#eb8931" }, // bright orange
+  { name: "yellow", hex: "#f7e26b" }, // pale yellow
+  { name: "white", hex: "#ffffff" }, // pure white
+  { name: "gray", hex: "#9d9d9d" }, // mid gray
+  { name: "darkgreen", hex: "#2f484e" }, // dark teal-green
+  { name: "nightblue", hex: "#1b2632" }, // very dark navy
+  { name: "green", hex: "#44891a" }, // mid green
+  { name: "slime", hex: "#a3ce27" }, // bright lime green
+  { name: "seablue", hex: "#005784" }, // deep ocean blue
+  { name: "skyblue", hex: "#31a2f2" }, // bright sky blue
+  { name: "cloudblue", hex: "#b2dcef" }, // pale icy blue
 
-const cols = [
-  'black',
-  'coffee',
-  'red',
-  'pink',
-  'brown',
-  'orange',
-  'lemon',
-  'white',
-  'gray',
-  'slate',
-  'midnight_blue',
-  'green',
-  'lime',
-  'navy_blue',
-  'blue',
-  'pale_blue',
-  'royal_purple',
-  'ash_gray',
-  'light_gray',
-  'maroon',
-  'fuchsia',
-  'olive',
-  'mustard',
-  'flame_orange',
-  'yellow',
-  'emerald',
-  'dark_teal',
-  'aqua',
-  'electric_blue',
-  'lavender',
-  'bubblegum',
-  'flesh'
+  // --- Extended 16 (Arne-32 additions) ---
+  { name: "indigo", hex: "#342a97" }, // deep blue-purple
+  { name: "steel", hex: "#656d71" }, // cool blue-gray
+  { name: "lightgray", hex: "#cccccc" }, // light gray
+  { name: "darkred", hex: "#732930" }, // deep crimson
+  { name: "purple", hex: "#cb43a7" }, // vivid magenta-purple
+  { name: "darkkhaki", hex: "#524f40" }, // dark olive/khaki
+  { name: "gold", hex: "#ad9d33" }, // muted gold
+  { name: "scarlet", hex: "#ec4700" }, // vivid red-orange
+  { name: "amber", hex: "#fab40b" }, // warm amber yellow
+  { name: "forestgreen", hex: "#115e33" }, // deep forest green
+  { name: "teal", hex: "#14807e" }, // mid teal
+  { name: "aqua", hex: "#15c2a5" }, // bright aqua/cyan
+  { name: "blue", hex: "#225af6" }, // vivid pure blue
+  { name: "violet", hex: "#9964f9" }, // soft violet
+  { name: "pink", hex: "#f78ed6" }, // light bubblegum pink
+  { name: "peach", hex: "#f4b990" }, // warm skin peach
 ];
 
-const palette = {};
+// convert into object for easy use
+const palette = {}
+for (let n in arne32) {
+  let col = arne32[n]
+  let hex = col.hex.replace(/^#/, '');
 
-gpl.split('\n').forEach((row, i) => {
-  let parts = row.split('\t');
-  let [r, g, b, hex] = parts;
-  let name = cols[i];
-  palette[name] = {
-    r: parseInt(r, 10) / 255,
-    g: parseInt(g, 10) / 255,
-    b: parseInt(b, 10) / 255,
-    hex: '#' + hex,
-  };
-  let p = palette[name];
-  palette[name].col = new Color(p.r, p.g, p.b, 1);
-  palette[name].mk = (o = 1) => {
+  // Parse the hex parts into littlejs friendly format
+  const r = parseInt(hex.substring(0, 2), 16) / 255;
+  const g = parseInt(hex.substring(2, 4), 16) / 255;
+  const b = parseInt(hex.substring(4, 6), 16) / 255;
+
+  palette[col.name] = {
+    col: new Color(r, g, b, 1),
+    hex: col.hex,
+    r, g, b
+  }
+  let p = palette[col.name];
+
+  palette[col.name].mk = (o = 1) => {
     return new Color(p.r, p.g, p.b, o);
   }
-})
 
+}
 
 export default palette;
