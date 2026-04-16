@@ -15,6 +15,8 @@ export default class Powerup extends Sprite {
     };
     this.changeAnim("sparkle", 0.1);
 
+    this.renderOrder = 3000;
+
     this.outline = this.outline || {
       color: BLACK, offset: .15
     };

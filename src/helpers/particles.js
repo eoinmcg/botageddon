@@ -34,6 +34,20 @@ const Particles = {
     );
   },
 
+  smoke: function(pos, size = 1) {
+    const color = new Color(1, 1, 1, .01)
+    new ParticleEmitter(
+      vec2(pos.x, pos.y + .2), 0,            // pos, angle
+      size, 1, 5, 0, // emitSize, emitTime, emitRate, emiteCone
+      G.tile('circle'),
+      color, color,           // colorStartA, colorStartB
+      color.scale(1, 0), color.scale(1, 0), // colorEndA, colorEndB
+      .2, .5, .2, .01, 0,  // time, sizeStart, sizeEnd, speed, angleSpeed
+      .99, .95, 0, PI,   // damping, angleDamping, gravityScale, cone
+      -1, 0, 0, 0        // fadeRate, randomness, collide, additive
+    );
+  },
+
   gunhit: function(pos, color = false) {
     color = color || palette.white.col;
 

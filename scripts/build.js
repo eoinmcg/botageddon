@@ -46,6 +46,7 @@ const dataFiles = Config.images.map(tile => `public/${tile}`);
 dataFiles.push(`public/wheaton_capitals.otf`);
 dataFiles.push(`public/favicon.gif`);
 dataFiles.push(`public/manifest.json`);
+dataFiles.push(`public/apple-icon-180.png`);
 
 console.log(``);
 chalkSuccess(` Building ${Config.title}... `, '🛠️');

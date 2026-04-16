@@ -3,9 +3,10 @@ export default class Swiper {
     if (Swiper.instance) return Swiper.instance;
     Swiper.instance = this;
 
-    document.addEventListener('touchstart', this.start);
-    document.addEventListener('touchmove', this.move);
-    document.addEventListener('touchend', this.end);
+
+    document.addEventListener('touchstart', this.start, { passive: false });
+    document.addEventListener('touchmove', this.move, { passive: false });
+    document.addEventListener('touchend', this.end, { passive: false });
 
     this.clear();
   }

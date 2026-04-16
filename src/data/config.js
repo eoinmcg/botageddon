@@ -2,7 +2,7 @@ const Config = {
   title: "BOTAGGEDON",
   W: 320,
   H: 480,
-  images: ["t.gif"],
+  images: ["t.gif", "bgs.gif"],
   tileSize: 8,
   size: {
     max: { x: 5, y: 7.5 },

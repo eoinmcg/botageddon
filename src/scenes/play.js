@@ -1,6 +1,8 @@
 import Scene from "./scene";
 import Player from "../sprites/player";
 import Dancer from "../sprites/dancer";
+import Muncher from "../sprites/muncher";
+import Drone from "../sprites/drone";
 import Human from "../sprites/human";
 import Alert from "../sprites/alert";
 import { setItem } from "../helpers/store.js";
@@ -15,9 +17,9 @@ export default class Play extends Scene {
 
     this.g.p1 = new Player(this.g, vec2(0, -1));
 
-    new Dancer(this.g)
-    new Human(this.g, { pos: vec2(-3, -6) })
-    new Human(this.g, { pos: vec2(3, -6) })
+    new Drone(this.g)
+    new Human(this.g, { pos: vec2(-1.5, -5) })
+    new Human(this.g, { pos: vec2(1.5, -5) })
 
     this.g.gameOver = false;
 
@@ -26,7 +28,7 @@ export default class Play extends Scene {
     this.lastStick = [0];
     document.body.style.cursor = 'none'
 
-    // this.g.music.play('intro');
+    this.g.music.play('mission');
     new Alert(this.g, { text: 'WAVE 1', col: 'slime', outline: 'green', pos: vec2(-2, 1), sfx: 'score' });
   }
 

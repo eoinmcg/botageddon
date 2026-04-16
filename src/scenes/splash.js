@@ -1,4 +1,5 @@
 import Scene from "./scene";
+import Particles from "../helpers/particles";
 
 export default class Splash extends Scene {
   enter(Game) {
@@ -6,7 +7,7 @@ export default class Splash extends Scene {
     this.g = Game;
 
     this.options = ['Start', 'Help', 'Settings'];
-    this.yPos = [-3, -4, -5];
+    this.yPos = [1, 0, -1];
     this.pointer = 0;
 
     this.g.resetStore();
@@ -50,11 +51,16 @@ export default class Splash extends Scene {
       }
 
     }
+    Particles.smoke(vec2(-4, -4), 1);
+    Particles.smoke(vec2(3, -3.5), 1);
 
   }
 
   render() {
-    drawRect(cameraPos, getCameraSize(), this.g.palette.darkred.col);
+    let p = this.g.palette;
+    drawRectGradient(cameraPos, getCameraSize(), p.void.col, p.nightblue.col);
+
+    drawTile(vec2(0, -3), vec2(12), tile(0, vec2(320, 480), 1), new Color(0, 0, 0, .9));
   }
 
   renderPost() {
@@ -70,7 +76,7 @@ export default class Splash extends Scene {
     setFontDefault('"wheaton"');
     let col = new Color(0, 0, 0, .8);
     this.logoText({
-      text: 'botageddon', pos: vec2(0, 2), lineWidth: .2, color: slime,
+      text: 'botageddon', pos: vec2(0, 4), lineWidth: .2, color: slime,
       lineColor: BLACK
     })
 

@@ -1,4 +1,4 @@
-# BOTAGGEDON
+# 🤖 BOTAGGEDON
 
 Twin stick shooter arcade action.
 

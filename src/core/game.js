@@ -67,10 +67,6 @@ const sceneManager = new SceneManager(Game);
 Game.sceneManager = sceneManager;
 
 setTileDefaultBleed(0.5);
-// setTouchGamepadEnable(true);
-// setTouchGamepadButtonCount(1);
-// setTouchGamepadSize(200);
-// setTouchGamepadAnalog(false);
 
 setCanvasClearColor(new Color(0, 0, 0, 0));
 
