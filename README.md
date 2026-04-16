@@ -15,19 +15,21 @@ or use a gamepad
 [P] pause
 [O] fullscreen
 
-### [🎮 Play](https://eoinmcgrath.com/botageddon)
+#### [🎮 Play](https://eoinmcgrath.com/botageddon)
 
 -----
+
+## Tech
 
 Clone the repo, crack open a terminal and prepare for fun!
 
 __Run locally__: `npm run dev`
+
 __Create a zip__: `npm run zip`
+
 __* Host on github pages:__ `npm run deploy`
 
-* In your repo under settings > pages
-
------
+(* In your repo under settings > pages)
 
 - [🎶 Music by Snabisch](https://snabisch.itch.io/free-music-sequences-for-pico-8)
 - [⚙️ Made with LittleJS](https://github.com/KilledByAPixel/LittleJS)
