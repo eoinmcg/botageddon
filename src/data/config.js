@@ -2,7 +2,7 @@ const Config = {
   title: "ROBOCIDE 1984",
   W: 320,
   H: 480,
-  images: ["t.gif", "bgs.gif"],
+  images: ["t.gif", "bgs.png"],
   tileSize: 8,
   size: {
     max: { x: 5, y: 7.5 },
@@ -36,7 +36,6 @@ const Config = {
     crystal2: 26,
     diamond: 27,
     sparkle: 28,
-    gun: 29,
     dog0: 30,
     dog0: 31,
     robo0: 32,
@@ -52,6 +51,12 @@ const Config = {
     fish0: 48,
     fish1: 49,
     fish2: 50,
+    bee0: 51,
+    bee1: 52,
+    bee2: 53,
+    bee2: 53,
+    wall0: 54,
+    wall1: 55,
   },
 };
 

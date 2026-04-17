@@ -24,6 +24,9 @@ export default class Muncher extends Enemy {
     if (props.pos.x < 0) {
       this.velocity.x *= -1;
     }
+  }
+
+  update() {
 
   }
 

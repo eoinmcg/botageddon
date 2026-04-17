@@ -15,7 +15,6 @@ export default class Help extends Scene {
     new Box(this.g, vec2(0, -3), vec2(9, .7), 'https://snabisch.itch.io/free-music-sequences-for-pico-8');
     new Box(this.g, vec2(0, -4), vec2(9, .7), 'https://github.com/KilledByAPixel/LittleJS');
     new Box(this.g, vec2(0, -6), vec2(9, .7), 'scene:Splash');
-    console.log('CREATING BOXES')
   }
 
   update() {

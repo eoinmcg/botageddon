@@ -3,7 +3,6 @@ import { Game as G } from '../core/game';
 
 const Particles = {
 
-
   score: function() {
     let pos = vec2(rand(2, -2), -10.5);
     const color = palette.yellow.col;
@@ -48,18 +47,18 @@ const Particles = {
     );
   },
 
-  gunhit: function(pos, color = false) {
-    color = color || palette.white.col;
-
+  gunhit: function(pos, angle) {
     new ParticleEmitter(
-      pos, 0,            // pos, angle
-      .25, .05, 10, PI, // emitSize, emitTime, emitRate, emiteCone
-      G.tile('circle'),
-      color, color,           // colorStartA, colorStartB
-      color.scale(1, 0), color.scale(1, 0), // colorEndA, colorEndB
-      .1, .5, .2, 5, .01,  // time, sizeStart, sizeEnd, speed, angleSpeed
-      .99, .95, 4, PI,   // damping, angleDamping, gravityScale, cone
-      .1, .5, 0, 1        // fadeRate, randomness, collide, additive
+      pos,
+      angle,
+      0, 0.05,
+      150, 0.4,
+      G.tile('round'),
+      rgb(1, 1, 0), rgb(1, .5, 0),
+      rgb(1, 0, 0, 0), rgb(1, 0, 0, 0),
+      0.2, 0.5, 0.8, 0, 0,
+      0.9, 0.9, 0, 0,
+      0.2, 0.5, false, true
     );
 
   },

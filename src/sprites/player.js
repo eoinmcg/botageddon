@@ -7,15 +7,15 @@ import postScore from "../helpers/postScore";
 
 
 export default class Player extends Sprite {
-  constructor(g, pos) {
-    const props = { g };
+  constructor(props) {
 
-    const t = g.tile("bee0");
-    super(pos, vec2(.7), t, props);
+    const t = props.g.tile("bee0");
+    super(props.pos, vec2(.7), t, props);
 
     this.player = 'p1';
 
-    this.g = g;
+    this.g = props.g;
+    this.props = props;
     this.name = "player";
     this.mirror = false;
 
@@ -37,19 +37,32 @@ export default class Player extends Sprite {
 
     this.renderOrder = 2000;
 
-    this.sticks = (g.sticks.l.hasTouch && g.sticks.r.hasTouch)
-      ? g.sticks : false;
+    this.sticks = (props.g.sticks.l.hasTouch && props.g.sticks.r.hasTouch)
+      ? props.g.sticks : false;
 
-    this.speed = 0.05;
+    this.speed = 0.08;
     this.aimDir = vec2(1, 0);
     this.fireCooldownDelay = .1;
     this.fireCooldown = 0;
 
     this.outline = {
       offset: 0.1,
-      color: BLACK
+      cotlor: BLACK
     };
 
+
+    this.initStats()
+
+  }
+
+  initStats() {
+    this.stats = {
+      shots: 0,
+      hits: 0,
+      misses: 0,
+      kills: 0,
+      saves: 0,
+    }
   }
 
   update() {
@@ -69,7 +82,6 @@ export default class Player extends Sprite {
     }
 
     this.velocity = move.scale(this.speed);
-    this.pos = this.pos.add(this.velocity);
 
     // Aiming
     let aimingWithStick = false;
@@ -99,13 +111,19 @@ export default class Player extends Sprite {
 
     if (!this.sticks && mouseWasPressed(0)) this.shoot = true;
 
-    if (isUsingGamepad && gamepadIsDown(7)) this.shoot = true;
+    if (isUsingGamepad) {
+      const stickR = gamepadStick(1);
+      if (stickR.length() > 0.2)
+        this.shoot = true;
+    }
     // On touch, fire automatically whenever the right stick is active
     if (this.sticks && this.sticks.r.active) this.shoot = true;
 
     if (this.shoot && this.fireCooldown <= 0) {
       const spawnPos = this.pos.add(this.aimDir.scale(.2));
-      new Bullet(spawnPos, { dir: this.aimDir, angle: this.angle, g: this.g });
+      this.shots += 1;
+      new Bullet(spawnPos, { dir: this.aimDir, angle: this.angle, g: this.g, owner: this });
+      this.stats.shots += 1;
       this.g.sfx.play("shoot", this.pos);
       const gunTip = this.pos.add(this.aimDir.scale(.8));
       Particles.gunsmoke(gunTip);
@@ -115,8 +133,8 @@ export default class Player extends Sprite {
     // Hurt / Fade
     this.clampToScreen();
 
-    let t = this.hurtTimer.get();
-    if (this.hurtTimer && this.hurtTimer.isSet && this.hurtTimer.elapsed()) {
+    let t = this.hurtTimer ? this.hurtTimer.get() : 0;
+    if (this.hurtTimer && this.hurtTimer.isSet() && this.hurtTimer.elapsed()) {
       this.hurtTimer.unset();
       this.fade = false;
     }
@@ -207,6 +225,11 @@ export default class Player extends Sprite {
   collideWithObject(o) {
     if (this.fade) return;
     const canHit = ["baddie", "enemyFire", "platform", "rock"];
+
+    if (o.name === 'kitty') {
+      return false;
+    }
+
     if (canHit.includes(o.name)) {
       if (o.name !== "platform" && o.type !== "boss" && o.name !== "rock") {
         o.destroy(true);
@@ -217,6 +240,7 @@ export default class Player extends Sprite {
 
       this.g.store[this.player].lives -= 1;
       this.g.store[this.player].powerups = 0;
+      this.initStats();
       this.g.sfx.play("smash", this.pos);
       Particles.explode(this.pos, 0.25);
       Particles.sparks(this.pos);
@@ -257,6 +281,7 @@ export default class Player extends Sprite {
         this.g.sfx.play("hurt", this.pos);
       }
     }
+    return super.collideWithObject(o)
   }
 
   updateStore(k, v) {

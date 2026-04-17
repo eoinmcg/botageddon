@@ -17,6 +17,7 @@ export default class Enemy extends Sprite {
 
     this.g = g;
     this.hit = false;
+    this.type = 'bot'
     this.name = 'baddie';
     this.health = this.health || 1;
     this.value = this.value || 10;
@@ -85,63 +86,39 @@ export default class Enemy extends Sprite {
 
   collideWithObject(o) {
     this.multiplier = 1; // charge doubles this
-    if (o.name === 'charge' || o.name === 'bullet') {
+    if (o.name === 'bullet') {
 
       this.health -= 1;
       this.hit = true;
+      o.owner.stats.hits += 1;
 
       if (o.name === 'bullet') {
         o.destroy();
       }
-      if (o.name === 'charge') {
-        this.health -= 2;
-        this.multiplier = 2;
+
+      if (this.health <= 0) {
+        this.destroy();
+        o.owner.stats.kills += 1;
+        this.g.store['p1'].score += this.value;
       }
-      if (o.name === 'charge' && this.type === 'boss') {
-        o.destroy();
-      }
+
 
       Particles.sparks(this.pos);
 
       this.g.sfx.play('walk', this.pos);
-      this.pos.x += .1;
       this.hurt = 10;
       this.angle += rand(-.1, .1);
+
+      return false;
+
     }
 
     if (o.name === 'kitty') {
       o.destroy();
       console.log('DED KITTY')
-
     }
 
-    if (o.name === 'shield' && this.type !== 'boss') {
-      this.destroy();
-      return;
-    }
-
-    const waveId = this?.waveId;
-    if (!this.dead && (this.health <= 0 || o.name === 'charge')) {
-
-      if (o.name === 'bullet' || o.name === 'charge') {
-        this.value *= this.multiplier;
-        this.g.store[o.owner].score += this.value;
-      }
-
-      if (this.health <= 0) {
-        if (waveId) {
-          this.g.waves[waveId] -= 1;
-        }
-
-        if (waveId && this.g.waves[waveId] <= 0 && o?.owner) {
-          this.g.store[o.owner].score += this.value * 2;
-          delete this.g.waves[waveId];
-          new Powerup(this.g, this.lastPos);
-        }
-
-        this.destroy();
-      }
-    }
+    return super.collideWithObject(o)
   }
 
 

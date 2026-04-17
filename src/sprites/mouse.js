@@ -1,3 +1,5 @@
+import isMobile from "../helpers/isMobile";
+
 export default class Mouse extends EngineObject {
   constructor(g, size = .75) {
     super(vec2(0), vec2(.1));
@@ -20,6 +22,7 @@ export default class Mouse extends EngineObject {
   }
 
   render() {
+    if (isMobile()) return;
     const frame = this.hover ? 'pointer1' : 'pointer0';
     drawTile(this.pos.add(vec2(0, -.5)), vec2(this.drawSize), this.g.tile(frame))
   }

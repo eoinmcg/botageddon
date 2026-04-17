@@ -16,7 +16,7 @@ export default class Sprite extends EngineObject {
 
     this.lastPos = this.pos.copy();
 
-    this.shadowCol = new Color(0, 0, 0, .2)
+    this.shadowCol = new Color(0, 0, 0, .3)
   }
 
   update() {

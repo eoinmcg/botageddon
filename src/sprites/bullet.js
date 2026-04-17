@@ -8,8 +8,8 @@ export default class Bullet extends Sprite {
     super(pos, vec2(.2), t, props);
 
     this.name = 'bullet';
-    this.speed = .5;
-    this.velocity = props.dir.normalize(0.4);
+    this.speed = .3
+    this.velocity = props.dir.normalize().scale(this.speed);
     this.angle = props.angle;
     this.owner = props.owner || 'p1';
 
@@ -17,7 +17,6 @@ export default class Bullet extends Sprite {
 
     this.renderOrder = 3000;
 
-    // this.color = this.g.palette.yellow.mk()
     this.outline = {
       offset: .1, color: RED
     }
@@ -27,6 +26,7 @@ export default class Bullet extends Sprite {
     super.update();
 
     if (this.isOffScreen()) {
+      this.owner.stats.misses += 1;
       this.destroy();
     }
   }
@@ -36,6 +36,24 @@ export default class Bullet extends Sprite {
   }
 
   collideWithObject(o) {
-    // console.log('HOT', o);
+    if (o.name === 'wall') {
+      this.destroy(true);
+    }
+    if (o.name === 'kitty') {
+      return false;
+    }
+
+    return super.collideWithObject(o)
+  }
+
+  destroy(withEffect = false) {
+
+    if (withEffect) {
+      const dir = this.velocity.normalize().scale(-1);
+      const hitPos = this.pos.add(this.velocity.normalize().scale(-0.1));
+      Particles.gunhit(hitPos, dir.angle())
+    }
+
+    super.destroy();
   }
 }

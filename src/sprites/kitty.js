@@ -18,6 +18,7 @@ export default class Kitty extends Sprite {
       idle: ["kitty3", "kitty4", "kitty3"],
     }
     this.changeAnim("idle", 0.5);
+    this.mass = 0;
 
     this.cols = [
       g.palette.pink.mk(1),

@@ -1,11 +1,10 @@
 import Scene from "./scene";
 import Player from "../sprites/player";
-import Dancer from "../sprites/dancer";
-import Muncher from "../sprites/muncher";
-import Drone from "../sprites/drone";
-import Kitty from "../sprites/kitty";
 import Alert from "../sprites/alert";
 import { setItem } from "../helpers/store.js";
+
+import LevelManager from "../core/levelManager.js";
+
 
 export default class Play extends Scene {
 
@@ -15,11 +14,6 @@ export default class Play extends Scene {
     this.g.plays += 1;
     setItem('plays', this.g.plays);
 
-    this.g.p1 = new Player(this.g, vec2(0, -1));
-
-    new Drone(this.g)
-    new Kitty(this.g, { pos: vec2(-1.5, -5) })
-    new Kitty(this.g, { pos: vec2(1.5, -5) })
 
     this.g.gameOver = false;
 
@@ -28,16 +22,17 @@ export default class Play extends Scene {
     this.lastStick = [0];
     document.body.style.cursor = 'none'
 
-    this.g.music.play('intro');
-    new Alert(this.g, { text: 'WAVE 1', col: 'slime', outline: 'forestgreen', pos: vec2(-2, 1), sfx: 'score' });
+    this.wave = new LevelManager(this.g, 1);
+    this.g.p1 = new Player({ g: this.g, pos: vec2(0, -1), wave: this.wave });
+
+
+
   }
 
   update() {
     super.update();
 
-    if (!this.g.gameOver && Math.random() > 0.991) {
-      new Dancer(this.g)
-    }
+    this.wave.update()
 
     if (this.g.store.p1.score > this.g.hiScore) {
       if (!this.g.newHiscore) {
@@ -195,4 +190,5 @@ export default class Play extends Scene {
     this.g.sticks.r.render();
 
   }
+
 }
