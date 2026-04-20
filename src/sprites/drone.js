@@ -4,7 +4,7 @@ export default class Drone extends Enemy {
 
   constructor(g, props = {}) {
     if (!props.pos) {
-      props.pos = vec2(rand(g.size.min.x, g.size.max.x), 8)
+      props.pos = vec2(rand(g.size.min.x, g.size.max.x), 7.5)
     }
 
     super(g, {
@@ -19,6 +19,9 @@ export default class Drone extends Enemy {
 
     this.anims = {
       float: ["drone2", "drone1", "drone0"],
+      left: ["drone2"],
+      right: ["drone0"],
+
     };
     this.changeAnim("float", 0.3);
 
@@ -30,7 +33,7 @@ export default class Drone extends Enemy {
       this.velocity.x *= -1;
     }
 
-    this.target = g.p1;
+    this.target = false;
 
     this.speed = 0.02;
   }
@@ -38,7 +41,18 @@ export default class Drone extends Enemy {
   update() {
 
     if (this.target) {
-      this.wobbleToTarget(this.target);
+      if (this.target.pos.x < this.pos.x) {
+        this.changeAnim('left');
+      } else {
+        this.changeAnim('right');
+      }
+      this.moveToTarget(this.target);
+      this.color = RED;
+    }
+
+    if (this.hit && !this.target) {
+      this.target = this.g.p1
+      this.speed *= 2;
     }
 
     super.update();
@@ -58,20 +72,6 @@ export default class Drone extends Enemy {
     }
   }
 
-  wobbleToTarget(target) {
-    let direction = target.pos.subtract(this.pos);
-
-    const baseSpeed = 0.01;
-    const wobbleSpeed = 2;
-    const wobbleWidth = 0.02;
-
-    const moveVec = direction.normalize(baseSpeed);
-
-    const sideVec = moveVec.rotate(Math.PI / 2).normalize(wobbleWidth);
-    const wobble = sideVec.scale(Math.sin(time * wobbleSpeed));
-
-    this.velocity = moveVec.add(wobble);
-  }
 
   render() {
 

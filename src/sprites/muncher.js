@@ -4,13 +4,13 @@ export default class Muncher extends Enemy {
 
   constructor(g, props = {}) {
     if (!props.pos) {
-      props.pos = vec2(rand(g.size.min.x, g.size.max.x), 8)
+      props.pos = vec2(rand(g.size.min.x, g.size.max.x), 7.5)
     }
 
     super(g, {
       waveId: props?.waveId,
       pos: props.pos,
-      size: vec2(.75),
+      size: vec2(.5),
       tile: g.tile('muncher'),
       anim: 'muncher',
       health: 0,
@@ -18,15 +18,20 @@ export default class Muncher extends Enemy {
     });
 
 
-    this.health = 2;
-
-    this.velocity = vec2(0, -.02);
-    if (props.pos.x < 0) {
-      this.velocity.x *= -1;
-    }
+    this.speed = .03;
   }
 
   update() {
+    super.update();
+
+    const direction = this.g.p1.pos.subtract(this.pos);
+    const distance = direction.length();
+
+    if (distance > .1) {
+      this.velocity = direction.normalize(this.speed);
+    } else {
+      this.velocity = vec2(0)
+    }
 
   }
 

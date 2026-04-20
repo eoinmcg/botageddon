@@ -17,10 +17,6 @@ export default class Splash extends Scene {
     this.g.levelNum = 1;
     this.activeTextCol = this.g.palette.slime.col;
 
-    const loadingDiv = document.querySelector('.loading');
-    if (loadingDiv) {
-      loadingDiv.remove();
-    }
   }
 
   update() {

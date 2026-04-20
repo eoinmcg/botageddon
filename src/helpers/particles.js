@@ -10,7 +10,7 @@ const Particles = {
     new ParticleEmitter(
       vec2(pos.x, pos.y + .5), 0,            // pos, angle
       .5, .1, 15, 1, // emitSize, emitTime, emitRate, emiteCone
-      tile(14, G.tileSize),                      // tileInfo
+      tile(2, G.tileSize),                      // tileInfo
       color, color2,           // colorStartA, colorStartB
       color.scale(1, 0), color2.scale(1, 0), // colorEndA, colorEndB
       1, .75, 1, .2, 0.00,  // time, sizeStart, sizeEnd, speed, angleSpeed
@@ -48,14 +48,16 @@ const Particles = {
   },
 
   gunhit: function(pos, angle) {
+    const colA = new Color(1, 1, .5),
+      colB = new Color(1, 1, 1, 0)
     new ParticleEmitter(
       pos,
       angle,
       0, 0.05,
-      150, 0.4,
+      20, 0.4,
       G.tile('round'),
-      rgb(1, 1, 0), rgb(1, .5, 0),
-      rgb(1, 0, 0, 0), rgb(1, 0, 0, 0),
+      WHITE, colB,
+      colA, colB,
       0.2, 0.5, 0.8, 0, 0,
       0.9, 0.9, 0, 0,
       0.2, 0.5, false, true
@@ -139,16 +141,17 @@ const Particles = {
     );
   },
 
-  powerup: function(p, c = WHITE, t = 24) {
+  powerup: function(p, c = WHITE, t = 4) {
     new ParticleEmitter(
-      p, PI * 2,            // pos, angle
-      0, .2, 30, 1, // emitSize, emitTime, emitRate, emiteCone
-      tile(t, 8),                      // tileInfo
-      c, c,           // colorStartA, colorStartB
-      c.scale(1, 0), c.scale(1, 0), // colorEndA, colorEndB
-      1, .5, .9, .25, 0.005,  // time, sizeStart, sizeEnd, speed, angleSpeed
-      1, 1, 50, PI,   // damping, angleDamping, gravityScale, cone
-      0, 0, 0, 0        // fadeRate, randomness, collide, additive
+      p, PI,              // pos, angle (full 360°)
+      1,                      // emitSize — radius of the ring ← this is the key
+      .2, 30, 1,
+      tile(t, 8),
+      c, c,
+      c.scale(1, 0), c.scale(1, 0),
+      1, .6, .3, .25, 0.005,
+      1, 1, 50, PI * 2,       // cone = PI*2 for full circle spread
+      0, 0, 0, 0
     );
   },
 

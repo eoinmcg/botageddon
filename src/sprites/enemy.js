@@ -90,7 +90,7 @@ export default class Enemy extends Sprite {
 
       this.health -= 1;
       this.hit = true;
-      o.owner.stats.hits += 1;
+      this.g.store[o.owner].stats.hits += 1;
 
       if (o.name === 'bullet') {
         o.destroy();
@@ -98,8 +98,9 @@ export default class Enemy extends Sprite {
 
       if (this.health <= 0) {
         this.destroy();
-        o.owner.stats.kills += 1;
-        this.g.store['p1'].score += this.value;
+        this.g.store[o.owner].score += this.value;
+        this.g.store[o.owner].stats.kills += 1;
+
       }
 
 
@@ -115,7 +116,7 @@ export default class Enemy extends Sprite {
 
     if (o.name === 'kitty') {
       o.destroy();
-      console.log('DED KITTY')
+      console.log('DED KITTY', o)
     }
 
     return super.collideWithObject(o)
@@ -131,8 +132,8 @@ export default class Enemy extends Sprite {
     Particles.explodeBaddie(this.pos, this.size);
     this.g.sfx.play('explosion', this.pos);
 
-    if (Math.random() > .9) {
-      new Powerup(this.g, this.pos)
+    if (Math.random() > .5) {
+      new Powerup(this.g, { pos: this.pos })
     } else {
       new Scorch(this.g, { pos: this.pos });
     }

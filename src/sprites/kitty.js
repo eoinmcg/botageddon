@@ -14,8 +14,11 @@ export default class Kitty extends Sprite {
     this.g = g;
     this.name = "kitty";
 
+    this.following = false;
+
     this.anims = {
       idle: ["kitty3", "kitty4", "kitty3"],
+      run: ["kitty1", "kitty2"]
     }
     this.changeAnim("idle", 0.5);
     this.mass = 0;
@@ -31,10 +34,16 @@ export default class Kitty extends Sprite {
       offset: 0.1,
       color: BLACK
     };
+
+    this.renderOrder = 2999;
   }
 
   update() {
     super.update()
+
+    if (this.following) {
+      return this.followPlayer()
+    }
 
     if (Math.random() > .99) {
       this.mirror = !this.mirror
@@ -43,12 +52,29 @@ export default class Kitty extends Sprite {
 
   }
 
+  followPlayer() {
+    const target = this.g.p1.pos.add(vec2(0, -1));
+    const dir = target.subtract(this.pos);
+    const dist = dir.length();
+    const speed = .05;
+
+    this.mirror = this.pos.x > target.x;
+
+    if (dist > 0.1) {
+      // Move toward target
+      this.velocity = dir.normalize().scale(speed);
+      this.changeAnim("run", 0.1);
+    } else {
+      this.velocity = vec2(0)
+      this.changeAnim("idle", 0.5);
+    }
+  }
+
   render() {
     const SHADOW = new Color(0, 0, 0, 0.2)
     drawTile(this.pos.add(vec2(0, -.5)), vec2(.7, .5), tile(0, this.g.tileSize), SHADOW);
 
     super.render();
-
   }
 
 }

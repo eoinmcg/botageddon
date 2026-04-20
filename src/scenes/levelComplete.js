@@ -1,71 +1,143 @@
 import Scene from "./scene";
+import Particles from '../helpers/particles';
 
 export default class LevelComplete extends Scene {
 
-  enter(Game, data) {
+  enter(Game) {
     this.g = Game;
-    this.ttl = 2;
-    this.startTime = time;
-    this.g.music.stop();
 
-    this.p1 = this.g.p1 && this.g.store.p1.lives > -1 ? this.g.p1 : null;
+    Game.levelSize = vec2();
 
-    const stats = this.g.p1.stats
-    this.accuracy = stats.shots
+    setCameraPos(Game.levelSize.scale(.5));
+    this.change = false;
+
+    this.text = [
+      'TIME: ',
+      'SAVED: ',
+      'KILLED: ',
+    ];
+
+    // this.g.music.play('victory');
+
+    this.title = 'WAVE COMPLETE';
+    this.g.levelNum += 1;
+
+    this.lines = [];
+    this.lineInterval = 1;
+    this.lineTimer = null;
+
+    let timers = ['Accuracy', 'Kills', 'Saves'];
+    this.renderFrags = [];
+    this.timers = {};
+    timers.forEach((name, i) => {
+      this.timers[name] = new Timer();
+      this.timers[name].set(i * 1);
+    });
+
+
+    this.score = this.g.store['p1'].score;
+    this.displayScore = this.g.store['p1'].score;
+
+    const stats = this.g.store['p1'].stats;
+    stats.accuracy = stats.shots
       ? Math.floor((stats.hits / stats.shots) * 100) : 0
 
-    this.bonus = this.accuracy * 10;
-    this.displayBonus = 0;
-    this.g.store['p1'].score += this.bonus;
+    this.stats = stats;
 
-    this.nextScene = 'Play';
-    if (this.g.levelNum > this.g.totalLevels) {
-      console.log('GAME COMPLETE, CHAMP!');
-      this.nextScene = 'Victory';
-    }
+    this.g.events.push({
+      ttl: 5,
+      cb: () => {
+        this.g.sceneManager.changeScene('Play');
+      }
+    })
+
+    engineObjects.forEach((o) => {
+      if (o.name !== 'player') {
+        this.destroy();
+      }
+    })
+
   }
 
   update() {
-    this.ttl -= timeDelta;
+    super.update();
+    this.handleUiInput();
 
-    if (this.displayBonus >= this.bonus) {
-      this.displayBonus = this.bonus;
-    } else {
-      if (rand() > .75) {
-        this.g.sfx.play('score');
+    if (this.uiInput === 'enter' && this.score === this.displayScore) {
+      this.g.sceneManager.changeScene('Play');
+    }
+
+    Object.keys(this.timers).forEach((timer) => {
+      if (this.timers[timer].elapsed()) {
+        this.timers[timer].unset();
+        delete this.timers[timer];
+        this.renderFrags.push(timer);
+        this.g.sfx.play('bounce');
+        this.updateScore(timer);
       }
-      this.displayBonus += 20;
+    });
+
+    if (this.displayScore < this.score - 10) {
+      this.displayScore += 10;
+      this.g.sfx.play('score');
+      Particles.score();
+    } else if (this.displayScore < this.score) {
+      this.displayScore += 10;
+      this.g.sfx.play('score');
+      Particles.score();
     }
-
-    if (this.uiInput === 'enter') {
-
-      this.g.sceneManager.changeScene(this.nextScene);
-
-      if (this.p1) { this.g.store.p1.score += this.bonus; }
-
-    }
-
-    if (time - this.startTime > 5) {
-      this.g.sceneManager.changeScene(this.nextScene);
-    }
-
-
+    this.g.store['p1'].score = this.displayScore;
   }
 
   renderPost() {
 
     setFontDefault('"wheaton"');
-    drawText(`LEVEL COMPLETE!`, vec2(0, 6), 1, this.g.palette.slime.col);
+    const wave = Math.sin(new Date().getTime() * 0.005);
 
-    const bonus = `+${this.displayBonus}`;
-    let pink = this.g.palette['pink'].col;
+    if (wave > 0) {
+      const slime = this.g.palette.slime.col;
+      drawText(this.title, vec2(0, 6), 1, slime);
+    }
 
-    drawText(`Accuracy`, vec2(0, 4), .6)
-    drawText(this.accuracy + '%', vec2(0, 3), .6, pink);
+    let y = 3;
+    this.renderFrags.forEach((part, i) => {
+      this[`render${part}`](y - (i * 2), wave);
+    })
 
-    drawText(`BONUS`, vec2(0, 1), .6);
-    drawText(bonus, vec2(0, 0), .6, pink);
-
+    drawText(`${this.displayScore}`, vec2(0, -6), 1.2, YELLOW, .2, BLACK, 'center');
   }
 
+  renderAccuracy(y) {
+    let text = 'Accuracy:';
+    drawText(text, vec2(0, y), .7, WHITE, 0, CLEAR_BLACK, 'right');
+    text = `${this.stats.accuracy}%`;
+    drawText(text, vec2(1, y), .7, RED, 0, CLEAR_BLACK, 'left');
+  }
+
+  renderKills(y) {
+    let text = 'KILLS:';
+    drawText(text, vec2(0, y), .7, WHITE, 0, BLACK, 'right');
+    text = this.stats.kills;
+    drawText(text, vec2(1, y), .7, RED, 0, CLEAR_BLACK, 'left');
+  }
+
+  renderSaves(y) {
+    let text = 'SAVED:';
+    drawText(text, vec2(0, y), .7, WHITE, 0, CLEAR_BLACK, 'right');
+    text = this.stats.saves;
+    drawText(text, vec2(1, y), .7, RED, 0, CLEAR_BLACK, 'left');
+  }
+
+  updateScore(type) {
+    type = type.toLowerCase();
+    console.log('update score', type)
+    let stat = this.stats[type];
+    if (type === 'accuracy') {
+      this.score += stat;
+    } else if (type === 'kills') {
+      this.score += stat * 10;
+    } else if (type === 'saved') {
+      // this.score += stat * 20;
+    }
+  }
 }

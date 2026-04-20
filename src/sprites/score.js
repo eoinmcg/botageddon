@@ -5,9 +5,11 @@ export default class Score extends EngineObject {
 
     Object.assign(this, props);
 
-    this.velocity = vec2(0, this.value > 100 ? .005 : .01);
-    this.ttl = 1;
+    this.velocity = vec2(0, this.value > 100 ? .01 : .03);
+    this.ttl = 1.5;
     this.g = g;
+
+    this.renderOrder = 5000;
   }
 
   update() {
@@ -17,7 +19,7 @@ export default class Score extends EngineObject {
   }
 
   render() {
-    let col = this.g.palette[this.value > 100 ? 'yellow' : 'white'].mk(this.ttl);
+    let col = this.g.palette[this.value > 100 ? 'yellow' : 'white'].mk(this.ttl / 2);
     const font = engineFontImage;
     font.drawText('+' + this.value, this.pos, .3, true, col)
   }

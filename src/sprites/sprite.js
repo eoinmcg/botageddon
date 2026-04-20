@@ -76,6 +76,36 @@ export default class Sprite extends EngineObject {
       || this.pos.y > size.max.y;
   }
 
+  clampToScreen() {
+    this.pos.x = clamp(
+      this.pos.x,
+      this.g.size.min.x + 0.5,
+      this.g.size.max.x - 0.5,
+    );
+    this.pos.y = clamp(
+      this.pos.y,
+      this.g.size.min.y + 0.5,
+      this.g.size.max.y - 0.5,
+    );
+  }
+
+
+  atScreenEdgeX() {
+    const size = this.g.size;
+    return (
+      this.pos.x > size.max.x - .5
+      || this.pos.x < size.min.x + .5
+    );
+  }
+
+  atScreenEdgeY() {
+    const size = this.g.size;
+    return (
+      this.pos.y > size.max.y - .5
+      || this.pos.y < size.min.y + .5
+    );
+  }
+
   getTileIndex() {
     const tileSize = this.tileInfo.size;
     const tilePos = this.tileInfo.pos;

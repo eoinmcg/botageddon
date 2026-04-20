@@ -5,7 +5,7 @@ export default class Dancer extends Enemy {
   constructor(g, props = {}) {
 
     if (!props.pos) {
-      props.pos = vec2(rand(g.size.min.x, g.size.max.x), 8)
+      props.pos = vec2(rand(g.size.min.x, g.size.max.x), 7)
     }
 
     super(g, {
@@ -30,16 +30,19 @@ export default class Dancer extends Enemy {
   update() {
     super.update();
 
-    if (this.pos.x > 4 || this.pos.x < -4) {
-      this.velocity.x *= -1;
-    }
-
-    if (this.pos.y < this.g.size.min.y) {
-      console.log('OFF SCREEN');
-      this.destroy(false);
-    }
+    if (this.atScreenEdgeX()) { this.velocity.x *= -1; }
+    if (this.atScreenEdgeY()) { this.velocity.y *= -1; }
+    // if (this.pos.x > size.max.x || this.pos.x < size.max.y) {
+    //   this.velocity.x *= -1;
+    // }
+    //
+    // if (this.pos.y < this.g.size.min.y) {
+    //   console.log('OFF SCREEN');
+    //   this.destroy(false);
+    // }
 
   }
+
 
   render() {
     drawTile(this.pos.add(vec2(0, -.5)), vec2(.8, .4), tile(0, this.g.tileSize), this.shadowCol);

@@ -47,13 +47,27 @@ export const Game = {
     Game.newHiscore = false;
     Game.store.p1 = {
       score: 0,
-      lives: 0,
+      lives: 1,
       powerups: 0,
+      coin: 0,
+      stats: {
+        shots: 0,
+        hits: 0,
+        kills: 0,
+        saves: 0,
+      }
     };
     Game.store.p2 = {
       score: 0,
       lives: 2,
       powerups: 0,
+      coin: 0,
+      stats: {
+        shots: 0,
+        hits: 0,
+        kills: 0,
+        saves: 0,
+      }
     };
   },
 };

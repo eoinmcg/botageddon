@@ -122,8 +122,8 @@ export default class Player extends Sprite {
     if (this.shoot && this.fireCooldown <= 0) {
       const spawnPos = this.pos.add(this.aimDir.scale(.2));
       this.shots += 1;
-      new Bullet(spawnPos, { dir: this.aimDir, angle: this.angle, g: this.g, owner: this });
-      this.stats.shots += 1;
+      this.g.stats
+      new Bullet(spawnPos, { dir: this.aimDir, angle: this.angle, g: this.g, owner: this.player });
       this.g.sfx.play("shoot", this.pos);
       const gunTip = this.pos.add(this.aimDir.scale(.8));
       Particles.gunsmoke(gunTip);
@@ -208,25 +208,14 @@ export default class Player extends Sprite {
 
   }
 
-  clampToScreen() {
-    this.pos.x = clamp(
-      this.pos.x,
-      this.g.size.min.x + 0.5,
-      this.g.size.max.x - 0.5,
-    );
-    this.pos.y = clamp(
-      this.pos.y,
-      this.g.size.min.y + 0.5,
-      this.g.size.max.y - 0.5,
-    );
-
-  }
 
   collideWithObject(o) {
     if (this.fade) return;
     const canHit = ["baddie", "enemyFire", "platform", "rock"];
 
     if (o.name === 'kitty') {
+      o.following = o.following || true;;
+      this.g.store[this.player].stats.saves += 1;
       return false;
     }
 

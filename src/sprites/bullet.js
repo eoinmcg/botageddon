@@ -13,6 +13,9 @@ export default class Bullet extends Sprite {
     this.angle = props.angle;
     this.owner = props.owner || 'p1';
 
+    console.log(this.owner)
+    this.g.store[this.owner].stats.shots += 1;
+
     this.setCollision();
 
     this.renderOrder = 3000;
@@ -26,7 +29,6 @@ export default class Bullet extends Sprite {
     super.update();
 
     if (this.isOffScreen()) {
-      this.owner.stats.misses += 1;
       this.destroy();
     }
   }

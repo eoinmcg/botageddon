@@ -17,7 +17,7 @@ export default class Play extends Scene {
 
     this.g.gameOver = false;
 
-    this.yPos = [-4, -5];
+    this.yPos = [-1, -2];
     this.pointer = 0;
     this.lastStick = [0];
     document.body.style.cursor = 'none'
@@ -26,14 +26,18 @@ export default class Play extends Scene {
     this.g.p1 = new Player({ g: this.g, pos: vec2(0, -1), wave: this.wave });
 
 
+    // to change col & size of cash in HUD
+    this.g.flashScore = 0;
 
   }
 
   update() {
     super.update();
 
-    this.wave.update()
-
+    if (this.g.flashScore > 0) {
+      this.g.flashScore -= timeDelta * 2;
+      this.g.flashScore = max(this.g.flashScore, 0);
+    }
     if (this.g.store.p1.score > this.g.hiScore) {
       if (!this.g.newHiscore) {
         new Alert(this.g, { text: 'NEW HISCORE!!', col: 'yellow', pos: vec2(-3.7, -5), sfx: 'score' });
@@ -51,6 +55,12 @@ export default class Play extends Scene {
       }
       this.g.gameOver = time;
       this.setGameOver();
+      this.g.events.push({
+        ttl: 5,
+        cb: () => {
+          this.g.sceneManager.changeScene('Splash');
+        }
+      })
       try {
         this.g.music.pause();
       } catch (e) { }
@@ -63,6 +73,8 @@ export default class Play extends Scene {
 
     this.g.sticks.l.update();
     this.g.sticks.r.update();
+
+    this.wave.update()
 
   }
 
@@ -115,13 +127,10 @@ export default class Play extends Scene {
         || gamepadWasPressed(2)) {
         if (this.pointer === 0) {
           let p1Type = this.g.p1.type;
-          let p2Type = this.g.p2?.type;
           this.g.resetStore();
           this.g.store.p1.type = p1Type;
-          this.g.store.p2.type = p2Type;
 
           this.g.swipe.clear();
-          // this.levelManager = new LevelManager(this.g, this.g.levelNum);
           this.g.sceneManager.changeScene('Play');
           this.g.swipe.clear();
         } else {
@@ -147,11 +156,16 @@ export default class Play extends Scene {
 
     const leftX = -4.5;
 
+    const white = new Color(1, 1, 1, 1);
+    const yellow = new Color(1, 1, 0, 1);
+    const drawColor = white.lerp(yellow, this.g.flashScore);
+
     const text = this.g.p2 && this.g.p1.destroyed
       ? wave > 0 ? 'PRESS FIRE' : ''
       : `${this.g.store.p1.score.toString().padStart(5, '0')}`;
     font.drawText(text, vec2(leftX, 6.5), .5, false, BLACK);
-    font.drawText(text, vec2(leftX, 6.6), .5, false, WHITE);
+    font.drawText(text, vec2(leftX, 6.6), .5, false, drawColor);
+
     const heartTile = this.g.tile('heart');
     const pink = this.g.palette.pink.col;
     for (let i = 0; i < this.g.store.p1.lives; i += 1) {
@@ -168,10 +182,13 @@ export default class Play extends Scene {
 
         })
       }
-      font.drawText('CONTINUE?', cameraPos.add(vec2(0, -4)), .7, true);
-      font.drawText('QUIT', cameraPos.add(vec2(0, -5)), .7, true);
+      font.drawText('CONTINUE?', vec2(0, this.yPos[0]).add(vec2(0, -.1)), .5, true, BLACK);
+      font.drawText('CONTINUE?', vec2(0, this.yPos[0]), .5, true);
 
-      drawTile(vec2(-4, this.yPos[this.pointer]), vec2(.5), this.g.tile('select'), undefined, 0);
+      font.drawText('QUIT', vec2(0, this.yPos[1]).add(vec2(0, -.1)), .5, true, BLACK);
+      font.drawText('QUIT', vec2(0, this.yPos[1]), .5, true);
+
+      drawTile(vec2(-3, this.yPos[this.pointer]), vec2(.5), this.g.tile('select'), undefined, 0);
     }
 
     if (wave > 0 && paused && !this.g.hitStop) {

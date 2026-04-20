@@ -4,6 +4,7 @@ export default class Scene {
     this.g = game;
     this.g.events = [];
     this.uiInput = false;
+    this.lastStickY = 0
   }
 
   exit() { }
@@ -55,13 +56,13 @@ export default class Scene {
     this.uiInput = false;
     if (keyWasPressed('ArrowUp')
       || swipe === 'up'
-      || (this.lastStick[0] > 0 && stick.y === 0)) {
+      || (this.lastStickY > 0 && stick.y === 0)) {
       this.uiInput = 'up';
       this.g.swipe.clear();
     }
     if (keyWasPressed('ArrowDown')
       || swipe === 'down'
-      || (this.lastStick[0] < 0 && stick.y === 0)) {
+      || (this.lastStickY < 0 && stick.y === 0)) {
       this.uiInput = 'down';
       this.g.swipe.clear();
     }
@@ -70,13 +71,15 @@ export default class Scene {
       || gamepadWasPressed(0)
       || gamepadWasPressed(1)
       || gamepadWasPressed(2)
+      || gamepadWasPressed(7)
+      || mouseWasPressed(0)
       || swipe === 'tap'
       || keyWasPressed('Space')) {
       this.uiInput = 'enter';
       this.g.swipe.clear();
     }
 
-    this.lastStick = [stick.y];
+    this.lastStickY = stick.y;
   }
 
   updatePost() { }
@@ -106,7 +109,7 @@ export default class Scene {
       pos: vec2(0),
       size: 1.3,
       color: WHITE,
-      lineWidth: .75,
+      lineWidth: .25,
       lineColor: BLACK,
       textAlign: 'center',
       font: '"wheaton',

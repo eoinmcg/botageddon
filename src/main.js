@@ -23,6 +23,12 @@ function gameInit() {
   setCanvasPixelated(true);
   Game.sceneManager.changeScene(Game.startScene);
 
+  const loadingDiv = document.querySelector('.loading');
+  if (loadingDiv) {
+    loadingDiv.remove();
+  }
+
+
 }
 
 function gameUpdate() {

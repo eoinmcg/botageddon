@@ -5,6 +5,7 @@ import Muncher from "../sprites/muncher";
 import Drone from "../sprites/drone";
 import Kitty from "../sprites/kitty";
 import Wall from "../sprites/wall";
+import Powerup from "../sprites/powerup";
 
 
 export default class LevelManager {
@@ -21,6 +22,7 @@ export default class LevelManager {
       muncher: Muncher,
       kitty: Kitty,
       wall: Wall,
+      powerup: Powerup,
     }
 
     g.waves = {};
@@ -32,7 +34,6 @@ export default class LevelManager {
 
   loadLevel(levelNum) {
     this.levelData = levels[levelNum - 1]
-    console.log(this.levelData)
     if (this.levelData.music) {
       this.g.music.play(this.levelData.music)
     }
@@ -50,23 +51,23 @@ export default class LevelManager {
 
   update() {
     if (this.levelClear) return;
+    if (this.g.gameOver) return;
 
-    if (!this.g.gameOver && !this.complete && Math.random() > 0.991) {
-      new this.ents[this.levelData.types.rnd()](this.g)
-    }
-
-    const botCount = engineObjects.filter(item => item.type === 'bot').length;
+    const botCount = engineObjects.filter(o => o.type === 'bot').length;
 
     if (!this.complete && this.timer.elapsed()) {
       this.complete = true;
-      console.log('wave complete')
     }
 
+
+    console.log(engineObjects.filter(item => item.type === 'bot'));
+    console.log(this.complete, botCount)
     if (this.complete && botCount === 0) {
+      console.log(botCount, this.complete)
       this.levelClear = true;
       this.g.music.stop();
       this.g.events.push({
-        ttl: 1,
+        ttl: 3,
         cb: () => {
           this.g.sceneManager.changeScene('LevelComplete');
         }
@@ -76,9 +77,20 @@ export default class LevelManager {
       this.levelClear = false;
     }
 
-    if (this.complete) {
-      console.log('COMPLETE', botCount)
+    const maxBots = this.levelData.maxBots || 15;
+    if (botCount >= maxBots) return;
+
+    if (!this.spawnCooldown) this.spawnCooldown = 0;
+    this.spawnCooldown -= timeDelta;
+
+    if (!this.g.gameOver
+      && !this.complete
+      && this.spawnCooldown <= 0
+      && Math.random() > this.levelData.freq) {
+      new this.ents[this.levelData.types.rnd()](this.g)
+      this.spawnCooldown = this.levelData.spawnDelay || 0.2;
     }
+
 
   }
 
