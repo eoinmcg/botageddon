@@ -1,15 +1,24 @@
-
 export default class Scene {
   enter(game) {
     this.g = game;
     this.g.events = [];
     this.uiInput = false;
     this.lastStickY = 0
+    this.g.screenShake = 0;
   }
 
   exit() { }
 
   update() {
+    setCameraPos(vec2(0, 0));
+    if (this.g.screenShake > 0) {
+      const shakeX = (Math.random() - 0.5) * this.g.screenShake;
+      const shakeY = (Math.random() - 0.5) * this.g.screenShake;
+
+      cameraPos = cameraPos.add(vec2(shakeX, shakeY));
+
+      this.g.screenShake *= 0.9;
+    }
 
     if (keyWasPressed('KeyM')) {
       this.g.sfx.toggleMute();

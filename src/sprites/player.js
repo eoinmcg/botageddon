@@ -256,6 +256,7 @@ export default class Player extends Sprite {
 
       this.g.sfx.play("hurt", this.pos);
       setPaused(true);
+      this.g.screenShake = 1;
       this.children.forEach((c) => {
         c.destroy();
       });
