@@ -4,7 +4,7 @@ export default class Drone extends Enemy {
 
   constructor(g, props = {}) {
     if (!props.pos) {
-      props.pos = vec2(rand(g.size.min.x, g.size.max.x), 7.5)
+      props.pos = vec2(0, -9)
     }
 
     super(g, {
@@ -13,7 +13,6 @@ export default class Drone extends Enemy {
       size: vec2(.6),
       tile: g.tile('drone'),
       anim: 'drone',
-      health: 0,
       value: 10,
     });
 
@@ -25,17 +24,33 @@ export default class Drone extends Enemy {
     };
     this.changeAnim("float", 0.3);
 
-
     this.health = 2;
+    this.target = false;
+    this.speed = 0.02;
 
     this.velocity = vec2(0, -.02);
-    if (props.pos.x < 0) {
-      this.velocity.x *= -1;
+    this.spawnPos()
+    this.hasShadow = true;
+    this.shadowOffset = -1;
+  }
+
+  spawnPos() {
+    const fromBottom = Math.random() > 0.5;
+
+    const x = rand(this.g.size.min.x, this.g.size.max.x);
+
+    const y = fromBottom
+      ? this.g.size.min.y - 1.0   // below screen
+      : this.g.size.max.y + 1.0;  // above screen
+
+    this.pos = vec2(x, y);
+
+    if (fromBottom) {
+      this.velocity.y = Math.abs(this.velocity.y);
+    } else {
+      this.velocity.y = -Math.abs(this.velocity.y);
     }
 
-    this.target = false;
-
-    this.speed = 0.02;
   }
 
   update() {
@@ -64,20 +79,14 @@ export default class Drone extends Enemy {
 
     const distance = direction.length();
 
-    if (distance > 1) { // only move if we aren't already there
-      this.velocity = direction.normalize(this.speed);
+    if (distance > .1) {
+      this.velocity = direction.normalize().scale(this.speed);
     } else {
-      // stop moving, we've arrived
-      this.velocity = new Vector2(0, 0);
+      this.velocity = vec2(0, 0);
     }
   }
 
 
-  render() {
-
-    drawTile(this.pos.add(vec2(0, -1)), vec2(.8, .4), tile(0, this.g.tileSize), this.shadowCol);
-    super.render();
-  }
 
   collideWithObject(o) {
     if (o.name === 'wall') {

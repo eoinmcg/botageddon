@@ -1,4 +1,5 @@
 import Sprite from "./sprite";
+import DedKitty from "./dedKitty";
 
 export default class Kitty extends Sprite {
 
@@ -18,7 +19,8 @@ export default class Kitty extends Sprite {
 
     this.anims = {
       idle: ["kitty3", "kitty4", "kitty3"],
-      run: ["kitty1", "kitty2"]
+      run: ["kitty1", "kitty2"],
+      stand: ["kitty0"]
     }
     this.changeAnim("idle", 0.5);
     this.mass = 0;
@@ -35,13 +37,21 @@ export default class Kitty extends Sprite {
       color: BLACK
     };
 
+    this.followOffset = vec2(
+      rand(-0.5, 0.5),
+      rand(-1.2, -0.6)
+    );
+    this.drift = vec2(rand(-0.1, 0.1), rand(-0.1, 0.1));
+
     this.renderOrder = 2999;
+    this.hasShadow = true;
   }
 
   update() {
     super.update()
 
     if (this.following) {
+      this.drift = this.drift.add(vec2(rand(-0.005, 0.005), rand(-0.005, 0.005))).clampLength(0.15);
       return this.followPlayer()
     }
 
@@ -53,28 +63,45 @@ export default class Kitty extends Sprite {
   }
 
   followPlayer() {
-    const target = this.g.p1.pos.add(vec2(0, -1));
+    const p1 = this.g.p1;
+
+    let aim = p1.aimDir;
+    if (aim.length() < 0.01) {
+      // fallback if player isn't aiming
+      aim = vec2(0, 1); // facing down
+    }
+
+    const right = vec2(aim.y, -aim.x);   // 90° rotated
+    const forward = aim;
+
+    const rotatedOffset =
+      right.scale(this.followOffset.x)
+        .add(forward.scale(this.followOffset.y))
+
+    const target = p1.pos.add(rotatedOffset).add(this.drift);
+
     const dir = target.subtract(this.pos);
     const dist = dir.length();
-    const speed = .05;
+    const speed = 0.05;
 
     this.mirror = this.pos.x > target.x;
 
     if (dist > 0.1) {
-      // Move toward target
       this.velocity = dir.normalize().scale(speed);
       this.changeAnim("run", 0.1);
     } else {
-      this.velocity = vec2(0)
-      this.changeAnim("idle", 0.5);
+      this.velocity = vec2(0);
+      this.changeAnim("stand", 0.5);
     }
   }
 
-  render() {
-    const SHADOW = new Color(0, 0, 0, 0.2)
-    drawTile(this.pos.add(vec2(0, -.5)), vec2(.7, .5), tile(0, this.g.tileSize), SHADOW);
-
-    super.render();
+  destroy() {
+    super.destroy()
+    if (this.g.levelClear) {
+      return;
+    }
+    this.g.sfx.play('hurt', this.pos)
+    this.g.store['p1'].stats.saves -= 1;
+    new DedKitty(this.g, { pos: this.pos, color: this.color })
   }
-
 }

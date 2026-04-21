@@ -47,7 +47,7 @@ export const Game = {
     Game.newHiscore = false;
     Game.store.p1 = {
       score: 0,
-      lives: 1,
+      lives: 3,
       powerups: 0,
       coin: 0,
       stats: {

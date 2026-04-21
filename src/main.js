@@ -4,10 +4,7 @@ import Swiper from "./lib/swiper.js";
 import resize from "./helpers/resize.js";
 
 function gameInit() {
-  resize(Game.W, Game.H);
-  canvasMaxSize = vec2(2048);
-  canvasMinAspect = 1.6;
-  canvasMaxAspect = 2;
+  resize(Game);
 
   Game.sticks = {
     l: new VirtualStick('left'),

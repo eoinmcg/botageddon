@@ -6,7 +6,7 @@ export default class Collected extends Sprite {
   constructor(g, props) {
 
     props.size = props.size || .5;
-    props.t = props.t || 'money';
+    props.t = props.t || 'crystal0';
     super(props.pos, vec2(props.size), g.tile(props.t));
     this.target = props.target || vec2(-4, 6.5)
     this.setCollision(false, false, false);
@@ -22,12 +22,11 @@ export default class Collected extends Sprite {
     const speed = .5;
 
     if (dist > 0.5) {
-      // Move toward target
+      // move toward target
       this.velocity = dir.normalize().scale(speed);
     } else {
-      // Snap to target and destroy
+      // snap to target and destroy
       this.pos = this.target.copy();
-      Particles.powerup(this.pos, this.g.palette.yellow.col);
       if (this.props.cb) {
         this.props.cb();
       }

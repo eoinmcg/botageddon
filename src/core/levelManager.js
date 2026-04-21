@@ -40,7 +40,7 @@ export default class LevelManager {
     this.timer = new Timer();
     this.timer.set(this.levelData.time)
     this.complete = false;
-    this.levelClear = false;
+    this.g.levelClear = false;
     new Alert(this.g, { text: this.levelData.title, col: 'slime', outline: 'forestgreen', pos: vec2(-2, 1), sfx: 'score' });
 
     this.levelData.startUp.forEach((o) => {
@@ -50,7 +50,7 @@ export default class LevelManager {
   }
 
   update() {
-    if (this.levelClear) return;
+    if (this.g.levelClear) return;
     if (this.g.gameOver) return;
 
     const botCount = engineObjects.filter(o => o.type === 'bot').length;
@@ -60,21 +60,19 @@ export default class LevelManager {
     }
 
 
-    console.log(engineObjects.filter(item => item.type === 'bot'));
-    console.log(this.complete, botCount)
     if (this.complete && botCount === 0) {
-      console.log(botCount, this.complete)
-      this.levelClear = true;
+      this.g.levelClear = true;
       this.g.music.stop();
       this.g.events.push({
         ttl: 3,
         cb: () => {
           this.g.sceneManager.changeScene('LevelComplete');
+          this.g.levelNum += 1;
         }
       })
       new Alert(this.g, { text: 'AREA CLEAR', col: 'pink', outline: 'red', pos: vec2(-3, 1), sfx: 'score' });
     } else {
-      this.levelClear = false;
+      this.g.levelClear = false;
     }
 
     const maxBots = this.levelData.maxBots || 15;
@@ -83,10 +81,14 @@ export default class LevelManager {
     if (!this.spawnCooldown) this.spawnCooldown = 0;
     this.spawnCooldown -= timeDelta;
 
+
+    const progress = this.timer.getPercent(); // 0 → 1
+    const dynamicFreq = lerp(this.levelData.freq, this.levelData.freq - 0.03, progress);
+
     if (!this.g.gameOver
       && !this.complete
       && this.spawnCooldown <= 0
-      && Math.random() > this.levelData.freq) {
+      && Math.random() > dynamicFreq) {
       new this.ents[this.levelData.types.rnd()](this.g)
       this.spawnCooldown = this.levelData.spawnDelay || 0.2;
     }

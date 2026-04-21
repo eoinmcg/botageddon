@@ -4,13 +4,13 @@ import { Game as G } from '../core/game';
 const Particles = {
 
   score: function() {
-    let pos = vec2(rand(2, -2), -10.5);
+    let pos = vec2(rand(2, 0), -7);
     const color = palette.yellow.col;
     const color2 = palette.orange.col;
     new ParticleEmitter(
       vec2(pos.x, pos.y + .5), 0,            // pos, angle
       .5, .1, 15, 1, // emitSize, emitTime, emitRate, emiteCone
-      tile(2, G.tileSize),                      // tileInfo
+      tile(28, G.tileSize),                      // tileInfo
       color, color2,           // colorStartA, colorStartB
       color.scale(1, 0), color2.scale(1, 0), // colorEndA, colorEndB
       1, .75, 1, .2, 0.00,  // time, sizeStart, sizeEnd, speed, angleSpeed

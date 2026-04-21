@@ -84,7 +84,11 @@ export default class Scene {
 
   updatePost() { }
 
-  render() { }
+  render() {
+    for (const o of engineObjects) {
+      if (o.hasShadow) o.renderShadow();
+    }
+  }
 
   renderPost() {
   }

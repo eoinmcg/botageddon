@@ -60,6 +60,7 @@ export default class Enemy extends Sprite {
 
   update() {
     super.update();
+    this.preventOverlap()
 
     if (this.hurt > 0) {
       this.hurt -= timeDelta * 20;
@@ -80,6 +81,34 @@ export default class Enemy extends Sprite {
     if (this.shots && this.canShoot && rand() > .5) {
       this.shots = 0;
       this.shoot();
+    }
+
+    let size = this.g.size,
+      offset = 1.2;
+    if (this.pos.y < size.min.y * offset ||
+      this.pos.y > size.max.y * offset ||
+      this.pos.x < size.min.x * offset ||
+      this.pos.x > size.max.x * offset) {
+      this.destroy(false)
+    }
+
+
+  }
+
+  preventOverlap() {
+    const drones = engineObjects.filter(o => o.type === 'bot');
+
+    for (const other of drones) {
+      if (other === this) continue;
+
+      const diff = this.pos.subtract(other.pos);
+      const dist = diff.length();
+
+      const minDist = 0.8;
+      if (dist < minDist && dist > 0.001) {
+        const push = diff.normalize().scale((minDist - dist) * 0.02);
+        this.velocity = this.velocity.add(push);
+      }
     }
 
   }
@@ -116,7 +145,6 @@ export default class Enemy extends Sprite {
 
     if (o.name === 'kitty') {
       o.destroy();
-      console.log('DED KITTY', o)
     }
 
     return super.collideWithObject(o)

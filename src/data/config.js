@@ -1,13 +1,9 @@
 const Config = {
   title: "ROBOCIDE 1984",
-  W: 320,
-  H: 480,
   images: ["t.gif", "bgs.png"],
+  W: 320,
+  H: 568,
   tileSize: 8,
-  size: {
-    max: { x: 5, y: 7.5 },
-    min: { x: -5, y: -7.5 },
-  },
   atlas: {
     circle: 0,
     square: 1,
@@ -19,7 +15,7 @@ const Config = {
     cat1: 7,
     cat2: 8,
     cat3: 9,
-    skull: 10,
+    skull: 11,
     target: 12,
     money: 13,
     select: 14,
@@ -31,6 +27,7 @@ const Config = {
     kitty2: 20,
     kitty3: 21,
     kitty4: 22,
+    dedKitty: 23,
     crystal0: 24,
     crystal1: 25,
     crystal2: 26,

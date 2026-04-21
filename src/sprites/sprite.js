@@ -17,6 +17,8 @@ export default class Sprite extends EngineObject {
     this.lastPos = this.pos.copy();
 
     this.shadowCol = new Color(0, 0, 0, .3)
+    this.hasShadow = true;
+    this.shadowOffset = -.4;
   }
 
   update() {
@@ -25,7 +27,6 @@ export default class Sprite extends EngineObject {
     }
     super.update();
 
-    this.lastPos = this.pos.copy();
   }
 
   render() {
@@ -47,6 +48,12 @@ export default class Sprite extends EngineObject {
       angle: this.angle,
       mirror: this.mirror,
     });
+  }
+
+  renderShadow() {
+    drawTile(this.pos.add(vec2(0, this.shadowOffset)),
+      vec2(this.size.x * 1.1, this.size.y * .5),
+      tile(0, this.g.tileSize), this.shadowCol);
   }
 
   changeAnim(name, speed = .5) {

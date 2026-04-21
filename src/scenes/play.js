@@ -22,7 +22,7 @@ export default class Play extends Scene {
     this.lastStick = [0];
     document.body.style.cursor = 'none'
 
-    this.wave = new LevelManager(this.g, 1);
+    this.wave = new LevelManager(this.g, this.g.levelNum);
     this.g.p1 = new Player({ g: this.g, pos: vec2(0, -1), wave: this.wave });
 
 
@@ -143,18 +143,15 @@ export default class Play extends Scene {
 
   render() {
     drawRect(cameraPos, vec2(1000), rgb(0.1, 0.1, 0.2));
+    super.render();
   }
 
   renderPost() {
     const wave = Math.sin(new Date().getTime() * 0.005);
     const font = engineFontImage;
 
-    // const hi = `HI: ${this.g.hiScore.toString().padStart(5, '0')}`;
-    // const col = this.g.newHiscore ? this.g.palette.lime.mk() : WHITE;
-    // font.drawText(hi, vec2(0, -6.1), .5, true, BLACK);
-    // font.drawText(hi, vec2(0, -6), .5, true, col);
-
-    const leftX = -4.5;
+    const leftX = this.g.size.min.x + .5;
+    const topY = this.g.size.max.y - 1;
 
     const white = new Color(1, 1, 1, 1);
     const yellow = new Color(1, 1, 0, 1);
@@ -163,13 +160,13 @@ export default class Play extends Scene {
     const text = this.g.p2 && this.g.p1.destroyed
       ? wave > 0 ? 'PRESS FIRE' : ''
       : `${this.g.store.p1.score.toString().padStart(5, '0')}`;
-    font.drawText(text, vec2(leftX, 6.5), .5, false, BLACK);
-    font.drawText(text, vec2(leftX, 6.6), .5, false, drawColor);
+    font.drawText(text, vec2(leftX, topY), .5, false, BLACK);
+    font.drawText(text, vec2(leftX, topY + .1), .5, false, drawColor);
 
     const heartTile = this.g.tile('heart');
     const pink = this.g.palette.pink.col;
     for (let i = 0; i < this.g.store.p1.lives; i += 1) {
-      drawTile(vec2(4.5 - (i * .7), 6.5), vec2(.7), heartTile, pink);
+      drawTile(vec2(-leftX + (i * -.7), topY), vec2(.7), heartTile, pink);
     }
 
 
@@ -192,8 +189,8 @@ export default class Play extends Scene {
     }
 
     if (wave > 0 && paused && !this.g.hitStop) {
-      font.drawText(`PAUSED`, vec2(0, .75), 1, true, BLACK);
-      font.drawText(`PAUSED`, vec2(0, 1), 1, true, this.g.palette.lime.mk());
+      font.drawText(`PAUSED`, vec2(0, .75), .8, true, BLACK);
+      font.drawText(`PAUSED`, vec2(0, 1), .8, true, this.g.palette.slime.col);
     }
 
     // hacky. ensure enemyFire appears above explosions

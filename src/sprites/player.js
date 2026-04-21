@@ -44,12 +44,15 @@ export default class Player extends Sprite {
     this.aimDir = vec2(1, 0);
     this.fireCooldownDelay = .1;
     this.fireCooldown = 0;
+    this.facingDir = vec2(0, 1); // default facing down
 
     this.outline = {
       offset: 0.1,
-      cotlor: BLACK
+      color: BLACK
     };
 
+    this.hasShadow = true;
+    this.recoilStrength = 0.02;
 
     this.initStats()
 
@@ -123,11 +126,13 @@ export default class Player extends Sprite {
       const spawnPos = this.pos.add(this.aimDir.scale(.2));
       this.shots += 1;
       this.g.stats
+
       new Bullet(spawnPos, { dir: this.aimDir, angle: this.angle, g: this.g, owner: this.player });
       this.g.sfx.play("shoot", this.pos);
       const gunTip = this.pos.add(this.aimDir.scale(.8));
       Particles.gunsmoke(gunTip);
       this.fireCooldown = this.fireCooldownDelay;
+      this.pos = this.pos.subtract(this.aimDir.scale(this.recoilStrength));
     }
 
     // Hurt / Fade
@@ -154,6 +159,13 @@ export default class Player extends Sprite {
     }
 
 
+    const moveDir = this.pos.subtract(this.lastPos);
+    if (moveDir.length() > 0.01) {
+      this.facingDir = moveDir.normalize();
+    }
+
+    this.lastPos = this.pos.copy();
+
   }
 
   render() {
@@ -163,11 +175,12 @@ export default class Player extends Sprite {
     if (this.fade) {
       let size = (1 - this.fade) * 10;
       let ringColor = new Color(1, 1, 1, this.fade);
-      drawTile(this.pos, vec2(clamp(size, .5, 1)), this.g.tile('circle'), ringColor)
+      // drawTile(this.pos, vec2(clamp(size, .5, 1)), this.g.tile('circle'), ringColor)
+      drawCircle(this.pos, this.size.x + 2, ringColor);
     }
 
     //shadow
-    drawTile(this.pos.add(vec2(0, -.5)), vec2(.7, .5), tile(0, this.g.tileSize), this.shadowCol);
+    // drawTile(this.pos.add(vec2(0, -.5)), vec2(.7, .5), tile(0, this.g.tileSize), this.shadowCol);
 
     let skipParent = this.fade && wave > 0;
 
@@ -210,14 +223,17 @@ export default class Player extends Sprite {
 
 
   collideWithObject(o) {
-    if (this.fade) return;
     const canHit = ["baddie", "enemyFire", "platform", "rock"];
 
-    if (o.name === 'kitty') {
-      o.following = o.following || true;;
+    if (o.name === 'kitty' && !o.following) {
+      o.following = true;
       this.g.store[this.player].stats.saves += 1;
+      this.g.sfx.play('help', this.pos)
+      return false;
+    } else if (o.name === 'kitty') {
       return false;
     }
+    if (this.fade) return;
 
     if (canHit.includes(o.name)) {
       if (o.name !== "platform" && o.type !== "boss" && o.name !== "rock") {
@@ -281,34 +297,4 @@ export default class Player extends Sprite {
     return this.g.store[this.player][k];
   }
 
-  applyPowerups(bulletProps) {
-    const powerups = this.getStore("powerups");
-    if (!powerups) return;
-
-    let props;
-    if (powerups > 0) {
-      new Bullet(this.pos.add(vec2(0, -0.75)), bulletProps);
-    }
-    if (powerups > 2) {
-      props = { ...bulletProps };
-      props.angle = props.angle + PI / 12;
-      new Bullet(this.pos.add(vec2(0, 0.75)), props);
-    }
-    if (powerups > 3) {
-      props = { ...bulletProps };
-      props.angle = props.angle - PI / 12;
-      new Bullet(this.pos.add(vec2(0, 0.75)), props);
-    }
-    if (powerups > 4) {
-      props = { ...bulletProps };
-      props.angle = props.angle + PI;
-      new Bullet(this.pos.add(vec2(0, -0.5)), props);
-    }
-    if (powerups > 5 && this.children.length === 0) {
-      this.children.push(new Shield(this.g, this.pos, this));
-    }
-    if (powerups > 5) {
-      this.g.medals[2].unlock();
-    }
-  }
 }
