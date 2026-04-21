@@ -1,4 +1,5 @@
 import Scene from "./scene";
+import Alert from "../sprites/alert";
 import Particles from "../helpers/particles";
 
 export default class Splash extends Scene {
@@ -15,7 +16,40 @@ export default class Splash extends Scene {
     this.lastStick = [0];
 
     this.g.levelNum = 1;
-    this.activeTextCol = this.g.palette.slime.col;
+    this.activeTextCol = this.g.palette.pink.col;
+
+    this.startTime = time;
+    this.showStatic = false;
+
+    this.g.events.push({
+      ttl: 3,
+      cb: () => {
+        this.toggleStatic();
+      }
+    })
+
+    setFontDefault('"wheaton"');
+    new Alert(this.g, {
+      text: 'ROBOCIDE',
+      pos: vec2(-4.2, 5),
+      ttl: 0,
+      fontSize: 1.7,
+      col: 'slime',
+      outline: 'forestgreen'
+    });
+  }
+
+  toggleStatic() {
+    this.showStatic = !this.showStatic;
+    if (this.showStatic) {
+      this.g.sfx.play('jet')
+    }
+    this.g.events.push({
+      ttl: rand(.5, 5),
+      cb: () => {
+        this.toggleStatic()
+      }
+    })
 
   }
 
@@ -43,6 +77,7 @@ export default class Splash extends Scene {
       } else if (opt === 'Settings') {
         this.g.sceneManager.changeScene('Settings');
       } else if (opt === '1 Player' || opt === 'Start') {
+        this.g.plays += 1;
         this.g.sceneManager.changeScene('Play');
       }
 
@@ -55,24 +90,24 @@ export default class Splash extends Scene {
   render() {
     let p = this.g.palette;
     drawRectGradient(cameraPos, getCameraSize(), p.void.col, p.nightblue.col);
-
     drawTile(vec2(0, -3), vec2(12), tile(0, vec2(320, 480), 1), new Color(0, 0, 0, .9));
+    super.render();
+
+    if (this.showStatic) {
+      this.static(0, 0)
+    }
   }
 
   renderPost() {
 
+    if (time - this.startTime < .6) return;
     const font = engineFontImage;
 
     const hi = `HI: ${this.g.hiScore.toString().padStart(5, '0')}`;
-    font.drawText(hi, vec2(0, 11.4), 1, true, BLACK);
-    font.drawText(hi, vec2(0, 11.5), 1, true);
+    font.drawText(hi, vec2(0, this.g.size.min.y + 1), .5, true, BLACK);
+    font.drawText(hi, vec2(0, this.g.size.min.y + 1.1), .5, true, GRAY);
 
     setFontDefault('"wheaton"');
-    let col = new Color(0, 0, 0, .8);
-    this.logoText({
-      text: 'robocide', pos: vec2(0, 4), lineWidth: .5, color: this.g.palette.pink.col,
-      lineColor: this.g.palette.void.col
-    })
 
     const wave = Math.sin(new Date().getTime() * 0.009);
     const x = wave > 0 ? .1 : 0

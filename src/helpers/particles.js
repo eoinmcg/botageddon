@@ -155,6 +155,23 @@ const Particles = {
     );
   },
 
+  jetpack: function(pos, mirror) {
+    let red = palette.red.col,
+      yellow = palette.yellow.col;
+    const off = (mirror) ? 0 : -.7;
+    pos = pos.add(vec2(off, -1.8));
+
+    new ParticleEmitter(
+      pos, 0,            // pos, angle
+      2, .1, 3, 1, // emitSize, emitTime, emitRate, emiteCone
+      tile(0, 8),                      // tileInfo
+      red, yellow,           // colorStartA, colorStartB
+      red.scale(1, 0), yellow.scale(1, 0), // colorEndA, colorEndB
+      .1, 1.5, .5, .2, 1,  // time, sizeStart, sizeEnd, speed, angleSpeed
+      .99, .95, 5, PI,   // damping, angleDamping, gravityScale, cone
+      .2, 1, 0, 0        // fadeRate, randomness, collide, additive
+    );
+  },
 
 }
 

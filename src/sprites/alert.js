@@ -22,6 +22,7 @@ export default class Alert extends EngineObject {
     this.fontSize = props.fontSize;
     this.outline = g.palette[props.outline].mk();
     this.g = g;
+    this.name = 'alert';
 
     this.renderOrder = 1000;
 

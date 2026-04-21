@@ -7,7 +7,6 @@ import Kitty from "../sprites/kitty";
 import Wall from "../sprites/wall";
 import Powerup from "../sprites/powerup";
 
-
 export default class LevelManager {
 
   constructor(g, levelNum = 1) {
@@ -28,12 +27,16 @@ export default class LevelManager {
     g.waves = {};
     this.g = g;
     this.g.events = [];
+
     this.loadLevel(levelNum);
 
   }
 
   loadLevel(levelNum) {
     this.levelData = levels[levelNum - 1]
+    if (!this.levelData) return;
+
+
     if (this.levelData.music) {
       this.g.music.play(this.levelData.music)
     }
@@ -53,6 +56,11 @@ export default class LevelManager {
     if (this.g.levelClear) return;
     if (this.g.gameOver) return;
 
+    if (!this.levelData && this.levelNum > levels.length) {
+      this.g.sceneManager.changeScene('Victory');
+      return;
+    }
+
     const botCount = engineObjects.filter(o => o.type === 'bot').length;
 
     if (!this.complete && this.timer.elapsed()) {
@@ -70,7 +78,7 @@ export default class LevelManager {
           this.g.levelNum += 1;
         }
       })
-      new Alert(this.g, { text: 'AREA CLEAR', col: 'pink', outline: 'red', pos: vec2(-3, 1), sfx: 'score' });
+      new Alert(this.g, { text: 'AREA CLEAR', col: 'orange', outline: 'red', pos: vec2(-3, 1), sfx: 'score' });
     } else {
       this.g.levelClear = false;
     }

@@ -9,7 +9,7 @@ import postScore from "../helpers/postScore";
 export default class Player extends Sprite {
   constructor(props) {
 
-    const t = props.g.tile("bee0");
+    const t = props.g.tile("cat0");
     super(props.pos, vec2(.7), t, props);
 
     this.player = 'p1';

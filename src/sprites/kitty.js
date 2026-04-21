@@ -8,7 +8,7 @@ export default class Kitty extends Sprite {
 
 
     const t = g.tile(["kitty3"].rnd());
-    super(props.pos, vec2(.5), t, props);
+    super(props.pos, vec2(.6), t, props);
 
     this.setCollision();
 
@@ -26,11 +26,10 @@ export default class Kitty extends Sprite {
     this.mass = 0;
 
     this.cols = [
-      g.palette.pink.mk(1),
-      g.palette.orange.mk(1),
-      g.palette.yellow.mk(1),
+      'pink', 'orange', 'yellow', 'brown', 'white', 'skyblue'
     ];
-    this.color = this.cols.rnd();
+    this.color = g.palette[this.cols.rnd()].col;
+    // this.color.a = rand(.4, .7)
 
     this.outline = {
       offset: 0.1,

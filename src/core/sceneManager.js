@@ -6,7 +6,8 @@ import LevelComplete from "../scenes/levelComplete.js";
 import Tutorial from "../scenes/tutorial";
 import Victory from "../scenes/victory.js";
 import Settings from "../scenes/settings.js";
-import Routette from "../scenes/roulette.js";
+import Roulette from "../scenes/roulette.js";
+import Interval from "../scenes/interval.js";
 
 const Scenes = {
   Splash: Splash,
@@ -17,7 +18,8 @@ const Scenes = {
   Play: Play,
   LevelComplete: LevelComplete,
   Victory: Victory,
-  Routette: Routette,
+  Roulette: Roulette,
+  Interval: Interval,
 };
 
 export default class SceneManager {

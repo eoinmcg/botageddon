@@ -2,28 +2,16 @@ import { NewgroundsMedal } from "../lib/newgrounds";
 
 let medalData = [
   {
-    name: 'Buddy',
-    info: 'Play with a friend',
-    icon: '😎',
-    id: 87233,
-  },
-  {
     name: 'Achiever',
     info: 'Get a new HiScore',
     icon: '💸',
     id: 87234,
   },
   {
-    name: 'Power',
-    info: 'Achieve max powerups',
-    icon: '⚡',
+    name: 'Sharp',
+    info: 'More than 70% accuracy',
+    icon: '🎯',
     id: 87235,
-  },
-  {
-    name: 'Spelunker',
-    info: 'Survive the caves',
-    icon: '🦇',
-    id: 87236,
   },
   {
     name: 'Champion',

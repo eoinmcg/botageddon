@@ -2,9 +2,10 @@
 
 Twin stick shooter arcade action.
 
-The not too distant future, the year is 1984. Humanity's
+The not too distant future, the year is 1984. Our
 worst fear has come to pass: The machines have taken over.
-A bot army is hell-bent on destroying all meat bags.
+All humans have been eliminated. Only the cats survive.
+A bot army is hell-bent on destroying all remaining moggies.
 Only you stand between freedom and certain doom!
 Buckle up soldier, we're in for some mayhem!
 

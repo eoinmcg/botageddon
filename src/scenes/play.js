@@ -11,9 +11,6 @@ export default class Play extends Scene {
   enter(g) {
     super.enter(g);
     this.g = g;
-    this.g.plays += 1;
-    setItem('plays', this.g.plays);
-
 
     this.g.gameOver = false;
 
@@ -23,12 +20,11 @@ export default class Play extends Scene {
     document.body.style.cursor = 'none'
 
     this.wave = new LevelManager(this.g, this.g.levelNum);
-    this.g.p1 = new Player({ g: this.g, pos: vec2(0, -1), wave: this.wave });
 
+    this.g.p1 = new Player({ g: this.g, pos: vec2(0, -1), wave: this.wave });
 
     // to change col & size of cash in HUD
     this.g.flashScore = 0;
-
   }
 
   update() {
@@ -44,7 +40,7 @@ export default class Play extends Scene {
       }
       this.g.newHiscore = true;
       this.g.hiScore = Math.max(this.g.store.p1.score, this.g.store.p2.score);
-      this.g.medals[1].unlock();
+      this.g.medals[0].unlock();
     }
 
     const p1Dead = this.g.store.p1.lives < 0;

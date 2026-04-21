@@ -37,6 +37,8 @@ const Config = {
     dog0: 31,
     robo0: 32,
     robo1: 33,
+    evil0: 34,
+    evil1: 35,
     dancer0: 36,
     dancer1: 37,
     dancer2: 38,

@@ -41,12 +41,17 @@ export default class LevelComplete extends Scene {
     stats.accuracy = stats.shots
       ? Math.floor((stats.hits / stats.shots) * 100) : 0
 
+    console.log('Accuracy', stats.accuracy)
+    if (stats.accuracy > 70) {
+      this.g.medals[1].unlock();
+    }
+
     this.stats = stats;
 
     this.g.events.push({
       ttl: 5,
       cb: () => {
-        this.g.sceneManager.changeScene('Play');
+        this.g.sceneManager.changeScene('Interval');
       }
     })
 
@@ -93,38 +98,36 @@ export default class LevelComplete extends Scene {
     setFontDefault('"wheaton"');
     const wave = Math.sin(new Date().getTime() * 0.005);
 
-    if (wave > 0) {
-      const slime = this.g.palette.slime.col;
-      drawText(this.title, vec2(0, 6), 1, slime);
-    }
+    const slime = this.g.palette.slime.col;
+    drawText(this.title, vec2(0, 6), 1, slime);
 
     let y = 3;
     this.renderFrags.forEach((part, i) => {
       this[`render${part}`](y - (i * 2), wave);
     })
 
-    drawText(`${this.displayScore}`, vec2(0, -6), 1.2, YELLOW, .2, BLACK, 'center');
+    drawText(`${this.displayScore}`, vec2(0, -6), 1.2, this.g.palette.yellow.col, .2, BLACK, 'center');
   }
 
   renderAccuracy(y) {
     let text = 'Accuracy:';
     drawText(text, vec2(0, y), .7, WHITE, 0, CLEAR_BLACK, 'right');
     text = `${this.stats.accuracy}%`;
-    drawText(text, vec2(1, y), .7, RED, 0, CLEAR_BLACK, 'left');
+    drawText(text, vec2(1, y), .7, this.g.palette.pink.col, 0, CLEAR_BLACK, 'left');
   }
 
   renderKills(y) {
     let text = 'KILLS:';
     drawText(text, vec2(0, y), .7, WHITE, 0, BLACK, 'right');
     text = this.stats.kills;
-    drawText(text, vec2(1, y), .7, RED, 0, CLEAR_BLACK, 'left');
+    drawText(text, vec2(1, y), .7, this.g.palette.pink.col, 0, CLEAR_BLACK, 'left');
   }
 
   renderSaves(y) {
     let text = 'SAVED:';
     drawText(text, vec2(0, y), .7, WHITE, 0, CLEAR_BLACK, 'right');
     text = this.stats.saves;
-    drawText(text, vec2(1, y), .7, RED, 0, CLEAR_BLACK, 'left');
+    drawText(text, vec2(1, y), .7, this.g.palette.pink.col, 0, CLEAR_BLACK, 'left');
   }
 
   updateScore(type) {
@@ -136,7 +139,7 @@ export default class LevelComplete extends Scene {
     } else if (type === 'kills') {
       this.score += stat * 10;
     } else if (type === 'saved') {
-      // this.score += stat * 20;
+      this.score += stat * 20;
     }
   }
 }

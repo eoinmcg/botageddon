@@ -66,7 +66,7 @@ export default class Enemy extends Sprite {
       this.hurt -= timeDelta * 20;
       this.color = new Color(1, 0, 0, this.hurt / 10)
     } else {
-      this.color = undefined;
+      this.color = this.baseCol || undefined;
     }
 
     if (this.pathPoints) {
