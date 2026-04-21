@@ -58,7 +58,21 @@ export default class Kitty extends Sprite {
       this.mirror = !this.mirror
 
     };
+  }
 
+  render() {
+    super.render()
+    if (!this.following) {
+      let col = new Color(0, 0, 0, .5)
+      drawRect(this.pos.add(vec2(0, .2)), vec2(1, .05), col)
+      drawRect(this.pos.add(vec2(0, -.2)), vec2(1, .05), col)
+
+      drawRect(this.pos.add(vec2(0, -.5)), vec2(1, .05), col)
+      drawRect(this.pos.add(vec2(0, .5)), vec2(1, .05), col)
+
+      drawRect(this.pos.add(vec2(.5, 0)), vec2(.05, 1), col)
+      drawRect(this.pos.add(vec2(-.5, 0)), vec2(.05, 1), col)
+    }
   }
 
   followPlayer() {

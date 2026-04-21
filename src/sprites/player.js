@@ -228,7 +228,14 @@ export default class Player extends Sprite {
     if (o.name === 'kitty' && !o.following) {
       o.following = true;
       this.g.store[this.player].stats.saves += 1;
-      this.g.sfx.play('help', this.pos)
+      this.g.sfx.play('smash', this.pos)
+      Particles.smash(this.pos)
+      this.g.events.push({
+        ttl: .3,
+        cb: () => {
+          this.g.sfx.play('help')
+        }
+      })
       return false;
     } else if (o.name === 'kitty') {
       return false;
@@ -246,7 +253,6 @@ export default class Player extends Sprite {
       this.g.store[this.player].lives -= 1;
       this.g.store[this.player].powerups = 0;
       this.initStats();
-      this.g.sfx.play("smash", this.pos);
       Particles.explode(this.pos, 0.25);
       Particles.sparks(this.pos);
       this.killedAt = time;

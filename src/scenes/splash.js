@@ -82,15 +82,19 @@ export default class Splash extends Scene {
       }
 
     }
-    Particles.smoke(vec2(-4, -4), 1);
-    Particles.smoke(vec2(3, -3.5), 1);
+    Particles.smoke(vec2(1, -2.5), 1);
+    Particles.smoke(vec2(3, -1.7), 1);
 
   }
 
   render() {
     let p = this.g.palette;
     drawRectGradient(cameraPos, getCameraSize(), p.void.col, p.nightblue.col);
-    drawTile(vec2(0, -3), vec2(12), tile(0, vec2(320, 480), 1), new Color(0, 0, 0, .9));
+    drawTile(vec2(0, -3), vec2(12), tile(1, vec2(160, 160), 1), new Color(0, 0, 0, .5));
+    drawTile(vec2(0, -3), vec2(12), tile(0, vec2(160, 160), 1));
+
+    const frame = Math.sin(new Date().getTime() * 0.005) > 0 ? 'kitty3' : 'kitty4';
+    drawTile(vec2(-4.7, -4.0), vec2(.6), this.g.tile(frame), BLACK)
     super.render();
 
     if (this.showStatic) {
@@ -104,8 +108,8 @@ export default class Splash extends Scene {
     const font = engineFontImage;
 
     const hi = `HI: ${this.g.hiScore.toString().padStart(5, '0')}`;
-    font.drawText(hi, vec2(0, this.g.size.min.y + 1), .5, true, BLACK);
-    font.drawText(hi, vec2(0, this.g.size.min.y + 1.1), .5, true, GRAY);
+    font.drawText(hi, vec2(0, this.g.size.min.y + 1.9), .5, true, BLACK);
+    font.drawText(hi, vec2(0, this.g.size.min.y + 2), .5, true, GRAY);
 
     setFontDefault('"wheaton"');
 

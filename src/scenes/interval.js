@@ -14,6 +14,10 @@ export default class Interval extends Scene {
 
     this.start = time;
 
+    Object.keys(this.g.store.p1.stats).forEach((k) => {
+      this.g.store.p1.stats[k] = 0;
+    })
+
     new Alert(this.g, {
       text: taunts.shift(),
       pos: vec2(-4.5, -5),
@@ -22,6 +26,7 @@ export default class Interval extends Scene {
       col: 'pink',
       outline: 'red'
     });
+    this.g.sfx.play('jet')
 
     let count = 0;
     taunts.forEach((text, i) => {
@@ -29,6 +34,7 @@ export default class Interval extends Scene {
       this.g.events.push({
         ttl: 3 * (i + .7),
         cb: () => {
+          this.g.sfx.play('jet')
           new Alert(this.g, {
             text: text,
             pos: vec2(-4.5, -5.8 - (i * .7)),
@@ -49,7 +55,7 @@ export default class Interval extends Scene {
       }
     })
 
-    this.bot = new EvilBot({ g: this.g, pos: vec2(0), size: vec2(2) })
+    this.bot = new EvilBot({ g: this.g, pos: vec2(0), size: vec2(1.5) })
   }
 
   render() {

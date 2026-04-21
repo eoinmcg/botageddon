@@ -57,7 +57,7 @@ export default class EvilBot extends Sprite {
 
   render() {
 
-    drawRect(vec2(this.pos.x, this.pos.y + .4), vec2(this.size.x * .9, 1), this.eyeColor)
+    drawRect(vec2(this.pos.x, this.pos.y + .2), vec2(this.size.x * .9, 1), this.eyeColor)
     super.render()
   }
 

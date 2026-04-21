@@ -13,7 +13,6 @@ export default class Bullet extends Sprite {
     this.angle = props.angle;
     this.owner = props.owner || 'p1';
 
-    console.log(this.owner)
     this.g.store[this.owner].stats.shots += 1;
 
     this.setCollision();
@@ -41,6 +40,10 @@ export default class Bullet extends Sprite {
     if (o.name === 'wall') {
       this.destroy(true);
     }
+    if (o.name === 'kitty' && !o.following) {
+      this.destroy(true);
+    }
+
     if (o.name === 'kitty') {
       return false;
     }

@@ -173,6 +173,22 @@ const Particles = {
     );
   },
 
+
+  smash: function(pos, color = 'void', amount = 100, size = .5, elasticity = .3, time = .3, tileNo = 28) {
+    color = palette[color].col;
+    const color2 = new Color(0, 0, 0, .5)
+    const emitter = new ParticleEmitter(
+      pos, 0, 1, .1, 100, PI, // pos, angle, emitSize, emitTime, emitRate, emiteCone
+      tile(tileNo, 8),                      // tileInfo
+      color, color2,          // colorStartA, colorStartB
+      color, color2,          // colorEndA, colorEndB
+      time, size, size, .1, .05,  // time, sizeStart, sizeEnd, speed, angleSpeed
+      1, .95, .4, PI, 0,      // damp, angleDamp, gravity, particleCone, fade
+      .5, 1                   // randomness, collide, additive, colorLinear, renderOrder
+    );
+    emitter.elasticity = elasticity;
+  },
+
 }
 
 export default Particles;

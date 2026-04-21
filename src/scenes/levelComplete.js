@@ -41,7 +41,6 @@ export default class LevelComplete extends Scene {
     stats.accuracy = stats.shots
       ? Math.floor((stats.hits / stats.shots) * 100) : 0
 
-    console.log('Accuracy', stats.accuracy)
     if (stats.accuracy > 70) {
       this.g.medals[1].unlock();
     }
@@ -132,7 +131,6 @@ export default class LevelComplete extends Scene {
 
   updateScore(type) {
     type = type.toLowerCase();
-    console.log('update score', type)
     let stat = this.stats[type];
     if (type === 'accuracy') {
       this.score += stat;

@@ -143,6 +143,10 @@ export default class Enemy extends Sprite {
 
     }
 
+    if (o.name === 'kitty' && !o.following) {
+      return false;
+    }
+
     if (o.name === 'kitty') {
       o.destroy();
     }

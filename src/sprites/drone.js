@@ -28,6 +28,8 @@ export default class Drone extends Enemy {
     this.target = false;
     this.speed = 0.02;
 
+    this.renderOrder = 5000;
+
     this.velocity = vec2(0, -.02);
     this.spawnPos()
     this.hasShadow = true;
