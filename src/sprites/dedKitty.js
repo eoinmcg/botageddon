@@ -11,7 +11,9 @@ export default class DedKitty extends Sprite {
     this.color = new Color(1, 1, 1, .7);
     this.renderOrder = 500;
     this.color = props.color;
-    this.color.a = .5;
+    if (g.levelBgCol) {
+      this.color = props.color.lerp(g.levelBgCol, .2)
+    }
 
     this.hasShadow = false;
     this.mass = 0;

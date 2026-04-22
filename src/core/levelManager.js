@@ -78,7 +78,7 @@ export default class LevelManager {
           this.g.levelNum += 1;
         }
       })
-      new Alert(this.g, { text: 'AREA CLEAR', col: 'yellow', outline: 'red', pos: vec2(-3, 1), sfx: 'score' });
+      new Alert(this.g, { text: 'AREA CLEAR', col: 'white', outline: 'red', pos: vec2(-3, 1), sfx: 'score' });
     } else {
       this.g.levelClear = false;
     }
@@ -105,40 +105,53 @@ export default class LevelManager {
   render() {
     const random = new RandomGenerator(this.g.levelNum);
 
-    const col = this.levelData?.bg?.col || rgb(.1, .1, .2);
-    const colLight = col.lerp(WHITE, .05);
-    const colDark = col.lerp(BLACK, .05);
+    const data = this.levelData?.bg || {
+      col: rgb(.2, .2, .4),
+      walls: false,
+      tile: 2,
+    };
+
+    this.g.levelBgCol = data.col;
+    const colLight = data.col.lerp(WHITE, .2);
+    const colDark = data.col.lerp(BLACK, .8);
     const tileSize = 64;
     const flip = PI % (2 * PI);
 
     const xTiles = Math.ceil(this.g.W / tileSize);
     const yTiles = Math.ceil(this.g.H / tileSize);
 
-    drawRect(cameraPos, vec2(1000), col);
-
+    drawRect(cameraPos, vec2(1000), data.col);
 
     for (let y = -yTiles; y <= yTiles; y++) {
       for (let x = -xTiles; x <= xTiles; x++) {
-
         const pos = vec2(x - 0.5, y - 0.5);
-
         drawTile(
           pos,
           vec2(2),
-          tile(1, vec2(32), 2),
-          new Color(1, 1, 1, random.float(0, .01))
+          tile(data.tile, vec2(32), 2),
+          new Color(1, 1, 1, random.float(0, .05))
         );
       }
     }
 
+    // top and bottom yellow&black stripes
     for (let x = -xTiles; x <= xTiles; x++) {
       drawTile(vec2(x, -yTiles - .1), vec2(1), tile(0, vec2(32), 2), undefined, flip);
       drawTile(vec2(x, yTiles + .1), vec2(1), tile(0, vec2(32), 2));
     }
 
-    // drawTile(vec2(0), vec2(2), tile(2, vec2(32), 2), colDark);
-    drawRect(vec2(0), vec2(1.6), colLight)
-    drawRect(vec2(0), vec2(1.5), colDark)
+    // walls
+    if (data.walls) {
+      const wallCol = data.col.lerp(BLACK, .5)
+      for (let y = -yTiles; y <= yTiles; y++) {
+        drawTile(vec2(-xTiles + .5, y), vec2(1), tile(4, vec2(32), 2), wallCol);
+        drawTile(vec2(xTiles - .5, y), vec2(1), tile(4, vec2(32), 2), wallCol, 0, true);
+      }
+    }
+
+    // center tile
+    drawTile(vec2(0), vec2(1.6), tile(2, vec2(32), 2), colLight);
+    drawTile(vec2(0), vec2(1.5), tile(2, vec2(32), 2), data.col);
 
   }
 

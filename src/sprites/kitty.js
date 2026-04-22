@@ -26,11 +26,10 @@ export default class Kitty extends Sprite {
     this.mass = 0;
     this.speed = rand(0.05, 0.09);
 
-    this.cols = [
-      'pink', 'orange', 'yellow', 'brown', 'white', 'skyblue'
-    ];
-    this.color = g.palette[this.cols.rnd()].col;
-    // this.color.a = rand(.4, .7)
+    const col = [
+      'pink', 'yellow', 'skyblue', 'peach', 'aqua', 'gold', 'slime'
+    ].rnd();
+    this.color = g.palette[col].col;
 
     this.outline = {
       offset: 0.1,

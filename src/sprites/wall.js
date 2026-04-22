@@ -1,15 +1,21 @@
-import Game from "../core/game";
+import Sprite from "./sprite";
 
-export default class Wall extends EngineObject {
+export default class Wall extends Sprite {
   constructor(g, props) {
-    props.size = props.size || 1;
-    props.t = props.t || 'wall0';
+    props.size = props.size || .9;
+    props.t = props.t || 'wall2';
 
     super(props.pos, vec2(props.size), g.tile(props.t));
     this.setCollision();
     this.mass = 0;
     this.name = 'wall';
+    this.g = g;
 
-    this.color = Game.palette.peach.col;
+    this.shadowOffset = -.5
+    // this.outline = {
+    //   offset: 0.1,
+    //   color: BLACK
+    // };
+
   }
 }

@@ -10,10 +10,10 @@ export default class Muncher extends Enemy {
     super(g, {
       waveId: props?.waveId,
       pos: props.pos,
-      size: vec2(.5),
+      size: vec2(.8),
       tile: g.tile('muncher'),
       anim: 'muncher',
-      health: 0,
+      health: 3,
       value: 10,
     });
 

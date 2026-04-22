@@ -4,7 +4,10 @@ export default class Scorch extends EngineObject {
     let frame = ['x', 'x2', 'sparkle'].rnd();
     super(props.pos, vec2(rand(.5, .8), rand(.5, .8)), g.tile(frame));
 
-    this.color = new Color(0, 0, 0, rand(.2, .5))
+    this.color = g.levelBgCol
+      ? g.levelBgCol.lerp(BLACK, rand(.1, .4))
+      : new Color(0, 0, 0, rand(.2, .5))
+
     this.angle = rand(PI)
 
     this.renderOrder = 1;

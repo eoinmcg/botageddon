@@ -6,10 +6,14 @@ export const levels = [
     types: ['drone'],          // only fodder
     freq: 0.985,               // light pressure
     bg: {
-      col: new Color(.1, .2, .2),
+      walls: true,
+      tile: 1,
+      col: new Color(.2, .3, .2),
     },
     startUp: [
-      { ent: 'kitty', props: { pos: vec2(-0, 3) } },
+      { ent: 'wall', props: { pos: vec2(-3, -2) } },
+      { ent: 'wall', props: { pos: vec2(3, -2) } },
+      { ent: 'kitty', props: { pos: vec2(0, 3) } },
       { ent: 'kitty', props: { pos: vec2(-1, -3) } },
       { ent: 'kitty', props: { pos: vec2(1, -3) } }
     ]

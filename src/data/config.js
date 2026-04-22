@@ -56,6 +56,7 @@ const Config = {
     bee2: 53,
     wall0: 54,
     wall1: 55,
+    wall2: 56,
   },
 };
 

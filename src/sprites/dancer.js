@@ -8,8 +8,6 @@ export default class Dancer extends Enemy {
       props.pos = vec2(rand(g.size.min.x, g.size.max.x), g.size.max.y - .5)
     }
 
-    console.log(g.size.max.y)
-
     super(g, {
       waveId: props?.waveId,
       pos: props.pos,

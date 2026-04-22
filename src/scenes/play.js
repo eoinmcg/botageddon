@@ -142,6 +142,10 @@ export default class Play extends Scene {
     this.wave.render();
 
     super.render();
+
+    if (paused && !this.g.hitStop) {
+      this.static()
+    }
   }
 
   renderPost() {
@@ -187,8 +191,8 @@ export default class Play extends Scene {
     }
 
     if (wave > 0 && paused && !this.g.hitStop) {
-      font.drawText(`PAUSED`, vec2(0, .75), .8, true, BLACK);
-      font.drawText(`PAUSED`, vec2(0, 1), .8, true, this.g.palette.slime.col);
+      font.drawText(`PAWSED`, vec2(0, .75), .8, true, BLACK);
+      font.drawText(`PAWSED`, vec2(0, 1), .8, true, this.g.palette.slime.col);
     }
 
     // hacky. ensure enemyFire appears above explosions
