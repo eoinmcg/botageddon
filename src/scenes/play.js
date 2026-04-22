@@ -74,6 +74,7 @@ export default class Play extends Scene {
 
   }
 
+
   updatePost() {
     if (!this.g.gameOver && (keyWasPressed('KeyP') || gamepadWasPressed(9))) {
       this.togglePause();
@@ -138,7 +139,8 @@ export default class Play extends Scene {
   }
 
   render() {
-    drawRect(cameraPos, vec2(1000), rgb(0.1, 0.1, 0.2));
+    this.wave.render();
+
     super.render();
   }
 

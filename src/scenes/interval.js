@@ -51,6 +51,7 @@ export default class Interval extends Scene {
     this.g.events.push({
       ttl: 3 * (count + .5),
       cb: () => {
+        this.bot.velocity.y = .01;
         this.bot.isFleeing = true;
       }
     })
@@ -61,6 +62,7 @@ export default class Interval extends Scene {
   render() {
     let p = this.g.palette;
     drawRectGradient(cameraPos, getCameraSize(), p.forestgreen.col, p.void.col);
+    drawTile(vec2(0), vec2(16), tile(2, vec2(160, 160), 1), new Color(0, 0, 0, .3));
     super.render();
     this.static()
   }

@@ -29,7 +29,7 @@ export default class EvilBot extends Sprite {
 
     this.isFleeing = false;
 
-    this.velocity = vec2(0, .001)
+    this.velocity = vec2(0)
   }
 
   update() {
@@ -56,7 +56,6 @@ export default class EvilBot extends Sprite {
   }
 
   render() {
-
     drawRect(vec2(this.pos.x, this.pos.y + .2), vec2(this.size.x * .9, 1), this.eyeColor)
     super.render()
   }

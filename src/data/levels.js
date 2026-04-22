@@ -5,6 +5,9 @@ export const levels = [
     time: 12,
     types: ['drone'],          // only fodder
     freq: 0.985,               // light pressure
+    bg: {
+      col: new Color(.1, .2, .2),
+    },
     startUp: [
       { ent: 'kitty', props: { pos: vec2(-0, 3) } },
       { ent: 'kitty', props: { pos: vec2(-1, -3) } },

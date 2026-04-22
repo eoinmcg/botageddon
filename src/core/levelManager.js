@@ -78,7 +78,7 @@ export default class LevelManager {
           this.g.levelNum += 1;
         }
       })
-      new Alert(this.g, { text: 'AREA CLEAR', col: 'orange', outline: 'red', pos: vec2(-3, 1), sfx: 'score' });
+      new Alert(this.g, { text: 'AREA CLEAR', col: 'yellow', outline: 'red', pos: vec2(-3, 1), sfx: 'score' });
     } else {
       this.g.levelClear = false;
     }
@@ -100,7 +100,45 @@ export default class LevelManager {
       new this.ents[this.levelData.types.rnd()](this.g)
       this.spawnCooldown = this.levelData.spawnDelay || 0.2;
     }
+  }
 
+  render() {
+    const random = new RandomGenerator(this.g.levelNum);
+
+    const col = this.levelData?.bg?.col || rgb(.1, .1, .2);
+    const colLight = col.lerp(WHITE, .05);
+    const colDark = col.lerp(BLACK, .05);
+    const tileSize = 64;
+    const flip = PI % (2 * PI);
+
+    const xTiles = Math.ceil(this.g.W / tileSize);
+    const yTiles = Math.ceil(this.g.H / tileSize);
+
+    drawRect(cameraPos, vec2(1000), col);
+
+
+    for (let y = -yTiles; y <= yTiles; y++) {
+      for (let x = -xTiles; x <= xTiles; x++) {
+
+        const pos = vec2(x - 0.5, y - 0.5);
+
+        drawTile(
+          pos,
+          vec2(2),
+          tile(1, vec2(32), 2),
+          new Color(1, 1, 1, random.float(0, .01))
+        );
+      }
+    }
+
+    for (let x = -xTiles; x <= xTiles; x++) {
+      drawTile(vec2(x, -yTiles - .1), vec2(1), tile(0, vec2(32), 2), undefined, flip);
+      drawTile(vec2(x, yTiles + .1), vec2(1), tile(0, vec2(32), 2));
+    }
+
+    // drawTile(vec2(0), vec2(2), tile(2, vec2(32), 2), colDark);
+    drawRect(vec2(0), vec2(1.6), colLight)
+    drawRect(vec2(0), vec2(1.5), colDark)
 
   }
 

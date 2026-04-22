@@ -8,7 +8,7 @@ export default class Kitty extends Sprite {
 
 
     const t = g.tile(["kitty3"].rnd());
-    super(props.pos, vec2(.6), t, props);
+    super(props.pos, vec2(.5), t, props);
 
     this.setCollision();
 
@@ -24,6 +24,7 @@ export default class Kitty extends Sprite {
     }
     this.changeAnim("idle", 0.5);
     this.mass = 0;
+    this.speed = rand(0.05, 0.09);
 
     this.cols = [
       'pink', 'orange', 'yellow', 'brown', 'white', 'skyblue'
@@ -56,8 +57,9 @@ export default class Kitty extends Sprite {
 
     if (Math.random() > .99) {
       this.mirror = !this.mirror
-
     };
+
+    this.clampToScreen();
   }
 
   render() {
@@ -95,12 +97,11 @@ export default class Kitty extends Sprite {
 
     const dir = target.subtract(this.pos);
     const dist = dir.length();
-    const speed = 0.05;
 
     this.mirror = this.pos.x > target.x;
 
     if (dist > 0.1) {
-      this.velocity = dir.normalize().scale(speed);
+      this.velocity = dir.normalize().scale(this.speed);
       this.changeAnim("run", 0.1);
     } else {
       this.velocity = vec2(0);

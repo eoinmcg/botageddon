@@ -1,6 +1,6 @@
 const Config = {
   title: "ROBOCIDE 1984",
-  images: ["t.gif", "bgs.png"],
+  images: ["t.gif", "bgs.png", "tiles.png"],
   W: 320,
   H: 568,
   tileSize: 8,

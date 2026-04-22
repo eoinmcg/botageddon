@@ -175,8 +175,9 @@ export default class Player extends Sprite {
     if (this.fade) {
       let size = (1 - this.fade) * 10;
       let ringColor = new Color(1, 1, 1, this.fade);
-      // drawTile(this.pos, vec2(clamp(size, .5, 1)), this.g.tile('circle'), ringColor)
-      drawCircle(this.pos, this.size.x + 2, ringColor);
+      drawTile(this.pos, vec2(clamp(size, .5, 1)), this.g.tile('circle'), ringColor)
+      // drawCircle(this.pos, this.size.x + 2, ringColor);
+      // drawRect(this.pos, vec2(this.size.x + 2), ringColor);
     }
 
     //shadow
