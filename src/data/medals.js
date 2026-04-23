@@ -8,9 +8,21 @@ let medalData = [
     id: 87234,
   },
   {
-    name: 'Sharp',
+    name: 'Sharpshooter',
     info: 'More than 70% accuracy',
     icon: '🎯',
+    id: 87235,
+  },
+  {
+    name: 'Smash TV',
+    info: 'Break a monitor',
+    icon: '📺',
+    id: 87235,
+  },
+  {
+    name: 'Robolover',
+    info: 'Finish level with no kills',
+    icon: '🤖',
     id: 87235,
   },
   {

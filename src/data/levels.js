@@ -1,18 +1,21 @@
 export const levels = [
   {
-    title: 'Wave 1',
-    music: 'intro',
+    title: 'SECT0R Z',
+    // music: 'intro',
     time: 12,
-    types: ['drone'],          // only fodder
-    freq: 0.985,               // light pressure
+    // types: ['chip', 'doggo', 'droid', 'drone', 'muncher'],
+    types: ['chip'],
+    // isBoss: true,
+    freq: 0.985,
     bg: {
       walls: true,
       tile: 1,
-      col: new Color(.2, .3, .2),
+      col: new Color(.2, .3, .2),  // green
+      col: new Color(.1, .2, .2),
     },
     startUp: [
-      { ent: 'wall', props: { pos: vec2(-3, -2) } },
-      { ent: 'wall', props: { pos: vec2(3, -2) } },
+      { ent: 'wall', props: { pos: vec2(-3, -2), t: 'vat0' } },
+      { ent: 'wall', props: { pos: vec2(3, -2), t: 'monitor0' } },
       { ent: 'kitty', props: { pos: vec2(0, 3) } },
       { ent: 'kitty', props: { pos: vec2(-1, -3) } },
       { ent: 'kitty', props: { pos: vec2(1, -3) } }
@@ -22,7 +25,7 @@ export const levels = [
     title: 'Wave 2',
     music: 'mission',
     time: 15,
-    types: ['drone', 'dancer'],   // dancer = charger/zig-zag?
+    types: ['drone'],
     freq: 0.97,
     startUp: [
       { ent: 'powerup', props: { pos: vec2(0, 3) } },
@@ -33,19 +36,21 @@ export const levels = [
     title: 'Wave 3',
     music: 'mission2',
     time: 18,
-    types: ['drone', 'dancer', 'muncher'],
-    freq: 0.955,
+    types: ['muncher'],
+    freq: 0.99,
     startUp: [
-      // { ent: 'turret', props: { pos: vec2(-1.5, 5) } },
-      // { ent: 'turret', props: { pos: vec2(1.5, 5) } },
-      { ent: 'kitty', props: { pos: vec2(0, -5) } }
+      { ent: 'wall', props: { pos: vec2(0, -6), t: 'vat0' } },
+      { ent: 'kitty', props: { pos: vec2(0, -4) } },
+      { ent: 'kitty', props: { pos: vec2(0, 4) } },
+      { ent: 'kitty', props: { pos: vec2(4, 0) } },
+      { ent: 'kitty', props: { pos: vec2(-4, 0) } },
     ]
   },
   {
     title: 'Wave 4',
     music: 'mission2',
     time: 20,
-    types: ['drone', 'dancer'],
+    types: ['drone', 'chip'],
     freq: 0.965,
     startUp: [
       // { ent: 'claw', props: {} },          // mini-boss

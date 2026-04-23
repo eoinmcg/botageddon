@@ -29,8 +29,12 @@ export default class Enemy extends Sprite {
 
     this.anims = {
       dancer: ['dancer1', 'dancer0', 'dancer2', 'dancer0'],
+      doggo: ['dog0', 'dog1'],
       drone: ['drone0', 'drone1'],
+      droid: ['droid0', 'droid1'],
       muncher: ['muncher0', 'muncher1'],
+      chip: ['chip0', 'chip1'],
+      bossIdle: ['evil1'],
       glide: [''],
     }
 
@@ -38,23 +42,10 @@ export default class Enemy extends Sprite {
       this.changeAnim(this.anim, .09);
     }
 
-    if (this.path || this.pathOveride) {
-      this.pathPoints = this.pathOveride
-        ? this.pathOveride : paths[props.path];
-
-      if (this.reverse) {
-        this.pathPoints = this.pathPoints
-          .map(v => vec2(v.x, -v.y))  // Flip Y
-          .reverse();
-      }
-    }
+    this.target = false;
 
     this.setCollision();
-
-    this.shots = 0;
-    if (this.canShoot && rand() < this.canShoot) {
-      this.shots = 1;
-    }
+    this.hurtColor = new Color(1, 0, 0, 1);
 
   }
 
@@ -64,7 +55,9 @@ export default class Enemy extends Sprite {
 
     if (this.hurt > 0) {
       this.hurt -= timeDelta * 20;
-      this.color = new Color(1, 0, 0, this.hurt / 10)
+      // this.color = new Color(1, 0, 0, this.hurt / 10)
+      this.hurtColor.a = this.hurt / 10;
+      this.color = this.hurtColor;
     } else {
       this.color = this.baseCol || undefined;
     }
@@ -77,6 +70,11 @@ export default class Enemy extends Sprite {
     if (this.hit && rand() > .7) {
       Particles.damage(this.pos, .25);
     }
+
+    if (this.hit && !this.target) {
+      this.target = this.g.p1
+    }
+
 
     if (this.shots && this.canShoot && rand() > .5) {
       this.shots = 0;
@@ -110,8 +108,22 @@ export default class Enemy extends Sprite {
         this.velocity = this.velocity.add(push);
       }
     }
-
   }
+
+  moveToTarget(target) {
+
+    console.log({ target })
+    const direction = target.pos.subtract(this.pos);
+
+    const distance = direction.length();
+
+    if (distance > .1) {
+      this.velocity = direction.normalize().scale(this.speed);
+    } else {
+      this.velocity = vec2(0, 0);
+    }
+  }
+
 
   collideWithObject(o) {
     this.multiplier = 1; // charge doubles this

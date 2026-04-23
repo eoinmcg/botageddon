@@ -1,8 +1,11 @@
 import { levels } from "../data/levels"
 import Alert from "../sprites/alert";
-import Dancer from "../sprites/dancer";
+import Doggo from "../sprites/doggo";
 import Muncher from "../sprites/muncher";
 import Drone from "../sprites/drone";
+import Chip from "../sprites/chip";
+import Droid from "../sprites/droid";
+import Boss from "../sprites/boss";
 import Kitty from "../sprites/kitty";
 import Wall from "../sprites/wall";
 import Powerup from "../sprites/powerup";
@@ -17,8 +20,11 @@ export default class LevelManager {
     this.ents = {
       alert: Alert,
       drone: Drone,
-      dancer: Dancer,
+      doggo: Doggo,
       muncher: Muncher,
+      chip: Chip,
+      droid: Droid,
+      boss: Boss,
       kitty: Kitty,
       wall: Wall,
       powerup: Powerup,
@@ -44,12 +50,17 @@ export default class LevelManager {
     this.timer.set(this.levelData.time)
     this.complete = false;
     this.g.levelClear = false;
-    new Alert(this.g, { text: this.levelData.title, col: 'slime', outline: 'forestgreen', pos: vec2(-2, 1), sfx: 'score' });
+    new Alert(this.g, { text: this.levelData.title, col: 'white', outline: 'red', pos: vec2(-2.3, 1), sfx: 'score' });
 
     this.levelData.startUp.forEach((o) => {
       const props = o.props || {};
       new this.ents[o.ent](this.g, props)
     })
+
+    if (this.levelData.isBoss) {
+      new Boss(this.g)
+    }
+
   }
 
   update() {
@@ -69,22 +80,26 @@ export default class LevelManager {
 
 
     if (this.complete && botCount === 0) {
+      const nextScene = this.levelData.isBoss
+        ? 'Victory' : 'LevelComplete';
+      const alertText = this.levelData.isBoss
+        ? 'Goodnight!!!' : 'SECT0R CLEAR';
       this.g.levelClear = true;
       this.g.music.stop();
       this.g.events.push({
         ttl: 3,
         cb: () => {
-          this.g.sceneManager.changeScene('LevelComplete');
+          this.g.sceneManager.changeScene(nextScene);
           this.g.levelNum += 1;
         }
       })
-      new Alert(this.g, { text: 'AREA CLEAR', col: 'white', outline: 'red', pos: vec2(-3, 1), sfx: 'score' });
+      new Alert(this.g, { text: alertText, col: 'white', outline: 'red', pos: vec2(-3.3, 1), sfx: 'score' });
     } else {
       this.g.levelClear = false;
     }
 
     const maxBots = this.levelData.maxBots || 15;
-    if (botCount >= maxBots) return;
+    if (botCount >= maxBots || this.levelData.isBoss) return;
 
     if (!this.spawnCooldown) this.spawnCooldown = 0;
     this.spawnCooldown -= timeDelta;
@@ -105,15 +120,24 @@ export default class LevelManager {
   render() {
     const random = new RandomGenerator(this.g.levelNum);
 
+    let cols = [
+      rgb(.4, .2, .2),
+      rgb(.2, .4, .2),
+      rgb(.2, .2, .4),
+      rgb(.4, .4, .2),
+      rgb(.2, .4, .2),
+      rgb(.2, .4, .4),
+    ]
+
     const data = this.levelData?.bg || {
-      col: rgb(.2, .2, .4),
-      walls: false,
+      col: cols[random.int(0, cols.length - 1)],
+      walls: true,
       tile: 2,
     };
 
     this.g.levelBgCol = data.col;
     const colLight = data.col.lerp(WHITE, .2);
-    const colDark = data.col.lerp(BLACK, .8);
+    const colDark = data.col.lerp(BLACK, .1);
     const tileSize = 64;
     const flip = PI % (2 * PI);
 
@@ -151,7 +175,7 @@ export default class LevelManager {
 
     // center tile
     drawTile(vec2(0), vec2(1.6), tile(2, vec2(32), 2), colLight);
-    drawTile(vec2(0), vec2(1.5), tile(2, vec2(32), 2), data.col);
+    drawTile(vec2(0), vec2(1.5), tile(1, vec2(32), 2), colDark);
 
   }
 

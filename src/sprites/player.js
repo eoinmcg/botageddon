@@ -180,9 +180,6 @@ export default class Player extends Sprite {
       // drawRect(this.pos, vec2(this.size.x + 2), ringColor);
     }
 
-    //shadow
-    // drawTile(this.pos.add(vec2(0, -.5)), vec2(.7, .5), tile(0, this.g.tileSize), this.shadowCol);
-
     let skipParent = this.fade && wave > 0;
 
     if (this.isUp) this.renderGun(skipParent);
@@ -224,7 +221,7 @@ export default class Player extends Sprite {
 
 
   collideWithObject(o) {
-    const canHit = ["baddie", "enemyFire", "platform", "rock"];
+    const canHit = ["baddie", "enemyFire", "boss"];
 
     if (o.name === 'kitty' && !o.following) {
       o.following = true;
@@ -243,8 +240,9 @@ export default class Player extends Sprite {
     }
     if (this.fade) return;
 
+
     if (canHit.includes(o.name)) {
-      if (o.name !== "platform" && o.type !== "boss" && o.name !== "rock") {
+      if (o.name !== "platform" && o.name !== "boss") {
         o.destroy(true);
         this.g.store[this.player].score += o.value || 0;
       }

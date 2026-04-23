@@ -100,16 +100,16 @@ export default class Sprite extends EngineObject {
   atScreenEdgeX() {
     const size = this.g.size;
     return (
-      this.pos.x > size.max.x - .5
-      || this.pos.x < size.min.x + .5
+      this.pos.x > size.max.x - (this.size.x * .5)
+      || this.pos.x < size.min.x + (this.size.y * .5)
     );
   }
 
   atScreenEdgeY() {
     const size = this.g.size;
     return (
-      this.pos.y > size.max.y - .5
-      || this.pos.y < size.min.y + .5
+      this.pos.y > size.max.y - (this.size.x * .5)
+      || this.pos.y < size.min.y + (this.size.y * .5)
     );
   }
 

@@ -4,7 +4,7 @@ export default class Drone extends Enemy {
 
   constructor(g, props = {}) {
     if (!props.pos) {
-      props.pos = vec2(0, -9)
+      props.pos = vec2(0, g.size.min.y + .2)
     }
 
     super(g, {
@@ -68,24 +68,10 @@ export default class Drone extends Enemy {
     }
 
     if (this.hit && !this.target) {
-      this.target = this.g.p1
       this.speed *= 2;
     }
 
     super.update();
-  }
-
-  moveToTarget(target) {
-
-    const direction = target.pos.subtract(this.pos);
-
-    const distance = direction.length();
-
-    if (distance > .1) {
-      this.velocity = direction.normalize().scale(this.speed);
-    } else {
-      this.velocity = vec2(0, 0);
-    }
   }
 
 

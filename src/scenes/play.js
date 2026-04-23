@@ -192,7 +192,7 @@ export default class Play extends Scene {
 
     if (wave > 0 && paused && !this.g.hitStop) {
       font.drawText(`PAWSED`, vec2(0, .75), .8, true, BLACK);
-      font.drawText(`PAWSED`, vec2(0, 1), .8, true, this.g.palette.slime.col);
+      font.drawText(`PAWSED`, vec2(0, 1), .8, true, this.g.palette.pink.col);
     }
 
     // hacky. ensure enemyFire appears above explosions
@@ -201,6 +201,11 @@ export default class Play extends Scene {
         o.render();
       };
     })
+
+    if (this.g.p1 && !this.g.p1.sticks) {
+      drawTile(mousePos, vec2(.5), tile(12, this.g.tileSize), this.g.palette.slime.mk());
+    }
+
 
     this.g.sticks.l.render();
     this.g.sticks.r.render();

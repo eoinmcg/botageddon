@@ -24,12 +24,9 @@ export default class Help extends Scene {
 
     if (this.uiInput === 'up') {
       this.g.sfx.play('walk');
-    }
-    if (this.uiInput === 'down') {
+    } else if (this.uiInput === 'down') {
       this.g.sfx.play('walk');
-    }
-
-    if (this.uiInput === 'enter') {
+    } else if (this.uiInput === 'enter') {
       this.g.sceneManager.changeScene('Splash');
     }
   }

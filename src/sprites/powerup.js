@@ -29,7 +29,6 @@ export default class Powerup extends Sprite {
     this.ttl -= timeDelta;
 
     if (this.ttl <= 0) {
-      // Optional: play a poof animation
       this.destroy();
       return;
     }
@@ -52,7 +51,6 @@ export default class Powerup extends Sprite {
         this.g.store[o.player].coin += 1;
         this.g.store[o.player].score += 10;
         this.g.flashScore = 1;
-        this.g.sfx.play('key', this.pos);
       }
       new Collected(this.g, { pos: this.pos, cb })
       this.destroy();

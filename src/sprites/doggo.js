@@ -1,6 +1,6 @@
 import Enemy from "./enemy";
 
-export default class Dancer extends Enemy {
+export default class Doggo extends Enemy {
 
   constructor(g, props = {}) {
 
@@ -11,15 +11,16 @@ export default class Dancer extends Enemy {
     super(g, {
       waveId: props?.waveId,
       pos: props.pos,
-      size: vec2(.5),
-      tile: g.tile('dancer'),
-      anim: 'dancer',
+      size: vec2(.6),
+      tile: g.tile('doggo'),
+      anim: 'doggo',
       health: 0,
       value: 10,
     });
 
 
     this.health = 2;
+    this.speed = 0.025;
 
     this.velocity = vec2(rand(.01, .03), -.02);
     if (props.pos.x < 0) {
@@ -28,9 +29,17 @@ export default class Dancer extends Enemy {
   }
 
   update() {
-    super.update();
+    this.mirror = this.g.p1.pos.x < this.pos.x;
+
+    if (this.target) {
+      console.log(this.target, typeof this.target)
+      this.moveToTarget(this.target);
+    }
 
     if (this.atScreenEdgeX()) { this.velocity.x *= -1; }
     if (this.atScreenEdgeY()) { this.velocity.y *= -1; }
+
+    super.update();
+
   }
 }

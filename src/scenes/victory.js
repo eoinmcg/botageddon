@@ -14,7 +14,7 @@ export default class Victory extends Scene {
     this.startTime = time;
     new Alert(this.g, { text: 'VICTORY!', pos: vec2(-3, 0) });
 
-    this.g.medals[2].unlock();
+    this.g.medals[4].unlock();
 
   }
 

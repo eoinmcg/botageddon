@@ -19,7 +19,7 @@ export default class LevelComplete extends Scene {
 
     this.g.music.play('victory');
 
-    this.title = 'WAVE COMPLETE';
+    this.title = 'SECT0R COMPLETE';
 
     this.lines = [];
     this.lineInterval = 1;
@@ -43,6 +43,10 @@ export default class LevelComplete extends Scene {
 
     if (stats.accuracy > 70) {
       this.g.medals[1].unlock();
+    }
+
+    if (stats.kills === 0) {
+      this.g.medals[3].unlock();
     }
 
     this.stats = stats;

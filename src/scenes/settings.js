@@ -1,6 +1,6 @@
 import Scene from "./scene";
 
-export default class SEttings extends Scene {
+export default class Settings extends Scene {
   enter(Game) {
     this.g = Game;
 
@@ -22,20 +22,17 @@ export default class SEttings extends Scene {
       this.pointer -= 1;
       this.g.sfx.play("walk");
       this.g.swipe.clear();
-    }
-    if (this.uiInput === 'down') {
+    } else if (this.uiInput === 'down') {
       this.pointer += 1;
       this.g.sfx.play("walk");
+      this.g.swipe.clear();
+    } else if (this.uiInput === 'enter') {
+      this.runChoice(this.pointer);
       this.g.swipe.clear();
     }
 
     if (this.pointer < 0) this.pointer = this.yPos.length - 1;
     if (this.pointer > this.yPos.length - 1) this.pointer = 0;
-
-    if (this.uiInput === 'enter') {
-      this.runChoice(this.pointer);
-      this.g.swipe.clear();
-    }
 
   }
 

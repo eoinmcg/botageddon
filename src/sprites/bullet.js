@@ -38,6 +38,7 @@ export default class Bullet extends Sprite {
 
   collideWithObject(o) {
     if (o.name === 'wall') {
+      o.hits += 1;
       this.destroy(true);
     }
     if (o.name === 'kitty' && !o.following) {

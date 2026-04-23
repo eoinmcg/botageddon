@@ -64,12 +64,7 @@ export default class Splash extends Scene {
     } else if (this.uiInput === 'down') {
       this.pointer += 1;
       this.g.sfx.play('walk');
-    }
-
-    if (this.pointer < 0) this.pointer = this.yPos.length - 1;
-    if (this.pointer > this.yPos.length - 1) this.pointer = 0;
-
-    if (this.uiInput === 'enter') {
+    } else if (this.uiInput === 'enter') {
       const opt = this.options[this.pointer];
       this.g.swipe.clear();
       if (opt === 'Help') {
@@ -80,8 +75,11 @@ export default class Splash extends Scene {
         this.g.plays += 1;
         this.g.sceneManager.changeScene('Play');
       }
-
     }
+
+    if (this.pointer < 0) this.pointer = this.yPos.length - 1;
+    if (this.pointer > this.yPos.length - 1) this.pointer = 0;
+
     Particles.smoke(vec2(1, -2.5), 1);
     Particles.smoke(vec2(3, -1.7), 1);
 
