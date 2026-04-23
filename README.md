@@ -9,12 +9,11 @@
 
 Twin stick shooter arcade action.
 
-The not too distant future, the year is 1984.
-The machines have taken over.
-All humans have been eliminated. Only the cats survive.
+The year is 1984. The future is dead.
+The machines won. Humanity is a memory. Cats inherit the ruins.
 A bot army is hell-bent on destroying all remaining moggies.
-Only you stand between freedom and certain doom!
-Buckle up kitty, we're in for some mayhem!
+Buckle up, kitty! Nine lives won't be enough to survive this mayhem!
+Go give those toasters hell.
 
 Controls:
 keyboard & mouse

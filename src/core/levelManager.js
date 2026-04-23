@@ -50,7 +50,7 @@ export default class LevelManager {
     this.timer.set(this.levelData.time)
     this.complete = false;
     this.g.levelClear = false;
-    new Alert(this.g, { text: this.levelData.title, col: 'white', outline: 'red', pos: vec2(-2.3, 1), sfx: 'score' });
+    new Alert(this.g, { text: 'SECT0R ' + (levelNum - 1), col: 'white', outline: 'red', pos: vec2(-2.3, 1), sfx: 'score' });
 
     this.levelData.startUp.forEach((o) => {
       const props = o.props || {};
@@ -93,7 +93,7 @@ export default class LevelManager {
           this.g.levelNum += 1;
         }
       })
-      new Alert(this.g, { text: alertText, col: 'white', outline: 'red', pos: vec2(-3.3, 1), sfx: 'score' });
+      new Alert(this.g, { text: alertText, col: 'white', outline: 'red', pos: vec2(-3.5, 1), sfx: 'score' });
     } else {
       this.g.levelClear = false;
     }
