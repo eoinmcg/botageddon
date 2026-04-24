@@ -58,11 +58,12 @@ export default class Scene {
 
   // for navigating menus on splash screen etc
   handleUiInput() {
-
     const stick = gamepadStick(0);
     const swipe = this.g.swipe.dir;
+    const isTouchDevice = navigator.maxTouchPoints > 0;
 
     this.uiInput = false;
+
     if (keyWasPressed('ArrowUp')
       || swipe === 'up'
       || (this.lastStickY > 0 && stick.y === 0)) {
@@ -75,17 +76,21 @@ export default class Scene {
       this.uiInput = 'down';
       this.g.swipe.clear();
     }
-    if (keyWasPressed('Enter')
-      || keyWasPressed('KeyX')
-      || gamepadWasPressed(0)
-      || gamepadWasPressed(1)
-      || gamepadWasPressed(2)
-      || gamepadWasPressed(7)
-      || mouseWasPressed(0)
-      || swipe === 'tap'
-      || keyWasPressed('Space')) {
-      this.uiInput = 'enter';
-      this.g.swipe.clear();
+
+    // Only check enter if no directional swipe was already handled
+    if (!this.uiInput) {
+      if (keyWasPressed('Enter')
+        || keyWasPressed('KeyX')
+        || gamepadWasPressed(0)
+        || gamepadWasPressed(1)
+        || gamepadWasPressed(2)
+        || gamepadWasPressed(7)
+        || (!isTouchDevice && mouseWasPressed(0))  // only on real mouse
+        || swipe === 'tap'
+        || keyWasPressed('Space')) {
+        this.uiInput = 'enter';
+        this.g.swipe.clear();
+      }
     }
 
     this.lastStickY = stick.y;
