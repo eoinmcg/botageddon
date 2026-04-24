@@ -27,7 +27,7 @@ export default class Kitty extends Sprite {
     this.speed = rand(0.05, 0.09);
 
     const col = [
-      'pink', 'yellow', 'skyblue', 'peach', 'aqua', 'gold', 'slime'
+      'pink', 'yellow', 'skyblue', 'peach', 'aqua', 'slime'
     ].rnd();
     this.color = g.palette[col].col;
 

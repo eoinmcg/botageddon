@@ -41,6 +41,12 @@ export default class EnemyFire extends Sprite {
       this.destroy();
     }
 
+    if (o.name === 'bullet') {
+      Particles.sparks(this.pos);
+      o.destroy();
+      this.destroy();
+    }
+
     if (o.name === 'wall') {
       Particles.sparks(this.pos);
       this.destroy();
@@ -48,5 +54,4 @@ export default class EnemyFire extends Sprite {
     }
 
   }
-
 }

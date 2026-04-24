@@ -50,7 +50,7 @@ export default class LevelManager {
     this.timer.set(this.levelData.time)
     this.complete = false;
     this.g.levelClear = false;
-    new Alert(this.g, { text: 'SECT0R ' + (levelNum - 1), col: 'white', outline: 'red', pos: vec2(-2.3, 1), sfx: 'score' });
+    new Alert(this.g, { text: this.levelData.title, col: 'white', outline: 'red', pos: vec2(-2.3, 1), sfx: 'score' });
 
     this.levelData.startUp.forEach((o) => {
       const props = o.props || {};
@@ -127,12 +127,18 @@ export default class LevelManager {
       rgb(.4, .4, .2),
       rgb(.2, .4, .2),
       rgb(.2, .4, .4),
+      rgb(.4, .2, .2),
+      rgb(.2, .4, .2),
+      rgb(.2, .2, .4),
+      rgb(.4, .4, .2),
+      rgb(.2, .4, .2),
+      rgb(.2, .4, .4),
     ]
 
     const data = this.levelData?.bg || {
-      col: cols[random.int(0, cols.length - 1)],
+      col: cols[this.g.levelNum - 1],
       walls: true,
-      tile: 2,
+      tile: 2
     };
 
     this.g.levelBgCol = data.col;

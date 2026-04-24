@@ -160,8 +160,8 @@ export default class Enemy extends Sprite {
     }
 
     if (o.name === 'kitty') {
+      o.destroy()
       return false;
-      o.destroy();
     }
 
     return super.collideWithObject(o)
