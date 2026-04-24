@@ -120,7 +120,7 @@ export const levels = [
   },
   {
     title: 'BOSSTIME',
-    music: 'mission2',
+    music: 'techno',
     isBoss: true,
     freq: 0.965,
     bg: {

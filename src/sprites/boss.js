@@ -59,7 +59,7 @@ export default class Boss extends Enemy {
       const angle = Math.atan2(diff.y, diff.x);
       const speed = this.shotSpeed || .1;
       new EnemyFire(this.g, this.pos.add(vec2(0, -1)), angle)
-      this.g.sfx.play('shock', this.pos)
+      this.g.sfx.play('lazer', this.pos)
       this.fireCoolDown = 10;
     }
     this.fireCoolDown -= 1;
