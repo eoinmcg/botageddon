@@ -20,6 +20,7 @@ export default class LevelComplete extends Scene {
     this.g.music.play('victory');
 
     this.title = 'SECT0R COMPLETE';
+    this.g.levelNum += 1;
 
     this.lines = [];
     this.lineInterval = 1;

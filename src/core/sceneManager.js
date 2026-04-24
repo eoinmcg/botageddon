@@ -9,6 +9,7 @@ import Settings from "../scenes/settings.js";
 import Roulette from "../scenes/roulette.js";
 import Interval from "../scenes/interval.js";
 import Init from "../scenes/init.js";
+import Intro from "../scenes/intro.js";
 
 const Scenes = {
   Splash: Splash,
@@ -22,6 +23,7 @@ const Scenes = {
   Roulette: Roulette,
   Interval: Interval,
   Init: Init,
+  Intro: Intro,
 };
 
 export default class SceneManager {

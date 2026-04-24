@@ -90,7 +90,6 @@ export default class LevelManager {
         ttl: 3,
         cb: () => {
           this.g.sceneManager.changeScene(nextScene);
-          this.g.levelNum += 1;
         }
       })
       new Alert(this.g, { text: alertText, col: 'white', outline: 'red', pos: vec2(-3.5, 1), sfx: 'score' });

@@ -73,7 +73,7 @@ export default class Splash extends Scene {
         this.g.sceneManager.changeScene('Settings');
       } else if (opt === '1 Player' || opt === 'Start') {
         this.g.plays += 1;
-        this.g.sceneManager.changeScene('Play');
+        this.g.sceneManager.changeScene('Intro');
       }
     }
 
