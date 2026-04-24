@@ -3,7 +3,13 @@ import VirtualStick from "./sprites/virtualStick.js";
 import Swiper from "./lib/swiper.js";
 import resize from "./helpers/resize.js";
 
-function gameInit() {
+
+
+async function gameInit() {
+
+  const Wavedash = window.Wavedash ? await window.Wavedash : null;
+  Wavedash && Wavedash.updateLoadProgressZeroToOne(0);
+
   resize(Game);
 
   Game.sticks = {
@@ -25,7 +31,9 @@ function gameInit() {
     loadingDiv.remove();
   }
 
-
+  Wavedash && Wavedash.updateLoadProgressZeroToOne(1);
+  Wavedash && Wavedash.init({ debug: true });
+  console.log({ Wavedash })
 }
 
 function gameUpdate() {

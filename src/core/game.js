@@ -59,7 +59,7 @@ export const Game = {
     };
     Game.store.p2 = {
       score: 0,
-      lives: 2,
+      lives: 1,
       powerups: 0,
       coin: 0,
       stats: {
@@ -95,7 +95,7 @@ if (window.BUILD) {
       "%c" + `🤖 Greeting, Human! \n`,
       "font-size: 24px; font-family: monospace; font-weight: bold; color: lime;",
     );
-    console.log(`Check the source: https://github.com/eoinmcg/botageddon`);
+    console.log(`Check the source: https://github.com/eoinmcg/robocide`);
     console.log(`code & GFX by @eoinmcg`);
     console.log(`music: https://snabisch.itch.io/free-music-sequences-for-pico-8`);
     console.log(`made with: https://github.com/KilledByAPixel/LittleJS`);

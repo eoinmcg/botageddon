@@ -24,12 +24,20 @@ export default class Init extends Scene {
 
   render() {
     let p = this.g.palette;
-    drawRect(cameraPos, getCameraSize(), p.void.col);
+    const bg = new Color();
+    bg.setHex('#193d3f');
+    drawRect(cameraPos, getCameraSize(), bg);
 
     setFontDefault('"wheaton"');
-    if (this.showText) {
-      drawText('READY?', vec2(0), 1, p.slime.col.lerp(p.void.col, this.pulse))
-    }
+    // if (this.showText) {
+    // drawText('ROBOCIDE', vec2(0), 1, p.slime.col.lerp(p.void.col, this.pulse))
+    // }
+
+    drawText('ROBOCIDE', vec2(0, -.15), 1.9, p.void.col);
+    drawText('ROBOCIDE', vec2(0), 1.8, p.slime.col);
+
+    const size = this.g.size;
+
   }
 
 }
