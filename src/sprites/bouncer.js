@@ -1,4 +1,5 @@
 import Sprite from "./sprite";
+import Particles from "../helpers/particles";
 
 export default class Bouncer extends Sprite {
   constructor(g, props = {}) {
@@ -15,6 +16,7 @@ export default class Bouncer extends Sprite {
     const col = ['pink', 'yellow', 'skyblue', 'peach', 'aqua', 'slime'].rnd();
     this.color = g.palette[col].col;
     this.outline = { offset: 0.1, color: BLACK };
+    Particles.score(this.pos)
   }
 
   update() {
