@@ -32,7 +32,6 @@ export default class Doggo extends Enemy {
     this.mirror = this.g.p1.pos.x < this.pos.x;
 
     if (this.target) {
-      console.log(this.target, typeof this.target)
       this.moveToTarget(this.target);
     }
 

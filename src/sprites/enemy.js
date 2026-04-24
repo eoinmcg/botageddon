@@ -112,7 +112,6 @@ export default class Enemy extends Sprite {
 
   moveToTarget(target) {
 
-    console.log({ target })
     const direction = target.pos.subtract(this.pos);
 
     const distance = direction.length();
@@ -155,9 +154,9 @@ export default class Enemy extends Sprite {
 
     }
 
-    if (o.name === 'kitty' && !o.following) {
-      return false;
-    }
+    // if (o.name === 'kitty' && !o.following) {
+    //   return false;
+    // }
 
     if (o.name === 'kitty') {
       o.destroy()

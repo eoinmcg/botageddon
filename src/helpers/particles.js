@@ -4,7 +4,7 @@ import { Game as G } from '../core/game';
 const Particles = {
 
   score: function() {
-    let pos = vec2(rand(2, 0), -7);
+    let pos = vec2(rand(-1, 1), -6.5);
     const color = palette.yellow.col;
     const color2 = palette.orange.col;
     new ParticleEmitter(
