@@ -2,9 +2,9 @@
 
 
 <div style="display: flex; align-items: flex-start;">
-  <img src="https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/cover250x250.png" title="Banner"">
-  <img src="https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/screenshot1.png" title="screenshot"">
-  <img src="https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/gameplay1.gif" title="gamplay"">
+  <img src="https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/splash.png" title="Splash screen"">
+  <img src="https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/play.png" title="screenshot"">
+  <img src="https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/gameplay.gif" title="gamplay"">
 </div>
 
 Twin stick shooter arcade action.
