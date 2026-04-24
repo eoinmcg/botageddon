@@ -97,13 +97,18 @@ export default class LevelComplete extends Scene {
     this.g.store['p1'].score = this.displayScore;
   }
 
+  render() {
+    let p = this.g.palette;
+    drawRectGradient(cameraPos, getCameraSize(), p.void.col, p.steel.col.lerp(BLACK, .7));
+  }
+
   renderPost() {
 
     setFontDefault('"wheaton"');
     const wave = Math.sin(new Date().getTime() * 0.005);
 
     const slime = this.g.palette.slime.col;
-    drawText(this.title, vec2(0, 6), 1, slime);
+    drawText(this.title, vec2(0, 6), .8, slime);
 
     let y = 3;
     this.renderFrags.forEach((part, i) => {
@@ -111,6 +116,7 @@ export default class LevelComplete extends Scene {
     })
 
     drawText(`${this.displayScore}`, vec2(0, -6), 1.2, this.g.palette.yellow.col, .2, BLACK, 'center');
+    drawCRTBorder();
   }
 
   renderAccuracy(y) {
@@ -145,4 +151,96 @@ export default class LevelComplete extends Scene {
       this.score += stat * 20;
     }
   }
+}
+
+
+function drawCRTBorder() {
+  const canvas = mainCanvas;
+  const ctx = mainContext;
+  const w = canvas.width;
+  const h = canvas.height;
+
+  ctx.save();
+
+  const vignette = ctx.createRadialGradient(
+    w / 2, h / 2, h * 0.3,   // inner circle
+    w / 2, h / 2, h * 0.85   // outer circle
+  );
+  vignette.addColorStop(0, 'rgba(0,0,0,0)');
+  vignette.addColorStop(1, 'rgba(0,0,0,0.75)');
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, w, h);
+
+  const lineSpacing = Math.max(2, Math.floor(h / 200)); // scale with resolution
+  ctx.fillStyle = 'rgba(0,0,0,0.18)';
+  for (let y = 0; y < h; y += lineSpacing * 2) {
+    ctx.fillRect(0, y, w, lineSpacing);
+  }
+
+  const bevel = Math.round(Math.min(w, h) * 0.045); // ~4.5% of smaller dimension
+  // ctx.strokeStyle = '#1a1a1a';
+  ctx.strokeStyle = '#d4c9b0';
+  ctx.lineWidth = bevel * 2;
+  ctx.strokeRect(0, 0, w, h);
+
+  // Inner highlight edge (top-left bright, bottom-right dark — classic bevel)
+  const half = bevel;
+  ctx.lineWidth = 2;
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)'; // top & left highlight
+  ctx.beginPath();
+  ctx.moveTo(half, h - half);
+  ctx.lineTo(half, half);
+  ctx.lineTo(w - half, half);
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.5)'; // bottom & right shadow
+  ctx.beginPath();
+  ctx.moveTo(half, h - half);
+  ctx.lineTo(w - half, h - half);
+  ctx.lineTo(w - half, half);
+  ctx.stroke();
+
+  // --- 4. Curved corner mask (CRTs have rounded screens) ---
+  const cornerR = Math.min(w, h) * 0.07;
+  ctx.fillStyle = '#000';
+
+  // Draw black rounded-rect cutout by filling corners
+  // Top-left
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(cornerR, 0);
+  ctx.arcTo(0, 0, 0, cornerR, cornerR);
+  ctx.closePath();
+  ctx.fill();
+
+  // Top-right
+  ctx.beginPath();
+  ctx.moveTo(w, 0);
+  ctx.lineTo(w - cornerR, 0);
+  ctx.arcTo(w, 0, w, cornerR, cornerR);
+  ctx.closePath();
+  ctx.fill();
+
+  // Bottom-left
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  ctx.lineTo(cornerR, h);
+  ctx.arcTo(0, h, 0, h - cornerR, cornerR);
+  ctx.closePath();
+  ctx.fill();
+
+  // Bottom-right
+  ctx.beginPath();
+  ctx.moveTo(w, h);
+  ctx.lineTo(w - cornerR, h);
+  ctx.arcTo(w, h, w, h - cornerR, cornerR);
+  ctx.closePath();
+  ctx.fill();
+
+  // --- 5. Subtle green phosphor tint (optional, comment out if unwanted) ---
+  ctx.fillStyle = 'rgba(0, 255, 80, 0.03)';
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.restore();
 }

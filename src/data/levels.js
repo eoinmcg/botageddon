@@ -2,7 +2,7 @@ export const levels = [
   {
     title: 'SECT0R 0',
     music: 'intro',
-    time: 12,
+    time: 10,
     types: ['chip'],
     freq: 0.985,
     bg: {
