@@ -1,4 +1,6 @@
 import Enemy from "./enemy";
+import EnemyFire from "./enemyFire";
+import Particles from "../helpers/particles";
 
 export default class Boss extends Enemy {
 
@@ -21,6 +23,8 @@ export default class Boss extends Enemy {
       value: 500,
     });
 
+    this.maxHealth = this.health;
+    console.log(this.maxHealth);
     this.name = 'boss'
     this.speed = 0.05;
     this.state = 'patrol';
@@ -30,10 +34,36 @@ export default class Boss extends Enemy {
 
     this.shadowOffset = -.5;
 
+    this.batteryCol = new Color(.1, .1, .1)
+    this.batteryHighlight = new Color(1, 1, 1, .5)
+    this.fireCoolDown = 5;
+
+    this.outline = {
+      offset: 0.2,
+      color: BLUE
+    };
   }
 
   update() {
     super.update();
+    this.pulse = Math.sin(time * 2);
+    this.mouthWidth = .4 + this.pulse;
+    this.mouthWidth = clamp(this.mouthWidth, .3, 1);
+
+    if (this.mouthWidth > .8
+      && this.state === 'patrol'
+      && this.fireCoolDown < 0
+      && Math.random() > .7) {
+
+      const diff = this.g.p1.pos.subtract(this.pos);
+      const angle = Math.atan2(diff.y, diff.x);
+      const speed = this.shotSpeed || .1;
+      new EnemyFire(this.g, this.pos.add(vec2(0, -1)), angle)
+      this.g.sfx.play('shock', this.pos)
+      this.fireCoolDown = 10;
+    }
+    this.fireCoolDown -= 1;
+
     switch (this.state) {
       case 'patrol':
         this.velocity.x = this.direction * this.speed;
@@ -76,13 +106,93 @@ export default class Boss extends Enemy {
     );
 
     this.angle = 0;
-    // this.color = new Color(0, 0, 0, .5)
+  }
+
+  render() {
+
+    super.render();
+    this.renderBattery()
+
+    // eyes
+    const pal = this.g.palette;
+    const col = pal.red.col.lerp(pal.pink.col, this.pulse)
+    drawRect(this.pos.add(vec2(-.7, .29)), vec2(.3, .5), col)
+    drawRect(this.pos.add(vec2(-.55, .15)), vec2(.6, .27), col)
+
+    drawRect(this.pos.add(vec2(.7, .29)), vec2(.3, .5), col)
+    drawRect(this.pos.add(vec2(.55, .15)), vec2(.6, .27), col)
+
+    // mouth
+    const mouthCol = this.fireCoolDown < 0
+      ? BLACK
+      : this.g.palette.darkred.col.lerp(BLACK, this.fireCoolDown / 10);
+    drawRect(this.pos.add(vec2(0, -.5)), vec2(this.mouthWidth, .4), mouthCol)
+
+  }
+
+  renderBattery() {
+    const width = 1;
+    const height = .3;
+    const yOffset = 1.8;
+    const healthBarSize = vec2(width, height);
+    const healthWidth = (this.health / this.maxHealth) * healthBarSize.x;
+
+    const healthVal = (this.health / this.maxHealth)
+
+    let col = this.g.palette.slime.col;
+    if (healthVal < .66) col = this.g.palette.yellow.col;
+    if (healthVal < .33) col = this.g.palette.red.col;
+
+    // black background bar (centered)
+    drawRect(this.pos.add(vec2(0, yOffset)), healthBarSize.add(vec2(height)), this.batteryCol);
+    drawRect(this.pos.add(vec2(width * .65, yOffset)), vec2(.2), this.batteryCol);
+
+    // red bar (left-aligned)
+    drawRect(
+      vec2(this.pos.x - (width * .5) + healthWidth / 2, this.pos.y + yOffset),
+      vec2(healthWidth, height * .9),
+      col
+    );
+    drawRectGradient(
+      vec2(this.pos.x - (width * .5) + healthWidth / 2, this.pos.y + yOffset),
+      vec2(healthWidth, height * .9),
+      CLEAR_WHITE, this.batteryHighlight
+    );
+
   }
 
   renderShadow() {
     drawTile(this.pos.add(vec2(0, this.shadowOffset)),
       vec2(this.size.x * 1.1, this.size.y * 1.1),
       tile(0, this.g.tileSize), this.shadowCol);
+  }
+
+  collideWithObject(o) {
+    if (o.name === 'wall') {
+      return false;
+    }
+    if (o.name === 'kitty') {
+      o.destroy();
+      return false;
+    }
+
+    return super.collideWithObject(o)
+  }
+
+  destroy() {
+    let i = 5;
+    const pos = this.pos;
+    for (let i = 0; i < 1; i += .1) {
+      this.g.events.push({
+        ttl: i,
+        cb: () => {
+          Particles.explodeBaddie(pos.add(vec2(rand(.5))), this.size);
+          this.g.sfx.play('explosion', pos);
+
+        }
+      })
+    }
+    super.destroy();
   }
 
 }

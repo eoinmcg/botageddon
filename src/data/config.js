@@ -33,6 +33,7 @@ const Config = {
     crystal2: 26,
     diamond: 27,
     sparkle: 28,
+    charge: 29,
     dog0: 30,
     dog1: 31,
     droid0: 32,

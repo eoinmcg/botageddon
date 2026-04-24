@@ -5,7 +5,7 @@ export const levels = [
     time: 12,
     // types: ['chip', 'doggo', 'droid', 'drone', 'muncher'],
     types: ['chip'],
-    // isBoss: true,
+    isBoss: true,
     freq: 0.985,
     bg: {
       walls: true,
@@ -58,7 +58,30 @@ export const levels = [
       { ent: 'kitty', props: { pos: vec2(-1, -5) } },
       { ent: 'kitty', props: { pos: vec2(1, -5) } }
     ]
+  },
+  {
+    title: 'BOSSTIME',
+    music: 'mission2',
+    isBoss: true,
+    freq: 0.965,
+    bg: {
+      walls: true,
+      tile: 1,
+      col: new Color(.5, .05, .05),  // green
+    },
+    startUp: [
+      { ent: 'powerup', props: { pos: vec2(0, 1) } },
+      { ent: 'wall', props: { pos: vec2(-3, 2), t: 'vat0' } },
+      { ent: 'wall', props: { pos: vec2(0, 2), t: 'vat0' } },
+      { ent: 'wall', props: { pos: vec2(0, -6), t: 'monitor0' } },
+      { ent: 'wall', props: { pos: vec2(3, 2), t: 'vat0' } },
+      { ent: 'kitty', props: { pos: vec2(0, 3) } },
+      { ent: 'kitty', props: { pos: vec2(-1, -3) } },
+      { ent: 'kitty', props: { pos: vec2(1, -3) } }
+
+    ]
   }
+
 
 ]
 

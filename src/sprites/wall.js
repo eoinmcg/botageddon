@@ -16,7 +16,6 @@ export default class Wall extends Sprite {
     this.shadowOffset = -.5
 
     this.rnd = new RandomGenerator(time + rand(0, 10));
-    console.log(this.rnd)
 
     this.hits = 0;
 

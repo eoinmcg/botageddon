@@ -83,7 +83,7 @@ export default class LevelManager {
       const nextScene = this.levelData.isBoss
         ? 'Victory' : 'LevelComplete';
       const alertText = this.levelData.isBoss
-        ? 'Goodnight!!!' : 'SECT0R CLEAR';
+        ? 'SHUTDOWN!!!' : 'SECT0R CLEAR';
       this.g.levelClear = true;
       this.g.music.stop();
       this.g.events.push({

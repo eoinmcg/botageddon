@@ -4,7 +4,7 @@ import Particles from "../helpers/particles";
 export default class EnemyFire extends Sprite {
 
   constructor(g, pos, angle, speed = .1) {
-    super(pos, vec2(.5), g.tile('circle'));
+    super(pos, vec2(.7), g.tile('charge'));
 
     this.g = g;
     this.velocity = vec2(
@@ -12,23 +12,21 @@ export default class EnemyFire extends Sprite {
       Math.sin(angle) * speed,
     );
 
-    this.color = g.palette.pink.mk();
+    // this.color = g.palette.yellow.col;
     this.name = 'enemyFire';
 
     this.speed = speed;
-    this.angle = angle;
+    // this.angle = angle;
 
     this.renderOrder = 3000;
 
-    this.outline = { color: g.palette.red.mk(), offset: .15 }
+    this.outline = { color: g.palette.void.col, offset: .1 }
     // this.outline = { color: BLACK, offset: .15 }
 
   }
 
   update() {
-    this.angle += .1;
     super.update();
-    this.outline.color = new Color(1, Math.sin(time * 5), 0);
   }
 
   collideWithObject(o) {
@@ -36,6 +34,19 @@ export default class EnemyFire extends Sprite {
       Particles.sparks(this.pos);
       this.destroy();
     }
+
+    if (o.name === 'kitty' && o.following) {
+      Particles.sparks(this.pos);
+      o.destroy();
+      this.destroy();
+    }
+
+    if (o.name === 'wall') {
+      Particles.sparks(this.pos);
+      this.destroy();
+      this.g.sfx.play('walk', this.pos)
+    }
+
   }
 
 }
