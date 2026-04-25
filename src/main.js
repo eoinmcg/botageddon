@@ -4,10 +4,18 @@ import Swiper from "./lib/swiper.js";
 import resize from "./helpers/resize.js";
 
 
-
 async function gameInit() {
 
-  const Wavedash = window.Wavedash ? await window.Wavedash : null;
+  const isWavedashHost = window.location.hostname.includes('wavedash.com');
+
+  let Wavedash = null;
+  if (isWavedashHost && window.Wavedash) {
+    try {
+      Wavedash = await window.Wavedash;
+    } catch (e) {
+      console.warn("Wavedash SDK failed to load:", e);
+    }
+  }
   Wavedash && Wavedash.updateLoadProgressZeroToOne(0);
 
   resize(Game);
@@ -32,7 +40,7 @@ async function gameInit() {
   }
 
   Wavedash && Wavedash.updateLoadProgressZeroToOne(1);
-  Wavedash && Wavedash.init({ debug: true });
+  // Wavedash && Wavedash.init({ debug: true });
 }
 
 function gameUpdate() {
@@ -59,3 +67,17 @@ engineInit(
   gameRenderPost,
   Game.images,
 );
+
+
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('debug')) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/eruda';
+    script.onload = function() {
+      eruda.init();
+      console.log('Eruda debug console initialized.');
+    };
+    document.head.appendChild(script);
+  }
+})();
