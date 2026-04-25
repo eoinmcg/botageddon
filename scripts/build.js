@@ -73,7 +73,8 @@ Build
     sourceFiles,
     // [closureCompilerStep, uglifyBuildStep, htmlBuildStep, zipBuildStep]
     // [closureCompilerStep, uglifyBuildStep, roadrollerBuildStep, htmlBuildStep, zipBuildStep]
-    [closureCompilerSimpleStep, htmlBuildStep, zipBuildStep] // for build debugging
+    // [closureCompilerSimpleStep, htmlBuildStep, zipBuildStep] // for build debugging
+    [htmlBuildStep, zipBuildStep] // for build debugging
     // [closureCompilerStep, htmlBuildStep, zipBuildStep] // for build debugging
   );
 

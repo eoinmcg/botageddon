@@ -52,7 +52,7 @@ export default class Play extends Scene {
       this.g.gameOver = time;
       this.setGameOver();
       this.g.events.push({
-        ttl: 5,
+        ttl: 10,
         cb: () => {
           this.g.sceneManager.changeScene('Splash');
         }

@@ -86,6 +86,7 @@ export default class LevelManager {
         ? 'SHUTDOWN!!!' : 'SECT0R CLEAR';
       this.g.levelClear = true;
       this.g.music.stop();
+      this.g.store.p1.stats.saves = engineObjects.filter(o => o.name === 'kitty').length;
       this.g.events.push({
         ttl: 3,
         cb: () => {
