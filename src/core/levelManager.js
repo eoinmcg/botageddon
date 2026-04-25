@@ -1,4 +1,4 @@
-import { levels } from "../data/levels"
+import { getLevels } from "../data/levels";
 import Alert from "../sprites/alert";
 import Doggo from "../sprites/doggo";
 import Muncher from "../sprites/muncher";
@@ -15,7 +15,8 @@ export default class LevelManager {
   constructor(g, levelNum = 1) {
     this.g = g;
     this.levelNum = levelNum;
-    this.g.totalLevels = levels.length;
+    // this.g.totalLevels = levels.length;
+    this.g.totalLevels = getLevels().length;
 
     this.ents = {
       alert: Alert,
@@ -39,9 +40,9 @@ export default class LevelManager {
   }
 
   loadLevel(levelNum) {
-    this.levelData = levels[levelNum - 1]
+    const levels = getLevels();
+    this.levelData = levels[levelNum - 1];
     if (!this.levelData) return;
-
 
     if (this.levelData.music) {
       this.g.music.play(this.levelData.music)

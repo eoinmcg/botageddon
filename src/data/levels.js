@@ -1,4 +1,4 @@
-export const levels = [
+export const getLevels = () => [
   {
     title: 'SECT0R 0',
     music: 'intro',
@@ -126,7 +126,7 @@ export const levels = [
     bg: {
       walls: true,
       tile: 1,
-      col: new Color(.4, .05, .05),  // green
+      col: new Color(.4, .05, .05),
     },
     startUp: [
       { ent: 'powerup', props: { pos: vec2(0, 1) } },
@@ -139,25 +139,12 @@ export const levels = [
       { ent: 'kitty', props: { pos: vec2(0, 3) } },
       { ent: 'kitty', props: { pos: vec2(-1, -3) } },
       { ent: 'kitty', props: { pos: vec2(1, -3) } }
-
     ]
   }
+];
 
-
-]
 
 export const insults = [
-  // "Miserable fur‑beast! Your paws are no match for my glorious circuitry!",
-  // "You flea‑ridden feline! I’ve seen toaster ovens with more strategic talent!",
-  // "Curse you, cat! Stop succeeding — it’s ruining my perfectly villainous mood!",
-  // "You overgrown house pet! My robots will swat you like the yarn‑chasing fleabag you are!",
-  // "Pathetic creature! Even my error messages are more impressive than your combat skills!",
-  // "You think you’ve won? Ha! I’ve debugged coffee machines with more dignity!",
-  // "Foolish cat! Your victory only proves my robots need a firmware update!",
-  // "You whiskered nuisance! I’ll turn your precious scratching post into scrap metal!",
-  // "You may have claws! but I have processing power, you pompous puffball!",
-  // "Insolent kitty! I’ll have you know my robots were designed by the finest evil engineers!",
-  // "Stop winning! It’s extremely inconvenient for my plans!",
   "You dare challenge me? I’ll reduce your nine lives to a very disappointing zero!",
   "Was that a hiss? Stick to the litter box, you biological error!",
   "Out of lives already? I’ll enjoy deleting the remaining eight!",
