@@ -33,7 +33,6 @@ async function gameInit() {
 
   Wavedash && Wavedash.updateLoadProgressZeroToOne(1);
   Wavedash && Wavedash.init({ debug: true });
-  console.log({ Wavedash })
 }
 
 function gameUpdate() {

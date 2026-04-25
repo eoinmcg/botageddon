@@ -21,9 +21,9 @@ export const levels = [
     freq: 0.97,
     startUp: [
       { ent: 'powerup', props: { pos: vec2(0, 3) } },
-      { ent: 'kitty', props: { pos: vec2(0, -5) } },
-      { ent: 'kitty', props: { pos: vec2(4, -5) } },
-      { ent: 'kitty', props: { pos: vec2(-4, -5) } },
+      { ent: 'kitty', props: { pos: vec2(0, -2) } },
+      { ent: 'kitty', props: { pos: vec2(4, -2) } },
+      { ent: 'kitty', props: { pos: vec2(-4, -2) } },
     ]
   },
   {
