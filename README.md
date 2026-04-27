@@ -1,44 +1,54 @@
 # 🤖 ROBOCIDE
 
+> **The year is 1984. The future is dead. The machines won. Humanity is a memory. Cats inherit the ruins.**
 
-<div style="display: flex; align-items: flex-start;">
-  <img src="https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/splash.png" title="Splash screen"">
-  <img src="https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/play.png" title="screenshot"">
-  <img src="https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/gameplay.gif" title="gamplay"">
-</div>
+| ![Splash screen](https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/splash.png) | ![screenshot](https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/play.png) | ![gamplay](https://raw.githubusercontent.com/eoinmcg/robocide/main/promo/gameplay.gif) |
+| :---: | :---: | :---: |
 
-Twin stick shooter arcade action.
+Twin stick shooter arcade action. A bot army is hell-bent on destroying all remaining moggies. Buckle up, kitty! Nine lives won't be enough to survive this mayhem! Go give those toasters hell.
 
-The year is 1984. The future is dead.
-The machines won. Humanity is a memory. Cats inherit the ruins.
-A bot army is hell-bent on destroying all remaining moggies.
-Buckle up, kitty! Nine lives won't be enough to survive this mayhem!
-Go give those toasters hell.
+### [🕹️ PLAY THE GAME IN YOUR BROWSER](https://eoinmcgrath.com/robocide)
 
-Controls:
-keyboard & mouse
-or use a gamepad
-[M] mutes music & sfx
-[P] pause
-[O] fullscreen
+---
 
-#### [🎮 Play](https://eoinmcgrath.com/botageddon)
+## ⌨️ Controls
+- **WASD / Arrows**: Move
+- **Mouse**: Aim & Shoot
+- **Gamepad**: Fully supported
+- **[M]**: Mute music & SFX
+- **[P]**: Pause
+- **[O]**: Fullscreen
 
+---
 
------
+## 🛠 Tech & Development
 
-## Tech
+This project is built for the **Gamedev.js Jam 2026** using the [LittleJS Engine](https://github.com/KilledByAPixel/LittleJS).
 
-Clone the repo, crack open a terminal and prepare for fun!
+### Run Locally
+Clone the repo and run:
+```bash
+npm run dev
 
-__Run locally__: `npm run dev`
+Create a zip: `npm run zip`
 
-__Create a zip__: `npm run zip`
-
-__* Host on github pages:__ `npm run deploy`
+* Host on github pages: `npm run deploy`
 
 (* In your repo under settings > pages)
 
-- [🎶 Music by Snabisch](https://snabisch.itch.io/free-music-sequences-for-pico-8)
 - [⚙️ Made with LittleJS](https://github.com/KilledByAPixel/LittleJS)
+- [🎶 Music by Snabisch](https://snabisch.itch.io/free-music-sequences-for-pico-8)
+- [🔊 Music Player: pico8-music](https://github.com/codyebberson/codyebberson.github.io)
 
+
+## Architecture
+
+**Entry Point** (src/main.js): The engine's "brain." It bootstraps the game, initializes the canvas context, and manages the primary requestAnimationFrame loop.
+
+**Global Configuration** (src/data/config.js): A centralized source of truth for game constants, including screen resolution, physics parameters, and the sprite atlas mapping.
+
+**Scene Manager** (src/core/sceneManager.js): A state machine that handles transitions between game states (e.g., switching from the Splash Screen to Active Gameplay).
+
+**Base Scene** (src/scenes/scene.js): An abstract base class that provides standardized lifecycle methods and input handling to be inherited by all game levels.
+
+**Base Sprite Class** (src/sprites/sprite.js): The core EngineObject. It handles the rendering pipeline for all entities, featuring built-in, inheritable logic for dynamic shadows and outlines.

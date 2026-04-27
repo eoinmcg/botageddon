@@ -1,3 +1,6 @@
+// pico8-music - MIT License - Copyright 2021 2021 Cody Ebberson
+// https://github.com/codyebberson/pico8-music
+
 /**
  * Feature flag for custom instruments.
  * Custom instruments allow sound effects to be used as instruments.
@@ -262,9 +265,9 @@ function P8(sfx, music) {
 
       const samples = round(noteLength * SAMPLE_RATE);
       const customInstrument =
-          CUSTOM_INSTRUMENTS_ENABLED &&
-          currWaveform > 7 &&
-          getSound(currWaveform - 8, pitchOffset + currNote - 24);
+        CUSTOM_INSTRUMENTS_ENABLED &&
+        currWaveform > 7 &&
+        getSound(currWaveform - 8, pitchOffset + currNote - 24);
 
       let k = 0;
       for (let j = offset; j < offset + samples; j++) {
@@ -388,7 +391,7 @@ function P8(sfx, music) {
 
     const gainNode = audioCtx.createGain();
     // source.connect(audioCtx.destination);
-    gainNode.gain.value= vol;
+    gainNode.gain.value = vol;
     source.connect(gainNode);
     gainNode.connect(audioCtx.destination);
     source.start();

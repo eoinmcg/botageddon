@@ -40,7 +40,7 @@ async function gameInit() {
   }
 
   Wavedash && Wavedash.updateLoadProgressZeroToOne(1);
-  // Wavedash && Wavedash.init({ debug: true });
+  Wavedash && Wavedash.init({ debug: true });
 }
 
 function gameUpdate() {
