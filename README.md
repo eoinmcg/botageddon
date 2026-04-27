@@ -27,12 +27,12 @@ This project is built for the **Gamedev.js Jam 2026** using the [LittleJS Engine
 
 ### Run Locally
 Clone the repo and run:
-```bash
-npm run dev
+
+Start local dev server: `npm run dev`
 
 Create a zip: `npm run zip`
 
-* Host on github pages: `npm run deploy`
+* Host on [github pages](https://docs.github.com/en/pages): `npm run deploy`
 
 (* In your repo under settings > pages)
 
