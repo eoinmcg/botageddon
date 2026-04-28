@@ -32,18 +32,18 @@ Start local dev server: `npm run dev`
 
 Create a zip: `npm run zip`
 
-* Host on [github pages](https://docs.github.com/en/pages): `npm run deploy`
+Host on [github pages](https://docs.github.com/en/pages): `npm run deploy` *
 
 (* In your repo under settings > pages)
 
 - [⚙️ Made with LittleJS](https://github.com/KilledByAPixel/LittleJS)
 - [🎶 Music by Snabisch](https://snabisch.itch.io/free-music-sequences-for-pico-8)
-- [🔊 Music Player: pico8-music](https://github.com/codyebberson/codyebberson.github.io)
+- [🔊 Music Player: pico8-music](https://github.com/codyebberson/pico8-music)
 
 
 ## Architecture
 
-**Entry Point** (src/main.js): The engine's "brain." It bootstraps the game, initializes the canvas context, and manages the primary requestAnimationFrame loop.
+**Entry Point** (src/main.js): Bootstraps the game, initializes the canvas context, and manages the primary game loop.
 
 **Global Configuration** (src/data/config.js): A centralized source of truth for game constants, including screen resolution, physics parameters, and the sprite atlas mapping.
 

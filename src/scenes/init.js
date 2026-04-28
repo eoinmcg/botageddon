@@ -1,4 +1,5 @@
 import Scene from "./scene";
+import { outlineTile } from "../helpers/drawOutline";
 
 export default class Init extends Scene {
   enter(Game) {
@@ -29,14 +30,30 @@ export default class Init extends Scene {
     drawRect(cameraPos, getCameraSize(), bg);
 
     setFontDefault('"wheaton"');
-    // if (this.showText) {
-    // drawText('ROBOCIDE', vec2(0), 1, p.slime.col.lerp(p.void.col, this.pulse))
-    // }
+    drawText('outline', vec2(-2.5, 6.5), .6)
+    drawText('plain', vec2(2.5, 6.5), .6)
 
-    drawText('ROBOCIDE', vec2(0, -.15), 1.9, p.void.col);
-    drawText('ROBOCIDE', vec2(0), 1.8, p.slime.col);
+    outlineTile({
+      pos: vec2(-2.5, 5),
+      size: vec2(1),
+      tileInfo: this.g.tile('drone1')
+    })
+    drawTile(vec2(2.5, 5), vec2(1), this.g.tile('drone1'))
 
-    const size = this.g.size;
+    outlineTile({
+      pos: vec2(-2.5, 3),
+      size: vec2(1),
+      tileInfo: this.g.tile('muncher0')
+    })
+    drawTile(vec2(2.5, 3), vec2(1), this.g.tile('muncher0'))
+
+    outlineTile({
+      pos: vec2(-2.5, 1),
+      size: vec2(1),
+      tileInfo: this.g.tile('cat0')
+    })
+    drawTile(vec2(2.5, 1), vec2(1), this.g.tile('cat0'))
+
 
   }
 
