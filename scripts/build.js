@@ -47,6 +47,12 @@ dataFiles.push(`public/wheaton_capitals.otf`);
 dataFiles.push(`public/favicon.gif`);
 dataFiles.push(`public/manifest.json`);
 dataFiles.push(`public/apple-icon-180.png`);
+dataFiles.push('public/postmortem.html');
+dataFiles.push('public/style.css');
+dataFiles.push('public/postmortem_bg.png');
+dataFiles.push('public/vids/rescue.png');
+dataFiles.push('public/vids/outline.png');
+
 
 console.log(``);
 chalkSuccess(` Building ${Config.title}... `, '🛠️');

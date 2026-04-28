@@ -41,7 +41,7 @@ Host on [github pages](https://docs.github.com/en/pages): `npm run deploy` *
 - [🔊 Music Player: pico8-music](https://github.com/codyebberson/pico8-music)
 
 Read more about how the game was made:
-[post mortem](https://github.com/eoinmcg/robocide/postmortem.html)
+[post mortem](https://eoinmcgrath./robocide/postmortem.html)
 
 
 ## Architecture
